@@ -109,21 +109,18 @@ The raw authority share $a_{\text{raw}, i}(t)$ is allocated via a dynamic Boltzm
 $$a_{\text{raw}, i}(t) = \frac{\exp\left(\gamma(G_p) \cdot GS_i(t)\right) \cdot \mathbb{I}\left(GS_i(t) \ge \theta_{act}\right)}{\sum_{j=1}^N \exp\left(\gamma(G_p) \cdot GS_j(t)\right) \cdot \mathbb{I}\left(GS_j(t) \ge \theta_{act}\right)}$$
 where $\gamma(G_p) = \gamma_0 (1 + \kappa G_p(t))$ scales competition selectivity with real-time pressure.
 
-#### Analytical Convex Projection onto the `DEmin`-Simplex
+#### Analytical Convex Projection under the $DE_{\min}$ Constraint
 
-[SVG](https://github.com/RayanAndish/ADG-Mole-Rat/tree/main#analytical-convex-projection-onto-the-de_min-simplex)
+[SVG](https://github.com/RayanAndish/ADG-Mole-Rat/tree/main#analytical-convex-projection-under-the-de_min-constraint)
 
 To strictly enforce the constitutional invariant
-`I_safety: DE(t) ≥ DE_min`, the engine computes:
+$I_{\mathrm{safety}}: DE(t) \geq DE_{\min}$, the engine computes:
 
-$$
-\mathbf{a}^*(t)=(1-\lambda^*)\mathbf{a}_{\mathrm{raw}}(t)+\lambda^*\left(\frac{1}{N}\mathbf{1}\right)$$
+$$\mathbf{a}^{*}(t)=(1-\lambda^{*})\mathbf{a}_{\mathrm{raw}}(t)+\lambda^{*}\left(\frac{1}{N}\mathbf{1}\right)$$
 
-where $\lambda^* \in [0,1]$ is the minimum convex blending factor satisfying:
+where $\lambda^{*} \in [0,1]$ is the minimum convex blending factor satisfying:
 
-$$DE(\mathbf{a}^*)=-\frac{1}{\ln N}\sum_{i=1}^{N}a_i^*(t)\ln\left(a_i^*(t)+\epsilon\right)\geqDE_{\min}$$
-
----
+$$DE(\mathbf{a}^{*})=-\frac{1}{\ln N}\sum_{i=1}^{N}a_i^{*}(t)\ln\left(a_i^{*}(t)+\epsilon\right)\geqDE_{\min}$$
 
 ### 3.5. Biological Actuation Signals
 
