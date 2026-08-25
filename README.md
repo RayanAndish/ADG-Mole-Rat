@@ -83,8 +83,10 @@ Governance Pressure $G_p(t) \in [0, 1]$ quantifies the macro-level operational s
 $$G_p(t) = \mathbf{w}^T \mathbf{\Phi}(\mathbf{S}(t)) = w_r R(t) + w_w W(t) + w_f F(t) + w_c C(t) - w_d DE(t)$$
 subject to the convex simplex constraint $\sum_{k \in \{r,w,f,c,d\}} w_k = 1, \; w_k > 0$, where $\mathbf{\Phi}(\cdot)$ denotes a Sigmoidal normalization operator.
 
+
 #### Regime Transition Automaton
-The continuous pressure variable $G_p(t)$ drives discrete transitions across three operational governance modes via dual-threshold hysteresis:
+<p>The continuous pressure variable $G_p(t)$ drives discrete transitions across three operational governance modes via dual-threshold hysteresis:</p>
+
 $$M(t) = \begin{cases} 
 \mathcal{M}_0 \text{ (Flat Decentralization)}, & \text{if } G_p(t) < \theta_{low} \\
 \mathcal{M}_1 \text{ (Adaptive Committee)}, & \text{if } \theta_{low} \le G_p(t) < \theta_{high} \\
@@ -108,9 +110,11 @@ $$a_{\text{raw}, i}(t) = \frac{\exp\left(\gamma(G_p) \cdot GS_i(t)\right) \cdot 
 where $\gamma(G_p) = \gamma_0 (1 + \kappa G_p(t))$ scales competition selectivity with real-time pressure.
 
 #### Analytical Convex Projection onto the $DE_{min}$-Simplex
-To strictly enforce the constitutional invariant $\mathcal{I}_{safety}: DE(t) \ge DE_{min}$, the engine computes:
+<p>To strictly enforce the constitutional invariant $\mathcal{I}_{safety}: DE(t) \ge DE_{min}$, the engine computes:</p>
+
 $$\mathbf{a}^*(t) = (1 - \lambda^*) \mathbf{a}_{\text{raw}}(t) + \lambda^* \left( \frac{1}{N} \mathbf{1} \right)$$
-where $\lambda^* \in [0, 1]$ is the minimal convex blending factor satisfying:
+<p>where $\lambda^* \in [0, 1]$ is the minimal convex blending factor satisfying:</p>
+
 $$DE(\mathbf{a}^*) = -\frac{1}{\ln N} \sum_{i=1}^N a_i^*(t) \ln\left(a_i^*(t) + \epsilon\right) \ge DE_{min}$$
 
 ---
@@ -122,7 +126,12 @@ $$DE(\mathbf{a}^*) = -\frac{1}{\ln N} \sum_{i=1}^N a_i^*(t) \ln\left(a_i^*(t) + 
    Throttling allowable mutation bandwidth: $BW_i^{allowed}(t) = BW_i^{max} \cdot (1 - \sigma_{IPM}(t))$.
 
 2. **Targeted Mechanical Shoving Stimulus ($\mathbf{u}_{stim}$):**
+
+   <p>The stimulus vector activates idle validators based on weight and quality thresholds:</p>
+
    $$u_{stim, i}(t) = \text{ReLU}\left( \frac{\bar{w}_{colony}(t) - w_i(t)}{\bar{w}_{colony}(t)} \right) \cdot \mathbb{I}\left(l_i(t) \le \bar{l}_{median}\right) \cdot \mathbb{I}\left(Q_i(t) \ge Q_{thresh}\right)$$
+
+   <p>Formally, the stimulus vector $\mathbf{u}_{stim}(t) = (u_{stim,1}(t), \ldots, u_{stim,N}(t))$ acts as a coordination perturbation injected into the Boltzmann distribution weightings during the $\mathcal{M}_1$ (Adaptive Committee) regime, biasing committee formation toward underutilized yet high-quality validators.</p>
 
 ---
 
@@ -131,9 +140,12 @@ $$DE(\mathbf{a}^*) = -\frac{1}{\ln N} \sum_{i=1}^N a_i^*(t) \ln\left(a_i^*(t) + 
 We construct the positive-definite Lyapunov candidate function $V(\mathbf{S}(t)): \mathbb{R}^5 \to \mathbb{R}^+$:
 $$V(\mathbf{S}(t)) = \frac{1}{2} \big(G_p(t) - G_p^*\big)^2 + \frac{\lambda_{de}}{2} \big(1 - DE(t)\big)^2 + \frac{\lambda_a}{2} \sum_{i=1}^N \left( a_i(t) - \frac{1}{N} \right)^2$$
 
-Under the authority relaxation gradient law $\dot{a}_i(t) = -\kappa_a (a_i(t) - 1/N) + \zeta \nabla_{a_i} G_p(t)$, the total time derivative satisfies:
+
+<p>Under the authority relaxation gradient law $\dot{a}_i(t) = -\kappa_a (a_i(t) - 1/N) + \zeta \nabla_{a_i} G_p(t)$, the total time derivative satisfies:</p>
+
 $$\dot{V}(\mathbf{S}(t)) \le -c \|\mathbf{S}(t) - \mathbf{S}^*\|_2^2 \le -2c V(\mathbf{S}(t)) \implies V(\mathbf{S}(t)) \le V(\mathbf{S}(0)) e^{-2ct}$$
-guaranteeing exponential energy dissipation and asymptotic return to the flat decentralized equilibrium $\mathbf{S}^*$ in finite time $T_{conv} \le \frac{V(\mathbf{S}(0))}{c}$.
+
+<p>guaranteeing exponential energy dissipation and asymptotic return to the flat decentralized equilibrium $\mathbf{S}^*$ in finite time $T_{conv} \le \frac{V(\mathbf{S}(0))}{c}$.</p>
 
 ---
 
