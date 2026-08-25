@@ -1,0 +1,18 @@
+{
+  "name": "adg-framework-evaluation",
+  "version": "1.0.0",
+  "description": "ADG Framework – Academic Evaluation & Benchmarking Suite",
+  "type": "commonjs",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "deploy:local": "npx hardhat run scripts/deploy_local_ganache.cjs --network hardhat",
+    "deploy:sepolia": "npx hardhat run scripts/deploy_sepolia_live.cjs --network sepolia",
+    "interact:sepolia": "npx hardhat run scripts/interact_adg_sepolia.cjs --network sepolia"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
+    "hardhat": "^2.22.0"
+  },
+  "license": "MIT"
+}

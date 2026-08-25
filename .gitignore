@@ -1,0 +1,30 @@
+# Node
+node_modules/
+artifacts/
+cache/
+typechain-types/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Hardhat
+coverage/
+coverage.json
+
+# Output artifacts (regenerable)
+paper_outputs/csv_datasets/*.csv
+paper_outputs/figures/*.pdf
+paper_outputs/figures/*.png
+paper_outputs/tables/*.tex
