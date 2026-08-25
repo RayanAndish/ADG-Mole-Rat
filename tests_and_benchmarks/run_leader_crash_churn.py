@@ -10,7 +10,9 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 
-sys.path.append(str(Path(__file__).parent.parent))
+# Add Path to test suite root for imports
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(PROJECT_ROOT))
 
 from offchain_engine.config import ADGSystemConfig
 from offchain_engine.succession_fsm import SuccessionAutomaton

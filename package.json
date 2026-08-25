@@ -4,11 +4,8 @@
   "description": "Adaptive Distributed Governance (ADG) - On-Chain EVM Smart Contracts, Multi-Tier Benchmarks, and Publication Artifacts Generator",
   "main": "hardhat.config.js",
   "type": "commonjs",
-  "scripts": {
+"scripts": {
     "compile": "hardhat compile",
-    "clean": "hardhat clean",
-    "test:contracts": "hardhat test",
-    "deploy:local": "hardhat run scripts/deploy_local_ganache.cjs --network localhost",
     "deploy:ganache": "hardhat run scripts/deploy_local_ganache.cjs --network ganache",
     "deploy:sepolia": "hardhat run scripts/deploy_sepolia_live.cjs --network sepolia",
     "sim:scalability": "python tests_and_benchmarks/run_monte_carlo_scalability.py",
@@ -19,9 +16,7 @@
     "ledger:ganache": "python tests_and_benchmarks/run_ganache_ledger.py",
     "ledger:sepolia": "python tests_and_benchmarks/run_sepolia_live_benchmark.py",
     "artifacts:generate": "python tests_and_benchmarks/generate_all_publication_artifacts.py",
-    "pipeline:simulations": "npm run sim:scalability && npm run sim:byzantine && npm run sim:churn && npm run sim:sobol",
-    "pipeline:blockchain": "npm run gas:profile && npm run ledger:ganache && npm run ledger:sepolia",
-    "pipeline:full": "npm run compile && npm run pipeline:simulations && npm run pipeline:blockchain && npm run artifacts:generate"
+    "pipeline:full": "npm run compile && npm run deploy:ganache && npm run sim:scalability && npm run sim:byzantine && npm run sim:churn && npm run sim:sobol && npm run gas:profile && npm run ledger:ganache && npm run ledger:sepolia && npm run artifacts:generate"
   },
   "keywords": [
     "distributed-systems",

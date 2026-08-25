@@ -1,0 +1,21 @@
+{
+  "network": "ganache",
+  "rpcUrl": "http://127.0.0.1:7545",
+  "chainId": 1337,
+  "deployerAddress": "0xF4BCdF4fa4D90a8576cf83D3dDFca29D877c7C12",
+  "contracts": {
+    "EntropyConstraint": "0x145cf7f3DCa048864D1Ac7F2f3D7acC49767056e",
+    "ADGCoordinator": "0x999453AaeaCa6fa814a619A2C8b63Bd26E34Fba0",
+    "DynamicCommittee": "0xEFF4e64fa3409Ab41b1DFFa62A9626AAD979714d",
+    "SignalDistributor": "0x93f31241017531DC7e00abc0B128A2105c113Df0",
+    "DynamicGovernanceScore": "0xacDe6952FbD100251063A1a456ccE0859cf148C0",
+    "SuccessionAutomaton": "0xACBf79F67c5704BC73824fa22FAcbFBD778B34CA",
+    "StaticPBFTMock": "0x60a1EAf01C61dd7F398F2865E4b800197EDDBC97",
+    "FlatDAOMock": "0xCFd59223adeCc50Cba71e95D6F5908F59985aF5e",
+    "TendermintMock": "0xe97cfF20DD350B7bE9Da1d5c62b48005f8aE0b89",
+    "ByzantineCartelAttacker": "0x38fBd5d0540F141f07edFd78A29627D8C1688F9B",
+    "SybilChurnInjector": "0x6aB8cF305c56117Ae8b00766D0bD5f6d7DE4a8cb",
+    "EmergencyExploitSimulator": "0xdbE92AE51E4dA53acA99BE3007C59a6358cf78A3"
+  },
+  "artifactsDir": "E:\\Mole-Rat-ADG\\artifacts\\contracts"
+}
