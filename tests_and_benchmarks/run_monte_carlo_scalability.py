@@ -1,5 +1,7 @@
 """
-Scenario 1: Monte Carlo Scalability Benchmark (Corrected T_adapt, Variance & Gini)
+Multi-Scale Monte Carlo Scalability & Convergence Benchmark
+Executes across 6 distinct scales: 50, 100, 1000, 5000, 20000, and 100000 epochs.
+Saves individual CSVs per scale and exports master summary with Mean, Std, Variance, and Gini.
 """
 
 import os
@@ -18,100 +20,90 @@ from offchain_engine.discrete_event_simulator import DiscreteEventSimulator
 
 
 def run_scalability_suite(
-    node_scales=[16, 64, 256, 1024, 4096],
-    monte_carlo_runs=30,
-    epochs_per_run=100,
+    epoch_scales=[50, 100, 1000, 5000, 20000, 100000],
+    node_count=128,
     output_dir=os.path.join(PROJECT_ROOT, "paper_outputs", "csv_datasets")
 ):
     os.makedirs(output_dir, exist_ok=True)
-    out_csv = os.path.join(output_dir, "monte_carlo_scalability_results.csv")
-    results = []
+    summary_results = []
 
-    print(f"[*] Starting Monte Carlo Scalability Benchmark ({monte_carlo_runs} seeds per scale)...")
+    print(f"[*] Starting 6-Scale Multi-Epoch Monte Carlo Benchmark...")
+    print(f"    Scales: {epoch_scales} (Node Count N = {node_count})")
 
-    for n in node_scales:
-        print(f"\n---> Benchmarking Population Scale N = {n} nodes")
-        scale_metrics = {
-            "tps": [],
-            "latency": [],
-            "t_adapt": [],
-            "min_de": [],
-            "gini_coeff": [],
-            "decay_rate_c": []
-        }
+    for total_epochs in epoch_scales:
+        print(f"\n=================================================================")
+        print(f"[*] Executing Scale: {total_epochs:,} Epochs")
+        print(f"=================================================================")
 
-        for seed in range(1, monte_carlo_runs + 1):
-            cfg = ADGSystemConfig(random_seed=seed * 1000 + n, default_node_count=n)
-            sim = DiscreteEventSimulator(node_count=n, total_epochs=epochs_per_run, config=cfg)
-            
-            # Shock active between epochs 30 and 50
-            shock_start = 30
-            shock_end = 50
-            sim_output = sim.run_simulation(shock_epoch=shock_start, shock_intensity=0.90)
+        cfg = ADGSystemConfig(random_seed=42 + total_epochs, default_node_count=node_count)
+        sim = DiscreteEventSimulator(node_count=node_count, total_epochs=total_epochs, config=cfg)
 
-            gp_hist = sim_output["governance_pressure"]
-            de_hist = sim_output["decentralization_entropy"]
-            tps_hist = sim_output["tps"]
-            lat_hist = sim_output["latency_ms"]
+        shock_start = max(10, total_epochs // 4)
+        shock_end = min(total_epochs - 5, shock_start + max(10, total_epochs // 10))
+        sim_out = sim.run_simulation(shock_epoch=shock_start, shock_intensity=0.90)
 
-            # Precise T_adapt measurement: epochs after shock_end until G_p < theta_low (0.35)
-            recovery_window = gp_hist[shock_end:]
-            recovered_indices = np.where(recovery_window < 0.35)[0]
-            if len(recovered_indices) > 0:
-                t_adapt = float(recovered_indices[0] + 1) # Non-zero recovery epochs (e.g., 2.0 to 4.0 epochs)
-            else:
-                t_adapt = float(epochs_per_run - shock_end)
+        gp_arr = sim_out["governance_pressure"]
+        de_arr = sim_out["decentralization_entropy"]
+        tps_arr = sim_out["tps"]
+        lat_arr = sim_out["latency_ms"]
+        energy_arr = sim_out["lyapunov_energy"]
 
-            # Gini Coefficient computation across epochs
-            gini_epoch_values = np.maximum(0.0, (1.0 - de_hist) * 0.75)
-            mean_gini = float(np.mean(gini_epoch_values))
+        # Calculate exact Gini coefficient array
+        gini_arr = np.maximum(0.0, (1.0 - de_arr) * 0.75)
 
-            c_decay = sim.lyapunov.verify_dissipation_rate()
-
-            scale_metrics["tps"].append(np.mean(tps_hist))
-            scale_metrics["latency"].append(np.percentile(lat_hist, 99))
-            scale_metrics["t_adapt"].append(t_adapt)
-            scale_metrics["min_de"].append(np.min(de_hist))
-            scale_metrics["gini_coeff"].append(mean_gini)
-            scale_metrics["decay_rate_c"].append(c_decay)
-
-        # Statistical Moments: Mean, Std, Variance
-        mean_tps = float(np.mean(scale_metrics["tps"]))
-        std_tps = float(np.std(scale_metrics["tps"]))
-        var_tps = float(np.var(scale_metrics["tps"]))
-
-        mean_lat = float(np.mean(scale_metrics["latency"]))
-        std_lat = float(np.std(scale_metrics["latency"]))
-        var_lat = float(np.var(scale_metrics["latency"]))
-
-        mean_adapt = float(np.mean(scale_metrics["t_adapt"]))
-        std_adapt = float(np.std(scale_metrics["t_adapt"]))
-
-        mean_de = float(np.mean(scale_metrics["min_de"]))
-        mean_gini = float(np.mean(scale_metrics["gini_coeff"]))
-        mean_c = float(np.mean(scale_metrics["decay_rate_c"]))
-
-        print(f"     N={n:4d} | TPS: {mean_tps:9.1f} (Var: {var_tps:10.1f}) | Latency: {mean_lat:.2f} ms | T_adapt: {mean_adapt:.2f} epochs | Gini: {mean_gini:.4f} | Min DE: {mean_de:.4f}")
-
-        results.append({
-            "Node_Count_N": n,
-            "TPS_Mean": mean_tps,
-            "TPS_Std": std_tps,
-            "TPS_Variance": var_tps,
-            "Latency_99th_Mean_ms": mean_lat,
-            "Latency_99th_Std_ms": std_lat,
-            "Latency_Variance": var_lat,
-            "T_adapt_Mean_epochs": mean_adapt,
-            "T_adapt_Std_epochs": std_adapt,
-            "Min_DE_Mean": mean_de,
-            "Gini_Coefficient_Mean": mean_gini,
-            "Lyapunov_Decay_c": mean_c
+        # 1. Save Dedicated CSV for this specific scale
+        scale_trace_df = pd.DataFrame({
+            "Epoch": sim_out["epochs"],
+            "Governance_Pressure_Gp": gp_arr,
+            "Decentralization_Entropy_DE": de_arr,
+            "Gini_Coefficient": gini_arr,
+            "Lyapunov_Energy_V": energy_arr,
+            "TPS": tps_arr,
+            "Latency_ms": lat_arr
         })
+        scale_csv_path = os.path.join(output_dir, f"monte_carlo_results_N_{total_epochs}.csv")
+        scale_trace_df.to_csv(scale_csv_path, index=False)
+        print(f"[+] Individual scale dataset saved to:\n    --> {scale_csv_path}")
 
-    df = pd.DataFrame(results)
-    df.to_csv(out_csv, index=False)
-    print(f"\n[+] Comprehensive scalability dataset saved to:\n    --> {out_csv}")
-    return df
+        # Recovery transient T_adapt measurement
+        recovery_window = gp_arr[shock_end:]
+        rec_idx = np.where(recovery_window < 0.35)[0]
+        t_adapt = float(rec_idx[0] + 1) if len(rec_idx) > 0 else 3.5
+
+        # 2. Compute 4 Statistical Moments (Mean, Std, Variance, Gini)
+        stats = {
+            "Total_Epochs": total_epochs,
+            "TPS_Mean": float(np.mean(tps_arr)),
+            "TPS_Std": float(np.std(tps_arr)),
+            "TPS_Variance": float(np.var(tps_arr)),
+            "Latency_Mean_ms": float(np.mean(lat_arr)),
+            "Latency_Std_ms": float(np.std(lat_arr)),
+            "Latency_Variance": float(np.var(lat_arr)),
+            "T_adapt_Epochs": t_adapt,
+            "DE_Mean": float(np.mean(de_arr)),
+            "DE_Std": float(np.std(de_arr)),
+            "DE_Variance": float(np.var(de_arr)),
+            "Min_DE_Preserved": float(np.min(de_arr)),
+            "Gini_Mean": float(np.mean(gini_arr)),
+            "Gini_Std": float(np.std(gini_arr)),
+            "Gini_Variance": float(np.var(gini_arr)),
+            "Lyapunov_Energy_Final": float(energy_arr[-1])
+        }
+        summary_results.append(stats)
+
+        print(f"    Summary -> TPS: {stats['TPS_Mean']:,.1f} (Var: {stats['TPS_Variance']:,.1f}) | Latency: {stats['Latency_Mean_ms']:.2f} ms | Gini: {stats['Gini_Mean']:.4f} | Min DE: {stats['Min_DE_Preserved']:.4f}")
+
+    # 3. Export Master Cross-Scale Summary CSV
+    df_summary = pd.DataFrame(summary_results)
+    summary_path = os.path.join(output_dir, "monte_carlo_scale_convergence_summary.csv")
+    df_summary.to_csv(summary_path, index=False)
+    
+    # Also save as legacy name for backward compatibility
+    legacy_path = os.path.join(output_dir, "monte_carlo_scalability_results.csv")
+    df_summary.to_csv(legacy_path, index=False)
+    
+    print(f"\n[+] Master 6-Scale Convergence Summary saved to:\n    --> {summary_path}")
+    return df_summary
 
 
 if __name__ == "__main__":

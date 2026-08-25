@@ -1,5 +1,5 @@
 """
-Master Publication Artifacts Generator (Path-Safe & Regex Cleaned)
+Master Publication Artifacts Generator (Multi-Scale Convergence & High-Res PDF Visualizer)
 """
 
 import os
@@ -36,27 +36,27 @@ def generate_latex_tables(
     os.makedirs(tables_dir, exist_ok=True)
     print("[*] Generating Camera-Ready LaTeX Tables...")
 
-    # Table 1: Scalability Performance Table
-    sc_file = os.path.join(csv_dir, "monte_carlo_scalability_results.csv")
-    if os.path.exists(sc_file):
-        sc_df = pd.read_csv(sc_file)
-        with open(os.path.join(tables_dir, "table_performance_metrics.tex"), "w") as f:
+    # Table: 6-Scale Convergence Summary
+    conv_file = os.path.join(csv_dir, "monte_carlo_scale_convergence_summary.csv")
+    if os.path.exists(conv_file):
+        conv_df = pd.read_csv(conv_file)
+        with open(os.path.join(tables_dir, "table_scale_convergence.tex"), "w") as f:
             f.write("% ==============================================================================\n")
-            f.write("% TABLE: Scalability & Performance Metrics across Population Scales (N)\n")
+            f.write("% TABLE: Multi-Scale Monte Carlo Convergence (50 to 100,000 Epochs)\n")
             f.write("% ==============================================================================\n")
             f.write("\\begin{table*}[t]\n\\centering\n\\small\n")
-            f.write("\\caption{Monte Carlo Scalability Evaluation across Independent Runs per Scale.}\n")
-            f.write("\\label{tab:performance_metrics}\n")
+            f.write("\\caption{Statistical Convergence and Moments across 6 Scalability Horizons (Mean, Variance, and Gini Index).}\n")
+            f.write("\\label{tab:scale_convergence}\n")
             f.write("\\begin{tabular}{rccccc}\n\\hline\\hline\n")
-            f.write("Population ($N$) & Throughput (TPS) & 99th Latency (ms) & $T_{adapt}$ (Epochs) & Min $DE(t)$ & Decay Rate ($c$) \\\\ \\hline\n")
-            for _, row in sc_df.iterrows():
-                f.write(f"{int(row['Node_Count_N'])} & ${row['TPS_Mean']:.1f} \\pm {row['TPS_Std']:.1f}$ & "
-                        f"${row['Latency_99th_Mean_ms']:.2f} \\pm {row['Latency_99th_Std_ms']:.2f}$ & "
-                        f"${row['T_adapt_Mean_epochs']:.2f} \\pm {row['T_adapt_Std_epochs']:.2f}$ & "
-                        f"${row['Min_DE_Mean']:.4f}$ & ${row['Lyapunov_Decay_c']:.4f}$ \\\\\n")
+            f.write("Epochs ($T$) & Throughput (TPS $\\pm \\sigma$) & Latency (ms $\\pm \\sigma$) & Gini Index ($G$) & Min $DE(t)$ & Final Energy ($V$) \\\\ \\hline\n")
+            for _, row in conv_df.iterrows():
+                f.write(f"{int(row['Total_Epochs']):,} & ${row['TPS_Mean']:,.1f} \\pm {row['TPS_Std']:.1f}$ & "
+                        f"${row['Latency_Mean_ms']:.2f} \\pm {row['Latency_Std_ms']:.2f}$ & "
+                        f"${row['Gini_Mean']:.4f} \\pm {row['Gini_Std']:.4f}$ & "
+                        f"${row['Min_DE_Preserved']:.4f}$ & ${row['Lyapunov_Energy_Final']:.2e}$ \\\\\n")
             f.write("\\hline\\hline\n\\end{tabular}\n\\end{table*}\n")
 
-    # Table 2: Gas Comparison Table
+    # Table: Gas Benchmarks
     gas_file = os.path.join(csv_dir, "evm_gas_benchmarks.csv")
     if os.path.exists(gas_file):
         gas_df = pd.read_csv(gas_file)
@@ -82,7 +82,33 @@ def generate_publication_figures(
     os.makedirs(fig_dir, exist_ok=True)
     print("[*] Rendering High-Resolution Vector Figures (.pdf / .png)...")
 
-    # Figure 1: Byzantine Resilience
+    # Figure 1: 6-Scale Multi-Horizon Convergence Comparison
+    conv_file = os.path.join(csv_dir, "monte_carlo_scale_convergence_summary.csv")
+    if os.path.exists(conv_file):
+        conv_df = pd.read_csv(conv_file)
+        fig, ax1 = plt.subplots(figsize=(7.0, 4.2))
+
+        epochs = conv_df["Total_Epochs"]
+        ax1.plot(epochs, conv_df["TPS_Mean"], "o-", color="#1f77b4", lw=2, label="Mean Throughput (TPS)")
+        ax1.set_xscale("log")
+        ax1.set_xlabel("Monte Carlo Execution Scale (Total Epochs $T$)")
+        ax1.set_ylabel("Throughput (Transactions Per Second)", color="#1f77b4")
+        ax1.tick_params(axis="y", labelcolor="#1f77b4")
+        ax1.grid(True)
+
+        ax2 = ax1.twinx()
+        ax2.plot(epochs, conv_df["Gini_Mean"], "s--", color="#d62728", lw=2, label="Mean Gini Index ($G$)")
+        ax2.set_ylabel("Gini Coefficient of Authority Concentration", color="#d62728")
+        ax2.tick_params(axis="y", labelcolor="#d62728")
+        ax2.set_ylim(0.0, 0.40)
+
+        plt.title("Cross-Scale Asymptotic Convergence & Decentralization Stability")
+        fig.tight_layout()
+        plt.savefig(os.path.join(fig_dir, "fig_cross_scale_convergence.pdf"))
+        plt.savefig(os.path.join(fig_dir, "fig_cross_scale_convergence.png"))
+        plt.close()
+
+    # Figure 2: Byzantine Resilience
     byz_file = os.path.join(csv_dir, "byzantine_resilience_results.csv")
     if os.path.exists(byz_file):
         byz_df = pd.read_csv(byz_file)
@@ -100,7 +126,7 @@ def generate_publication_figures(
         plt.savefig(os.path.join(fig_dir, "fig_byzantine_resilience.png"))
         plt.close()
 
-    # Figure 2: Gas Scaling Comparison
+    # Figure 3: Gas Scaling Comparison
     gas_file = os.path.join(csv_dir, "evm_gas_benchmarks.csv")
     if os.path.exists(gas_file):
         gas_df = pd.read_csv(gas_file)
@@ -120,7 +146,7 @@ def generate_publication_figures(
         plt.savefig(os.path.join(fig_dir, "fig_gas_comparison.png"))
         plt.close()
 
-    # Figure 3: Global Sobol Sensitivity
+    # Figure 4: Global Sobol Sensitivity
     sobol_file = os.path.join(csv_dir, "sobol_sensitivity_results.csv")
     if os.path.exists(sobol_file):
         sobol_df = pd.read_csv(sobol_file)
@@ -140,7 +166,7 @@ def generate_publication_figures(
         plt.savefig(os.path.join(fig_dir, "fig_sobol_sensitivity.png"))
         plt.close()
 
-    print("[+] Publication vector figures generated in:", fig_dir)
+    print("[+] All publication vector figures generated in:", fig_dir)
 
 
 if __name__ == "__main__":
