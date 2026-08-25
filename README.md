@@ -16,7 +16,7 @@ Decentralized architectures exhibit an intrinsic **Decentralization–Coordinati
 
 ```mermaid
 flowchart TD
-    subgraph Trilemma["The Decentralization-Coordination Trade-off Space"]
+    subgraph Trilemma ["The Decentralization-Coordination Trade-off Space"]
         T1["High Adaptation Speed\n(Centralized Authority)"]
         T2["Strict Censorship Resistance\n(Flat Decentralization)"]
         T3["Bounded Safety & Liveness\n(BFT Guarantees)"]
@@ -27,9 +27,9 @@ flowchart TD
         
         ADG(("ADG Framework\n(Dynamic Equilibrium)"))
         
-        ADG -.->|Dynamic Pressure G_p| T1
-        ADG -.->|Entropy Bound DE_min| T2
-        ADG -.->|Lyapunov Stability V(S)| T3
+        ADG -.->|"Dynamic Pressure G_p"| T1
+        ADG -.->|"Entropy Bound DE_min"| T2
+        ADG -.->|"Lyapunov Stability V(S)"| T3
     end
 
     classDef default fill:#ffffff,stroke:#2b2b2b,stroke-width:1px;
