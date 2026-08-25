@@ -1,4 +1,3 @@
-```markdown
 # Adaptive Distributed Governance (ADG) Framework
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -46,11 +45,11 @@ The **Adaptive Distributed Governance (ADG)** framework resolves this fundamenta
 
 | Biological Mechanism (*H. glaber*) | Empirical Ethological Grounding | Formal Computational & Mathematical Operator | Implementation Module |
 | :--- | :--- | :--- | :--- |
-| **Queen Physical Shoving** | Reeve (1992); Kutsukake et al. (2012) | **Targeted Stimulus Vector ($\mathbf{u}_{stim}(t)$):** Latency-driven priority activation of idle validator sub-committees. | `SignalDistributor.sol` / `actuation_signals.py` |
-| **Volatile IPM Pheromone** | Khallaf et al. (2026); Faulkes (2026) | **Global Attenuation Signal ($\sigma_{IPM}(t)$):** Rate-limiting broadcast suppressing mutation and mempool thrashing. | `SignalDistributor.sol` / `actuation_signals.py` |
-| **Dominance & Endocrine Rank** | Clarke & Faulkes (1998); Jacobs et al. (2024) | **Dynamic Governance Score ($GS_i(t)$):** Multi-factor telemetry scoring combining uptime, capacity, and anti-monopoly decay. | `DynamicGovernanceScore.sol` / `gsf_scoring.py` |
-| **Peaceful Queen Succession** | Abeywardena et al. (2026); van der Westhuizen (2013) | **Deterministic Zero-Fork Automaton ($\mathcal{M}_{succ}$):** $(2f+1)$ quorum-certified leader handover state machine. | `SuccessionAutomaton.sol` / `succession_fsm.py` |
-| **Colony Metabolic Homeostasis** | Medger et al. (2019); Wetzel et al. (2026) | **Lyapunov Stability Energy ($V(\mathbf{S}(t))$):** Asymptotic dissipation guaranteeing reversible authority allocation. | `ADGCoordinator.sol` / `lyapunov_tracker.py` |
+| **Queen Physical Shoving** | Reeve (1992); Kutsukake et al. (2012) | **Targeted Stimulus Vector** $\mathbf{u}_{stim}(t)$: Latency-driven priority activation of idle validator sub-committees. | `SignalDistributor.sol` / `actuation_signals.py` |
+| **Volatile IPM Pheromone** | Khallaf et al. (2026); Faulkes (2026) | **Global Attenuation Signal** $\sigma_{IPM}(t)$: Rate-limiting broadcast suppressing mutation and mempool thrashing. | `SignalDistributor.sol` / `actuation_signals.py` |
+| **Dominance & Endocrine Rank** | Clarke & Faulkes (1998); Jacobs et al. (2024) | **Dynamic Governance Score** $GS_i(t)$: Multi-factor telemetry scoring combining uptime, capacity, and anti-monopoly decay. | `DynamicGovernanceScore.sol` / `gsf_scoring.py` |
+| **Peaceful Queen Succession** | Abeywardena et al. (2026); van der Westhuizen (2013) | **Deterministic Zero-Fork Automaton** $\mathcal{M}_{succ}$: $(2f+1)$ quorum-certified leader handover state machine. | `SuccessionAutomaton.sol` / `succession_fsm.py` |
+| **Colony Metabolic Homeostasis** | Medger et al. (2019); Wetzel et al. (2026) | **Lyapunov Stability Energy** $V(\mathbf{S}(t))$: Asymptotic dissipation guaranteeing reversible authority allocation. | `ADGCoordinator.sol` / `lyapunov_tracker.py` |
 
 ---
 
@@ -258,64 +257,125 @@ ADG-Framework/
 
 ### 5.1. Multi-Scale Convergence & Variance Decay ($T = 50$ to $100,000$ Epochs)
 
-| Monte Carlo Scale ($T$) | Mean Throughput (TPS $\pm \sigma$) | Throughput Variance ($\sigma^2$) | Latency (ms $\pm \sigma$) | Latency Variance | Mean Gini Index ($G$) | Min $DE(t)$ Preserved | Final Energy $V(\mathbf{S})$ |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **50** | $114,432.0 \pm 31,236.3$ | $9.75 \times 10^8$ | $59.41 \pm 7.22$ | $52.17$ | $0.000340$ | $0.9986$ | $1.05 \times 10^{-3}$ |
-| **100** | $136,234.2 \pm 28,915.4$ | $8.36 \times 10^8$ | $55.96 \pm 6.31$ | $39.78$ | $0.000180$ | $0.9985$ | $1.10 \times 10^{-3}$ |
-| **1,000** | $146,588.0 \pm 10,076.2$ | $1.01 \times 10^8$ | $52.65 \pm 2.24$ | $5.02$ | $0.000014$ | $0.9990$ | $1.05 \times 10^{-3}$ |
-| **5,000** | $145,846.0 \pm 4,478.9$ | $2.01 \times 10^7$ | $52.35 \pm 1.01$ | $1.02$ | $0.000005$ | $0.9981$ | $1.04 \times 10^{-3}$ |
-| **20,000** | $140,022.6 \pm 2,128.3$ | $4.53 \times 10^6$ | $52.23 \pm 0.50$ | $0.25$ | $0.000002$ | $0.9949$ | $0.98 \times 10^{-3}$ |
-| **100,000** | **$143,023.1 \pm 977.9$** | **$9.56 \times 10^5$** | **$52.26 \pm 0.23$** | **$0.05$** | **$3.11 \times 10^{-7}$** | **$0.9956$** | **$1.01 \times 10^{-3}$** |
+<table>
+  <thead>
+    <tr>
+      <th align="center">Monte Carlo Scale<br><em>T</em></th>
+      <th align="center">Mean Throughput<br>(TPS ± σ)</th>
+      <th align="center">Throughput Variance<br>(σ²)</th>
+      <th align="center">Latency<br>(ms ± σ)</th>
+      <th align="center">Latency Variance</th>
+      <th align="center">Mean Gini Index<br><em>G</em></th>
+      <th align="center">Min DE(t) Preserved</th>
+      <th align="center">Final Energy<br>V(<b>S</b>)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td align="center"><b>50</b></td><td align="center">114,432.0 ± 31,236.3</td><td align="center">9.75 × 10⁸</td><td align="center">59.41 ± 7.22</td><td align="center">52.17</td><td align="center">0.000340</td><td align="center">0.9986</td><td align="center">1.05 × 10⁻³</td></tr>
+    <tr><td align="center"><b>100</b></td><td align="center">136,234.2 ± 28,915.4</td><td align="center">8.36 × 10⁸</td><td align="center">55.96 ± 6.31</td><td align="center">39.78</td><td align="center">0.000180</td><td align="center">0.9985</td><td align="center">1.10 × 10⁻³</td></tr>
+    <tr><td align="center"><b>1,000</b></td><td align="center">146,588.0 ± 10,076.2</td><td align="center">1.01 × 10⁸</td><td align="center">52.65 ± 2.24</td><td align="center">5.02</td><td align="center">0.000014</td><td align="center">0.9990</td><td align="center">1.05 × 10⁻³</td></tr>
+    <tr><td align="center"><b>5,000</b></td><td align="center">145,846.0 ± 4,478.9</td><td align="center">2.01 × 10⁷</td><td align="center">52.35 ± 1.01</td><td align="center">1.02</td><td align="center">0.000005</td><td align="center">0.9981</td><td align="center">1.04 × 10⁻³</td></tr>
+    <tr><td align="center"><b>20,000</b></td><td align="center">140,022.6 ± 2,128.3</td><td align="center">4.53 × 10⁶</td><td align="center">52.23 ± 0.50</td><td align="center">0.25</td><td align="center">0.000002</td><td align="center">0.9949</td><td align="center">0.98 × 10⁻³</td></tr>
+    <tr><td align="center"><b>100,000</b></td><td align="center"><b>143,023.1 ± 977.9</b></td><td align="center"><b>9.56 × 10⁵</b></td><td align="center"><b>52.26 ± 0.23</b></td><td align="center"><b>0.05</b></td><td align="center"><b>3.11 × 10⁻⁷</b></td><td align="center"><b>0.9956</b></td><td align="center"><b>1.01 × 10⁻³</b></td></tr>
+  </tbody>
+</table>
 
-*Key Takeaway:* Throughput variance decays by **over $1000\times$** as $T \to 100,000$, while the Gini coefficient converges asymptotically to zero ($G = 3.11 \times 10^{-7}$), empirically proving Lyapunov stability and power reversibility.
+**Visual Summary — Multi-Scale Convergence:**
+
+<p align="center">
+  <img src="paper_outputs/figures/fig_cross_scale_convergence.png" alt="Cross-Scale Monte Carlo Convergence" width="90%"/>
+</p>
+
+**Key Takeaway:** Throughput variance decays by **over 1000×** as $T \to 100{,}000$, while the Gini coefficient converges asymptotically to zero ($G = 3.11 \times 10^{-7}$), empirically proving Lyapunov stability and power reversibility.
 
 ---
 
 ### 5.2. Byzantine Adversary Resilience ($N = 128$)
 
-| Byzantine Fraction ($f$) | ADG Capture Prob. $P_{cap}$ | ADG Fork Rate (%) | PBFT Fork Rate (%) | Flat DAO Capture Prob. $P_{cap}$ |
-| :---: | :---: | :---: | :---: | :---: |
-| **0.0% – 33.3%** | **0.0000** | **0.0%** | Up to 36.7% | Up to 0.6667 |
-| **35.0%** | **0.0000** | **3.3%** | 100.0% (Stall) | 0.8000 |
-| **40.0%** | **0.0000** | **10.0%** | 100.0% (Stall) | 0.8667 |
+<table>
+  <thead>
+    <tr>
+      <th align="center">Byzantine Fraction<br><em>f</em></th>
+      <th align="center">ADG Capture Prob.<br>P<sub>cap</sub></th>
+      <th align="center">ADG Fork Rate (%)</th>
+      <th align="center">PBFT Fork Rate (%)</th>
+      <th align="center">Flat DAO Capture Prob.<br>P<sub>cap</sub></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td align="center"><b>0.0% – 33.3%</b></td><td align="center"><b>0.0000</b></td><td align="center"><b>0.0%</b></td><td align="center">Up to 36.7%</td><td align="center">Up to 0.6667</td></tr>
+    <tr><td align="center"><b>35.0%</b></td><td align="center"><b>0.0000</b></td><td align="center"><b>3.3%</b></td><td align="center">100.0% (Stall)</td><td align="center">0.8000</td></tr>
+    <tr><td align="center"><b>40.0%</b></td><td align="center"><b>0.0000</b></td><td align="center"><b>10.0%</b></td><td align="center">100.0% (Stall)</td><td align="center">0.8667</td></tr>
+  </tbody>
+</table>
 
-*Key Takeaway:* ADG guarantees **$P_{cap} = 0.0000$** and **$0.0\%$ fork rate** up to the theoretical BFT bound $f \le 33.3\%$.
+<p align="center">
+  <img src="paper_outputs/figures/fig_byzantine_resilience.png" alt="Byzantine Resilience" width="90%"/>
+</p>
+
+**Key Takeaway:** ADG guarantees **$P_{cap} = 0.0000$** and **$0.0\%$ fork rate** up to the theoretical BFT bound $f \le 33.3\%$.
 
 ---
 
 ### 5.3. Dynamic Validator Churn & Handover Latency
 
-| Churn Rate (%) | Handover Success Rate (%) | Mean Handover Latency $T_{succ}$ (ms) | Message Overhead ($\text{Msgs}$) |
-| :---: | :---: | :---: | :---: |
-| **5% – 20%** | **100.0%** | $15.05 \text{ ms}$ | $204.0 - 242.0$ |
-| **30%** | **92.0%** | $15.00 \text{ ms}$ | $178.0$ |
-| **40%** | **8.0%** | $14.84 \text{ ms}$ | $152.0$ |
-| **50%** | **0.0%** (Safety Invariant) | $0.00 \text{ ms}$ | $0.0$ |
+<table>
+  <thead>
+    <tr>
+      <th align="center">Churn Rate (%)</th>
+      <th align="center">Handover Success Rate (%)</th>
+      <th align="center">Mean Handover Latency<br>T<sub>succ</sub> (ms)</th>
+      <th align="center">Message Overhead (Msgs)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td align="center"><b>5% – 20%</b></td><td align="center"><b>100.0%</b></td><td align="center">15.05 ms</td><td align="center">204.0 – 242.0</td></tr>
+    <tr><td align="center"><b>30%</b></td><td align="center"><b>92.0%</b></td><td align="center">15.00 ms</td><td align="center">178.0</td></tr>
+    <tr><td align="center"><b>40%</b></td><td align="center"><b>8.0%</b></td><td align="center">14.84 ms</td><td align="center">152.0</td></tr>
+    <tr><td align="center"><b>50%</b></td><td align="center"><b>0.0%</b> (Safety Invariant)</td><td align="center">0.00 ms</td><td align="center">0.0</td></tr>
+  </tbody>
+</table>
 
-*Key Takeaway:* Success rate strictly drops at $\ge 33.3\%$ churn because the $(2f+1)$ supermajority quorum cannot form, preserving safety over invalid execution.
+**Key Takeaway:** Success rate strictly drops at $\ge 33.3\%$ churn because the $(2f+1)$ supermajority quorum cannot form, preserving safety over invalid execution.
 
 ---
 
 ### 5.4. On-Chain EVM Gas Consumption Benchmarks
 
-| Committee Size ($m$) | ADG Epoch Advance | ADG Zero-Fork Succession | PBFT View-Change $\mathcal{O}(m^2)$ | Flat DAO Voting |
-| :---: | :---: | :---: | :---: | :---: |
-| **4** | $73,680 \text{ Gas}$ | $67,600 \text{ Gas}$ | $111,400 \text{ Gas}$ | $136,000 \text{ Gas}$ |
-| **16** | $90,720 \text{ Gas}$ | $101,200 \text{ Gas}$ | $507,400 \text{ Gas}$ | $400,000 \text{ Gas}$ |
-| **64** | $158,880 \text{ Gas}$ | $235,600 \text{ Gas}$ | $6,843,400 \text{ Gas}$ | $1,456,000 \text{ Gas}$ |
-| **128** | **$249,760 \text{ Gas}$** | **$412,000 \text{ Gas}$** | **$27,118,600 \text{ Gas}$** | **$2,864,000 \text{ Gas}$** |
+<table>
+  <thead>
+    <tr>
+      <th align="center">Committee Size<br><em>m</em></th>
+      <th align="center">ADG Epoch Advance</th>
+      <th align="center">ADG Zero-Fork Succession</th>
+      <th align="center">PBFT View-Change<br>𝒪(m²)</th>
+      <th align="center">Flat DAO Voting</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td align="center"><b>4</b></td><td align="center">73,680 Gas</td><td align="center">67,600 Gas</td><td align="center">111,400 Gas</td><td align="center">136,000 Gas</td></tr>
+    <tr><td align="center"><b>16</b></td><td align="center">90,720 Gas</td><td align="center">101,200 Gas</td><td align="center">507,400 Gas</td><td align="center">400,000 Gas</td></tr>
+    <tr><td align="center"><b>64</b></td><td align="center">158,880 Gas</td><td align="center">235,600 Gas</td><td align="center">6,843,400 Gas</td><td align="center">1,456,000 Gas</td></tr>
+    <tr><td align="center"><b>128</b></td><td align="center"><b>249,760 Gas</b></td><td align="center"><b>412,000 Gas</b></td><td align="center"><b>27,118,600 Gas</b></td><td align="center"><b>2,864,000 Gas</b></td></tr>
+  </tbody>
+</table>
 
-*Key Takeaway:* At $m=128$, ADG reduces on-chain governance overhead by **$99.08\%$** relative to PBFT view-changes.
+<p align="center">
+  <img src="paper_outputs/figures/fig_gas_comparison.png" alt="EVM Gas Comparison" width="90%"/>
+</p>
+
+**Key Takeaway:** At $m = 128$, ADG reduces on-chain governance overhead by **99.08%** relative to PBFT view-changes.
 
 ---
 
 ### 5.5. Verified Public Testnet Deployment (Ethereum Sepolia)
 
 50 consecutive state-transition transactions were broadcast and mined on the live public Ethereum Sepolia testnet across blocks `11566628` to `11566677`:
-* **Mean Block Inclusion Latency:** $10.42 \text{ s}$
-* **Gas Consumption per Mined Transition:** $95,440 - 95,480 \text{ Gas}$
-* **Effective Gas Price:** $1.17 - 1.49 \text{ Gwei}$
-* **Transaction Status:** $100\%$ Success (`Status: 1`)
+
+* **Mean Block Inclusion Latency:** 10.42 s
+* **Gas Consumption per Mined Transition:** 95,440 – 95,480 Gas
+* **Effective Gas Price:** 1.17 – 1.49 Gwei
+* **Transaction Status:** 100% Success (`Status: 1`)
 
 ---
 
@@ -402,5 +462,3 @@ If you utilize this framework, codebase, or empirical datasets in your research,
 ## 8. License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
-```
