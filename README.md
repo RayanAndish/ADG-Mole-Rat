@@ -116,31 +116,15 @@ where $\gamma(G_p) = \gamma_0 (1 + \kappa G_p(t))$ scales competition selectivit
 To strictly enforce the constitutional invariant
 $I_{\mathrm{safety}}: DE(t) \geq DE_{\min}$, the engine computes:
 
-$$
-\mathbf{a}^{\star}(t)
-=
-(1-\lambda^{\star})\mathbf{a}_{\mathrm{raw}}(t)
-+
-\lambda^{\star}
-\left(
-\frac{1}{N}\mathbf{1}
-\right)
-$$
+```math
+\mathbf{a}^{\star}(t)=(1-\lambda^{\star})\mathbf{a}_{\mathrm{raw}}(t)+\lambda^{\star}\left(\frac{1}{N}\mathbf{1}\right)
+```
 
 where $\lambda^{\star} \in [0,1]$ is the minimum convex blending factor satisfying:
 
-$$
-DE(\mathbf{a}^{\star})
-=
--\frac{1}{\ln N}
-\sum_{i=1}^{N}
-a_i^{\star}(t)
-\ln\left(
-a_i^{\star}(t)+\epsilon
-\right)
-\geq
-DE_{\min}
-$$
+```math
+DE(\mathbf{a}^{\star})=-\frac{1}{\ln N}\sum_{i=1}^{N}a_i^{\star}(t)\ln\left(a_i^{\star}(t)+\epsilon\right)\geqDE_{\min}
+```
 
 ### 3.5. Biological Actuation Signals
 
