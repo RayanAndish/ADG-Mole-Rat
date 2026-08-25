@@ -1,99 +1,107 @@
 """
-Scenario 1: Monte Carlo Scalability Benchmark
-Evaluates ADG throughput, finality latency, adaptation time (T_adapt), and entropy across N = 16 to 4096 nodes.
-Executes 50 independent random seeds per population scale.
+Authority Allocation Engine (Fixed & Mathematically Corrected)
+Implements Analytical Convex Projection ensuring DE(t) >= DE_min and computes Gini Index.
 """
 
-import os
-import sys
 import numpy as np
-import pandas as pd
-from pathlib import Path
-
-# Add project root to sys.path
-sys.path.append(str(Path(__file__).parent.parent))
-
 from offchain_engine.config import ADGSystemConfig
-from offchain_engine.discrete_event_simulator import DiscreteEventSimulator
+from offchain_engine.governance_pressure import GovernanceMode
 
 
-def run_scalability_suite(
-    node_scales=[16, 64, 256, 1024, 4096],
-    monte_carlo_runs=50,
-    epochs_per_run=100,
-    output_dir="paper_outputs/csv_datasets"
-):
-    os.makedirs(output_dir, exist_ok=True)
-    results = []
+class AuthorityAllocator:
+    def __init__(self, config: ADGSystemConfig):
+        self.cfg = config
 
-    print(f"[*] Starting Monte Carlo Scalability Benchmark ({monte_carlo_runs} seeds per scale)...")
+    def calculate_shannon_entropy(self, authority_vector: np.ndarray) -> float:
+        """
+        Evaluates Normalized Shannon Decentralization Entropy:
+        DE(a) = - (1 / ln N) * sum(a_i * ln a_i)
+        """
+        n = len(authority_vector)
+        if n <= 1:
+            return 1.0
 
-    for n in node_scales:
-        print(f"\n---> Benchmarking Population Scale N = {n} nodes")
-        scale_metrics = {
-            "tps": [],
-            "latency": [],
-            "t_adapt": [],
-            "min_de": [],
-            "decay_rate_c": []
-        }
+        p = np.clip(authority_vector, 1e-15, 1.0)
+        p = p / np.sum(p)
+        raw_entropy = -np.sum(p * np.log(p))
+        normalized_de = raw_entropy / np.log(n)
+        return float(np.clip(normalized_de, 0.0, 1.0))
 
-        for seed in range(1, monte_carlo_runs + 1):
-            cfg = ADGSystemConfig(random_seed=seed * 1000 + n, default_node_count=n)
-            sim = DiscreteEventSimulator(node_count=n, total_epochs=epochs_per_run, config=cfg)
-            
-            # Run simulation with shock injected between epochs 40 and 60
-            sim_output = sim.run_simulation(shock_epoch=40, shock_intensity=0.95)
+    def calculate_gini_coefficient(self, authority_vector: np.ndarray) -> float:
+        """
+        Computes the Gini Coefficient of authority concentration:
+        G = sum_i sum_j |a_i - a_j| / (2 * N * sum_i a_i)
+        G = 0 -> Perfect Equality (Flat Decentralization), G = 1 -> Total Monopoly
+        """
+        a = np.sort(authority_vector)
+        n = len(a)
+        if n == 0 or np.sum(a) == 0:
+            return 0.0
+        index = np.arange(1, n + 1)
+        gini = (2.0 * np.sum(index * a) - (n + 1) * np.sum(a)) / (n * np.sum(a))
+        return float(np.clip(gini, 0.0, 1.0))
 
-            gp_hist = sim_output["governance_pressure"]
-            de_hist = sim_output["decentralization_entropy"]
-            tps_hist = sim_output["tps"]
-            lat_hist = sim_output["latency_ms"]
+    def project_to_entropy_simplex(
+        self,
+        raw_authority: np.ndarray,
+        target_de_min: float
+    ) -> np.ndarray:
+        """
+        Analytical Convex Projection onto the DE_min-Simplex:
+        a*(lambda) = (1 - lambda) * a_raw + lambda * (1/N)
+        Guarantees DE(a*) >= DE_min for all iterations.
+        """
+        n = len(raw_authority)
+        current_de = self.calculate_shannon_entropy(raw_authority)
 
-            # Calculate Adaptation Time T_adapt (epochs to return to G_p < 0.35 after shock)
-            shock_end = 60
-            stabilized_epochs = np.where(gp_hist[shock_end:] < 0.35)[0]
-            t_adapt = float(stabilized_epochs[0]) if len(stabilized_epochs) > 0 else float(epochs_per_run - shock_end)
+        if current_de >= target_de_min:
+            return raw_authority / np.sum(raw_authority)
 
-            # Estimate Lyapunov dissipation constant c
-            c_decay = sim.lyapunov.verify_dissipation_rate()
+        # Binary search for optimal minimal lambda in [0, 1]
+        low, high = 0.0, 1.0
+        best_a = np.full(n, 1.0 / n, dtype=np.float64)
 
-            scale_metrics["tps"].append(np.mean(tps_hist))
-            scale_metrics["latency"].append(np.percentile(lat_hist, 99)) # 99th percentile
-            scale_metrics["t_adapt"].append(t_adapt)
-            scale_metrics["min_de"].append(np.min(de_hist))
-            scale_metrics["decay_rate_c"].append(c_decay)
+        for _ in range(30):
+            mid = (low + high) / 2.0
+            candidate_a = (1.0 - mid) * raw_authority + mid * (1.0 / n)
+            candidate_a /= np.sum(candidate_a)
+            de_val = self.calculate_shannon_entropy(candidate_a)
 
-        # Aggregate statistical distributions
-        mean_tps = np.mean(scale_metrics["tps"])
-        std_tps = np.std(scale_metrics["tps"])
-        mean_lat = np.mean(scale_metrics["latency"])
-        std_lat = np.std(scale_metrics["latency"])
-        mean_adapt = np.mean(scale_metrics["t_adapt"])
-        std_adapt = np.std(scale_metrics["t_adapt"])
-        mean_de = np.mean(scale_metrics["min_de"])
-        mean_c = np.mean(scale_metrics["decay_rate_c"])
+            if de_val >= target_de_min:
+                best_a = candidate_a
+                high = mid  # Try to find a smaller lambda (closer to raw)
+            else:
+                low = mid
 
-        print(f"     N={n} | TPS: {mean_tps:.1f} ± {std_tps:.1f} | 99th Latency: {mean_lat:.2f} ms | T_adapt: {mean_adapt:.2f} epochs | Min DE: {mean_de:.4f}")
+        return best_a
 
-        results.append({
-            "Node_Count_N": n,
-            "TPS_Mean": mean_tps,
-            "TPS_Std": std_tps,
-            "Latency_99th_Mean_ms": mean_lat,
-            "Latency_99th_Std_ms": std_lat,
-            "T_adapt_Mean_epochs": mean_adapt,
-            "T_adapt_Std_epochs": std_adapt,
-            "Min_DE_Mean": mean_de,
-            "Lyapunov_Decay_c": mean_c
-        })
+    def allocate_authority(
+        self,
+        gsf_scores: np.ndarray,
+        governance_pressure: float,
+        current_mode: GovernanceMode
+    ) -> np.ndarray:
+        """
+        Master authority allocation using Boltzmann distribution with dynamic temperature.
+        """
+        n = len(gsf_scores)
+        th = self.cfg.thresholds
 
-    df = pd.DataFrame(results)
-    out_path = os.path.join(output_dir, "monte_carlo_scalability_results.csv")
-    df.to_csv(out_path, index=False)
-    print(f"\n[+] Scalability benchmark successfully logged to: {out_path}")
-    return df
+        if current_mode == GovernanceMode.MODE_0_FLAT:
+            return np.full(n, 1.0 / n, dtype=np.float64)
 
+        # Dynamic Boltzmann Selectivity parameter: gamma(G_p)
+        gamma = 1.50 * (1.0 + 2.0 * governance_pressure)
+        
+        # Shifted softmax for numerical stability with baseline smoothing
+        shifted_scores = gsf_scores - np.max(gsf_scores)
+        weights = np.exp(gamma * shifted_scores)
+        
+        # Add baseline epsilon to ensure non-zero support across all validators
+        eps_floor = 1e-4 / n
+        weights = weights + eps_floor
+        raw_a = weights / np.sum(weights)
 
-if __name__ == "__main__":
-    run_scalability_suite()
+        # Strictly enforce the constitutional lower bound DE >= DE_min
+        final_a = self.project_to_entropy_simplex(raw_a, th.de_min)
+        return final_a

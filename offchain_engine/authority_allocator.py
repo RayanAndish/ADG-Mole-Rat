@@ -1,6 +1,6 @@
 """
-Authority Allocation & Entropy Projection Engine
-Implements Boltzmann authority distribution and Algorithm 3 (Constrained Projection onto DE_min Simplex).
+Authority Allocation Engine (Fixed & Mathematically Corrected)
+Implements Analytical Convex Projection ensuring DE(t) >= DE_min and computes Gini Index.
 """
 
 import numpy as np
@@ -14,7 +14,8 @@ class AuthorityAllocator:
 
     def calculate_shannon_entropy(self, authority_vector: np.ndarray) -> float:
         """
-        Evaluates Normalized Shannon Decentralization Entropy DE(a) = - (1 / ln N) * sum(a_i * ln a_i).
+        Evaluates Normalized Shannon Decentralization Entropy:
+        DE(a) = - (1 / ln N) * sum(a_i * ln a_i)
         """
         n = len(authority_vector)
         if n <= 1:
@@ -24,45 +25,55 @@ class AuthorityAllocator:
         p = p / np.sum(p)
         raw_entropy = -np.sum(p * np.log(p))
         normalized_de = raw_entropy / np.log(n)
-        return float(normalized_de)
+        return float(np.clip(normalized_de, 0.0, 1.0))
+
+    def calculate_gini_coefficient(self, authority_vector: np.ndarray) -> float:
+        """
+        Computes the Gini Coefficient of authority concentration:
+        G = sum_i sum_j |a_i - a_j| / (2 * N * sum_i a_i)
+        G = 0 -> Perfect Equality (Flat Decentralization), G = 1 -> Total Monopoly
+        """
+        a = np.sort(authority_vector)
+        n = len(a)
+        if n == 0 or np.sum(a) == 0:
+            return 0.0
+        index = np.arange(1, n + 1)
+        gini = (2.0 * np.sum(index * a) - (n + 1) * np.sum(a)) / (n * np.sum(a))
+        return float(np.clip(gini, 0.0, 1.0))
 
     def project_to_entropy_simplex(
         self,
         raw_authority: np.ndarray,
-        target_de_min: float,
-        max_iter: int = 100,
-        tol: float = 1e-6
+        target_de_min: float
     ) -> np.ndarray:
         """
-        Algorithm 3: Bregman projection to strictly enforce DE(a) >= DE_min.
+        Analytical Convex Projection onto the DE_min-Simplex:
+        a*(lambda) = (1 - lambda) * a_raw + lambda * (1/N)
+        Guarantees DE(a*) >= DE_min for all iterations.
         """
         n = len(raw_authority)
-        a_current = np.copy(raw_authority)
-        a_current = a_current / np.sum(a_current)
+        current_de = self.calculate_shannon_entropy(raw_authority)
 
-        current_de = self.calculate_shannon_entropy(a_current)
-        if current_de >= target_de_min - tol:
-            return a_current
+        if current_de >= target_de_min:
+            return raw_authority / np.sum(raw_authority)
 
-        mu_dual = 0.5
-        step_size = 0.05
+        # Binary search for optimal minimal lambda in [0, 1]
+        low, high = 0.0, 1.0
+        best_a = np.full(n, 1.0 / n, dtype=np.float64)
 
-        for _ in range(max_iter):
-            p = np.clip(a_current, 1e-15, 1.0)
-            de_val = -np.sum(p * np.log(p)) / np.log(n)
+        for _ in range(30):
+            mid = (low + high) / 2.0
+            candidate_a = (1.0 - mid) * raw_authority + mid * (1.0 / n)
+            candidate_a /= np.sum(candidate_a)
+            de_val = self.calculate_shannon_entropy(candidate_a)
 
-            if de_val >= target_de_min - tol:
-                break
+            if de_val >= target_de_min:
+                best_a = candidate_a
+                high = mid  # Try to find a smaller lambda (closer to raw)
+            else:
+                low = mid
 
-            # Gradient of DE with respect to a_i
-            grad_de = -(np.log(p) + 1.0) / np.log(n)
-
-            # Subgradient update toward uniform entropy
-            mu_dual = max(0.0, mu_dual + step_size * (target_de_min - de_val))
-            a_current = raw_authority * np.exp(mu_dual * grad_de)
-            a_current = a_current / np.sum(a_current)
-
-        return a_current
+        return best_a
 
     def allocate_authority(
         self,
@@ -77,25 +88,20 @@ class AuthorityAllocator:
         th = self.cfg.thresholds
 
         if current_mode == GovernanceMode.MODE_0_FLAT:
-            # Mode 0: Perfect Uniform Authority
             return np.full(n, 1.0 / n, dtype=np.float64)
 
-        # Mode 1 & 2: Dynamic Selectivity scaling gamma(G_p) = gamma_0 * (1 + kappa * G_p)
+        # Dynamic Boltzmann Selectivity parameter: gamma(G_p)
         gamma = 1.50 * (1.0 + 2.0 * governance_pressure)
         
-        # Heaviside filter: only nodes exceeding theta_act participate
-        eligible_mask = gsf_scores >= th.theta_act
-        if not np.any(eligible_mask):
-            eligible_mask = np.ones(n, dtype=bool)
+        # Shifted softmax for numerical stability with baseline smoothing
+        shifted_scores = gsf_scores - np.max(gsf_scores)
+        weights = np.exp(gamma * shifted_scores)
+        
+        # Add baseline epsilon to ensure non-zero support across all validators
+        eps_floor = 1e-4 / n
+        weights = weights + eps_floor
+        raw_a = weights / np.sum(weights)
 
-        shifted_scores = gsf_scores - np.max(gsf_scores) # Numerical stability
-        exp_terms = np.exp(gamma * shifted_scores) * eligible_mask
-
-        if np.sum(exp_terms) == 0:
-            raw_a = np.full(n, 1.0 / n, dtype=np.float64)
-        else:
-            raw_a = exp_terms / np.sum(exp_terms)
-
-        # Enforce Information-Theoretic Entropy Invariant DE >= DE_min
+        # Strictly enforce the constitutional lower bound DE >= DE_min
         final_a = self.project_to_entropy_simplex(raw_a, th.de_min)
         return final_a

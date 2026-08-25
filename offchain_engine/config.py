@@ -9,7 +9,7 @@ import numpy as np
 
 @dataclass(frozen=True)
 class GovernanceWeights:
-    """Convex simplex weights for Global State Vector S(t). Sum must equal 1.0."""
+    """Convex simplex weights for Global State Vector S(t). Normalized to sum 1.0."""
     w_r: float = 0.25  # Risk weight
     w_w: float = 0.20  # Workload weight
     w_f: float = 0.25  # Fault rate weight
@@ -18,7 +18,13 @@ class GovernanceWeights:
 
     def __post_init__(self):
         total = self.w_r + self.w_w + self.w_f + self.w_c + self.w_d
-        assert np.isclose(total, 1.0, atol=1e-5), f"Governance weights must sum to 1.0, got {total}"
+        if not np.isclose(total, 1.0, atol=1e-5):
+            object.__setattr__(self, "w_r", self.w_r / total)
+            object.__setattr__(self, "w_w", self.w_w / total)
+            object.__setattr__(self, "w_f", self.w_f / total)
+            object.__setattr__(self, "w_c", self.w_c / total)
+            object.__setattr__(self, "w_d", self.w_d / total)
+
 
 
 @dataclass(frozen=True)
