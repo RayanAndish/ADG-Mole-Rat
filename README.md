@@ -112,10 +112,10 @@ where $\gamma(G_p) = \gamma_0 (1 + \kappa G_p(t))$ scales competition selectivit
 #### Analytical Convex Projection onto the $DE_{min}$-Simplex
 <p>To strictly enforce the constitutional invariant $\mathcal{I}_{safety}: DE(t) \ge DE_{min}$, the engine computes:</p>
 
-$\mathbf{a}^*(t) = (1 - \lambda^*) \mathbf{a}_{\text{raw}}(t) + \lambda^* \left( \frac{1}{N} \mathbf{1} \right)$
-<p>where $\lambda^* \in [0, 1]$ is the minimal convex blending factor satisfying:</p>
+$$\mathbf{a}^*(t) = (1 - \lambda^*) \mathbf{a}_{\text{raw}}(t) + \lambda^* \left( \frac{1}{N} \mathbf{1} \right)$$
+where $\lambda^* \in [0,1]$ is the minimum convex blending factor satisfying:
 
-$DE(\mathbf{a}^*) = -\frac{1}{\ln N} \sum_{i=1}^N a_i^*(t) \ln\left(a_i^*(t) + \epsilon\right) \ge DE_{min}$
+$$DE(\mathbf{a}^*) = -\frac{1}{\ln N} \sum_{i=1}^N a_i^*(t) \ln\left(a_i^*(t) + \epsilon\right) \ge DE_{min}$$
 
 ---
 
