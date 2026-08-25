@@ -109,9 +109,9 @@ The raw authority share $a_{\text{raw}, i}(t)$ is allocated via a dynamic Boltzm
 $$a_{\text{raw}, i}(t) = \frac{\exp\left(\gamma(G_p) \cdot GS_i(t)\right) \cdot \mathbb{I}\left(GS_i(t) \ge \theta_{act}\right)}{\sum_{j=1}^N \exp\left(\gamma(G_p) \cdot GS_j(t)\right) \cdot \mathbb{I}\left(GS_j(t) \ge \theta_{act}\right)}$$
 where $\gamma(G_p) = \gamma_0 (1 + \kappa G_p(t))$ scales competition selectivity with real-time pressure.
 
-#### Analytical Convex Projection under the $DE_{\min}$ Constraint
+#### Analytical Convex Projection under the Minimum-Entropy Constraint
 
-[SVG](https://github.com/RayanAndish/ADG-Mole-Rat/tree/main#analytical-convex-projection-under-the-de_min-constraint)
+[SVG](https://github.com/RayanAndish/ADG-Mole-Rat/tree/main#analytical-convex-projection-under-the-minimum-entropy-constraint)
 
 To strictly enforce the constitutional invariant
 $I_{\mathrm{safety}}: DE(t) \geq DE_{\min}$, the engine computes:
