@@ -4,18 +4,18 @@
   "chainId": 1337,
   "deployerAddress": "0xF4BCdF4fa4D90a8576cf83D3dDFca29D877c7C12",
   "contracts": {
-    "EntropyConstraint": "0x00B68B61C28A222e88e8785F6A96424a17E44D53",
-    "ADGCoordinator": "0xfe2CC1c31F1F6b9C88C1c649cAdb7261EFDbe3bB",
-    "DynamicCommittee": "0x528c779116A030F9F3D324789F714e5304C6AFE7",
-    "SignalDistributor": "0x1a9A77Ea6c52F7bbf65ABc279a970Bd901Ff49B7",
-    "DynamicGovernanceScore": "0x9b2E306d46Bb9212C3a297B78fCcC4CFD5feBF41",
-    "SuccessionAutomaton": "0x54b3A4C7aA41E02aC6cbE66c9b4bB9A50FC1999f",
-    "StaticPBFTMock": "0xE8408544AD760cCAD4F16485430173Af2341AAC8",
-    "FlatDAOMock": "0xBCEE5b936422545fB3e770E319cEe26D3E4546B9",
-    "TendermintMock": "0x800444aFaCe4e46a49EF5b8C937BeE6f0442b214",
-    "ByzantineCartelAttacker": "0x3e29487B7bBCC66Af2527aad49fe2534235f3f51",
-    "SybilChurnInjector": "0xBEfc383A6C5F48d3e07635B094a5caEE73940ac5",
-    "EmergencyExploitSimulator": "0x6A330723218BE8Ef7D50cC62aBC7AC06527c7E5E"
+    "EntropyConstraint": "0x1Ca2f6Fd04331351818F468ca7F681F53b1dB834",
+    "ADGCoordinator": "0x4f7D3868a40Bd36c68684db9C0DE938580E672Bc",
+    "DynamicCommittee": "0x500eF0bAa8aDD92dFF69e02f68710E895F0C2c65",
+    "SignalDistributor": "0xDC9ddc1ED9eb0E08a464f520806b4edb948aF093",
+    "DynamicGovernanceScore": "0x088616abeaab03FA9e840Cf87C1882F9413969c5",
+    "SuccessionAutomaton": "0x5E5740330A5D117090d4D8591996699C00F80caA",
+    "StaticPBFTMock": "0xB2F8CD2F715Bd943320ED5A846a48D533A38D180",
+    "FlatDAOMock": "0xb61AADcA7Ef4b02130253D14A8812908E54F62c4",
+    "TendermintMock": "0x88cD0987E1407fbb76fDafbB41A7E8E4805d7a73",
+    "ByzantineCartelAttacker": "0xdA74DCED1f07E9d16531E40E54167c9CfE554F11",
+    "SybilChurnInjector": "0xfeFDCa38F770aD391D7924D442606EaaDB95e9ac",
+    "EmergencyExploitSimulator": "0x95d28Aa5CDA8ca95279a99F6f555ea70EBCe6b8A"
   },
   "artifactsDir": "E:\\Mole-Rat-ADG\\artifacts\\contracts"
 }
