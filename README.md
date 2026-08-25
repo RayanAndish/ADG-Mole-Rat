@@ -122,16 +122,18 @@ $$DE(\mathbf{a}^*) = -\frac{1}{\ln N} \sum_{i=1}^N a_i^*(t) \ln\left(a_i^*(t) + 
 ### 3.5. Biological Actuation Signals
 
 1. **Global IPM Chemical Suppression Signal ($\sigma_{IPM}$):**
-   $$\sigma_{IPM}(t) = \sigma_0 \cdot \left(1 - \exp\left(-\eta \cdot G_p(t)\right)\right) \cdot \exp\left(-\delta \cdot (t - t_{beacon})\right)$$
-   Throttling allowable mutation bandwidth: $BW_i^{allowed}(t) = BW_i^{max} \cdot (1 - \sigma_{IPM}(t))$.
+
+$$\sigma_{IPM}(t) = \sigma_0 \cdot \left(1 - \exp\left(-\eta \cdot G_p(t)\right)\right) \cdot \exp\left(-\delta \cdot (t - t_{beacon})\right)$$
+
+Throttling allowable mutation bandwidth: $BW_i^{allowed}(t) = BW_i^{max} \cdot (1 - \sigma_{IPM}(t))$.
 
 2. **Targeted Mechanical Shoving Stimulus ($\mathbf{u}_{stim}$):**
 
-   <p>The stimulus vector activates idle validators based on weight and quality thresholds:</p>
+<p>The stimulus vector activates idle validators based on weight and quality thresholds:</p>
 
-   $$u_{stim, i}(t) = \text{ReLU}\left( \frac{\bar{w}_{colony}(t) - w_i(t)}{\bar{w}_{colony}(t)} \right) \cdot \mathbb{I}\left(l_i(t) \le \bar{l}_{median}\right) \cdot \mathbb{I}\left(Q_i(t) \ge Q_{thresh}\right)$$
+$$u_{stim, i}(t) = \text{ReLU}\left( \frac{\bar{w}_{colony}(t) - w_i(t)}{\bar{w}_{colony}(t)} \right) \cdot \mathbb{I}\left(l_i(t) \le \bar{l}_{median}\right) \cdot \mathbb{I}\left(Q_i(t) \ge Q_{thresh}\right)$$
 
-   <p>Formally, the stimulus vector $\mathbf{u}_{stim}(t) = (u_{stim,1}(t), \ldots, u_{stim,N}(t))$ acts as a coordination perturbation injected into the Boltzmann distribution weightings during the $\mathcal{M}_1$ (Adaptive Committee) regime, biasing committee formation toward underutilized yet high-quality validators.</p>
+<p>Formally, the stimulus vector $\mathbf{u}_{stim}(t) = (u_{stim,1}(t), \ldots, u_{stim,N}(t))$ acts as a coordination perturbation injected into the Boltzmann distribution weightings during the $\mathcal{M}_1$ (Adaptive Committee) regime, biasing committee formation toward underutilized yet high-quality validators.</p>
 
 ---
 
