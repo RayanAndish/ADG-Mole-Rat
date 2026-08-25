@@ -330,7 +330,7 @@ ADG-Framework/
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/ADG-Framework.git
+git clone https://anonymous.4open.science/r/ADG-Mole-Rat-CED6/
 cd ADG-Framework
 
 # Install Node.js toolchain and Hardhat dependencies
@@ -388,7 +388,7 @@ If you utilize this framework, codebase, or empirical datasets in your research,
 ```bibtex
 @article{adg2026framework,
   title     = {Adaptive Dynamic Authority Allocation in Decentralized Systems: A Non-Equilibrium Control-Theoretic Framework Inspired by Eusocial Mammalian Regulation},
-  author    = {Research Team},
+  author    = {Erfan Shahmohammadi},
   journal   = {IEEE Transactions on Dependable and Secure Computing},
   year      = {2026},
   volume    = {under review},
