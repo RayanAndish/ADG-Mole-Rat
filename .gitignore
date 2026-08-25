@@ -22,9 +22,3 @@ Thumbs.db
 # Hardhat
 coverage/
 coverage.json
-
-# Output artifacts (regenerable)
-paper_outputs/csv_datasets/*.csv
-paper_outputs/figures/*.pdf
-paper_outputs/figures/*.png
-paper_outputs/tables/*.tex
