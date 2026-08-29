@@ -246,6 +246,40 @@ def generate_publication_figures(
         plt.savefig(os.path.join(fig_dir, "fig_ganache_20k_ledger_trace.png"))
         plt.close()
 
+    # Figure 6: 50 Live Sepolia Public Testnet Mined Transactions Trace
+    sepolia_file = os.path.join(csv_dir, "sepolia_real_mined_transactions_ledger.csv")
+    if os.path.exists(sepolia_file):
+        sdf = pd.read_csv(sepolia_file)
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(7.2, 5.2), sharex=True)
+
+        tx_idx = sdf["Transaction_Index"].values
+        latency = sdf["Mined_Latency_Seconds"].values
+        gas_price = sdf["Effective_Gas_Price_Gwei"].values
+
+        # Panel A: Block Inclusion Latency vs Ethereum 12-Second Slot
+        ax1.plot(tx_idx, latency, "o-", color="#1f77b4", lw=1.8, markersize=4, label="Mined Inclusion Latency (s)")
+        ax1.axhline(y=12.0, color="#d62728", linestyle="--", lw=1.5, label="Ethereum PoS Beacon Slot Time (12.0 s)")
+        mean_lat = float(np.mean(latency))
+        ax1.axhline(y=mean_lat, color="#2ca02c", linestyle=":", lw=1.5, label=f"Mean Latency ({mean_lat:.2f} s)")
+        ax1.set_ylabel("Inclusion Latency (s)")
+        ax1.set_title("Tier 3 Public Testnet: 50 Consecutive Mined Blocks on Ethereum Sepolia")
+        ax1.legend(loc="upper right")
+        ax1.grid(True)
+        ax1.set_ylim(0, max(25.0, float(np.max(latency)) * 1.15))
+
+        # Panel B: Effective Gas Price (EIP-1559 Dynamic Pricing)
+        ax2.plot(tx_idx, gas_price, "s-", color="#ff7f0e", lw=1.6, markersize=4, label="EIP-1559 Effective Gas Price (Gwei)")
+        ax2.set_xlabel("Mined Transaction Sequence ($1$ to $50$) across Blocks $11566628$ – $11566677$")
+        ax2.set_ylabel("Gas Price (Gwei)")
+        ax2.set_ylim(bottom=float(np.min(gas_price)) * 0.85, top=float(np.max(gas_price)) * 1.15)
+        ax2.legend(loc="upper right")
+        ax2.grid(True)
+
+        plt.tight_layout()
+        plt.savefig(os.path.join(fig_dir, "fig_sepolia_50_mined_trace.pdf"))
+        plt.savefig(os.path.join(fig_dir, "fig_sepolia_50_mined_trace.png"))
+        plt.close()
+
     print("[+] All 5 publication vector figures generated in:", fig_dir)
 
 
