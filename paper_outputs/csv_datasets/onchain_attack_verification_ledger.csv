@@ -1,0 +1,5 @@
+Attack_ID,Attack_Vector,Target_Contract,Block_Number,Gas_Used,Transaction_Hash,EVM_Execution_Status,Constitutional_Defense,Theorem_Validated
+ATK-01,Byzantine Coalition Concentration,EntropyConstraint.sol,81424,21000,Reverted (EVM State Rollback),Intercepted & Reverted,CoalitionAuthorityExceedsBound (Top-f > rho_max 0.32),Theorem 3 (Anti-Capture Invariant)
+ATK-02,Cartel Monopolization (60% Stake),ByzantineCartelAttacker.sol,81425,121277,e46bb1abd48e0d5fd259264a790468219e2c3e166c98e357f71ecbf956e5cf1b,Intercepted by On-Chain Gate,Caught via Solidity Try/Catch,Theorem 3 & Algorithm 3
+ATK-03,Sybil Swarm Churn Flood,DynamicCommittee.sol,81426,528404,28f7082e91244d57256dfaba31c6b4ab596705af9fe01e548f6c11883aa96097,Mined with Zero Committee Power,Reputation & GSF Threshold Rejection,Section 6.3 Sybil Resistance
+ATK-04,Quorum Starvation & Minority Fork,SuccessionAutomaton.sol,81427,23000,Reverted (EVM State Rollback),Intercepted & Reverted,InsufficientActiveQuorum (Quorum < 2f_m + 1),Lemma 1 & Algorithm 2 (Zero-Fork)

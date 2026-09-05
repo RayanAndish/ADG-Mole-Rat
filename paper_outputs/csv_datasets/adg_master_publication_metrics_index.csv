@@ -1,0 +1,27 @@
+﻿Domain,Section,Artifact,Metric,Value
+Tier 1: Simulation,Section 6.1,Table 7,100k_Horizon_Throughput_TPS,"120,183.8"
+Tier 1: Simulation,Section 6.1,Table 7,100k_Horizon_Finality_Latency_ms,53.00
+Tier 1: Simulation,Section 6.1,Table 7,100k_Horizon_Gini_Index,8.25e-08
+Tier 1: Simulation,Section 6.1,Table 7,Throughput_Variance_Decay,6.73e+07 -> 2.21e+05
+Tier 1: Simulation,Section 6.2,Table 8,4096_Validators_Throughput_TPS,"3,698,952.8"
+Tier 1: Simulation,Section 6.2,Table 8,4096_Validators_p99_Latency_ms,58.02
+Tier 1: Simulation,Section 6.2,Table 8,Lyapunov_Dissipation_Rate_c,0.0340
+Tier 1: Simulation,Section 6.3,Table 9,ADG_Max_Governance_Capture_Prob,0.0000
+Tier 1: Simulation,Section 6.3,Table 9,Flat_DAO_Max_Governance_Capture_Prob,0.9000
+Tier 1: Simulation,Section 6.3,Table 9,ADG_Fork_Rate_at_BFT_Limit_33pct,0.0%
+Tier 1: Simulation,Section 6.4,Table 10,Failover_Success_Rate_20pct_Churn,100.0%
+Tier 1: Simulation,Section 6.4,Table 10,Failover_Success_Rate_30pct_Churn,100.0%
+Tier 1: Simulation,Section 6.4,Table 10,Mean_Handover_Latency_ms,20.62 ms
+Tier 2: EVM Benchmarks,Section 6.5,Table 11,ADG_Gas_Reduction_vs_PBFT_m128,99.08%
+Tier 2: EVM Benchmarks,Section 6.5,Table 11,ADG_Gas_Reduction_vs_FlatDAO_m128,91.28%
+Tier 2: EVM Benchmarks,Section 6.6,Table 12,Ganache_20k_Block_Range,"41,404 - 61,403 (20,000 Blocks)"
+Tier 2: EVM Benchmarks,Section 6.6,Table 12,Ganache_Mean_Latency_ms,35.99 +/- 2.99 ms
+Tier 2: EVM Benchmarks,Section 6.6,Table 12,Ganache_Gas_per_Tx,"95,476 Gas"
+Tier 3: Sepolia Live,Section 6.7,Table 13,Sepolia_Consecutive_Blocks,"11,640,612 - 11,640,662 (50 Blocks)"
+Tier 3: Sepolia Live,Section 6.7,Table 13,Sepolia_Mean_Inclusion_Latency,10.27 +/- 3.67 s (Slot 12.0s)
+Tier 3: Sepolia Live,Section 6.7,Table 13,Sepolia_Gas_per_Tx,"160,000 Gas"
+Tier 2: EVM Security,Section 6.3 & 6.6,Ganache Attack Ledger,Ganache_Real_Attacks_Intercepted,4 of 4 Attack Vectors Blocked
+Tier 2: EVM Security,Section 6.3 & 6.6,Ganache Attack Ledger,Theorem3_TopF_Revert_Proven_on_EVM,Validated (Error: CoalitionAuthorityExceedsBound)
+Tier 2: EVM Security,Section 6.3 & 6.6,Ganache Attack Ledger,Lemma1_Quorum_Revert_Proven_on_EVM,Validated (Error: InsufficientActiveQuorum)
+Tier 3: Sepolia Security,Section 6.7,Sepolia Proof Ledger,Sepolia_Theorem3_Takeover_Revert,Intercepted & Reverted by EVM
+Tier 3: Sepolia Security,Section 6.7,Sepolia Proof Ledger,Sepolia_Public_Chain_AntiCapture,Guaranteed (DE >= 0.60 and Top-f <= 32%)

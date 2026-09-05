@@ -267,7 +267,7 @@
 ===========================================================================
 [*] Connected to LIVE Ganache RPC: http://127.0.0.1:7545
     Active Operator Wallet      : 0xF8AaA335eF3bD0EA15e34f04242Eb88752358A16
-    Current Ganache Block Height: #81,421
+    Current Ganache Block Height: #81,424
 ===========================================================================
 
 [+] Launching Real On-Chain Adversarial Attack Suite on Ganache...
@@ -276,33 +276,28 @@
 [ATTACK 1] Shifting 50% Authority to Byzantine Coalition on EVM...
 ---------------------------------------------------------------------
   [✔] ATTACK INTERCEPTED ON EVM!
-      Transaction reverted by EntropyConstraint.sol:
       --> Error: CoalitionAuthorityExceedsBound (Top-f share 50% > rho_max 32%)
-      --> Theorem 3 Invariant Successfully Proven on Live Blockchain!
 
 ---------------------------------------------------------------------
 [ATTACK 2] Triggering ByzantineCartelAttacker.attackCoalitionConcentration...
 ---------------------------------------------------------------------
-  [✔] Attack Harness executed in Block #81422 (Gas Used: 121,277)
-      Attack was successfully intercepted by on-chain try/catch gate!
+  [✔] Attack Harness executed in Block #81425 (Gas Used: 121,277)
 
 ---------------------------------------------------------------------
 [ATTACK 3] Flooding Network with 3 Fake Sybil Identities...
 ---------------------------------------------------------------------
-  [✔] Sybil Swarm transaction mined in Block #81423 (Gas: 528,404)
-      Sybils registered with 0 reputation; permanently blocked from committee activation.
+  [✔] Sybil Swarm transaction mined in Block #81426 (Gas: 528,404)
 
 ---------------------------------------------------------------------
 [ATTACK 4] Quorum Starvation: Submitting Handover with < 2f+1 Signers...
 ---------------------------------------------------------------------
   [✔] ATTACK INTERCEPTED ON EVM!
-      Transaction reverted by SuccessionAutomaton.sol:
       --> Error: InsufficientActiveQuorum (Quorum < 2f_m + 1)
-      --> Minority fork successfully prevented by Algorithm 2!
 
 =====================================================================
 [✔] ALL 4 REAL ON-CHAIN ATTACKS EXECUTED AND INTERCEPTED ON GANACHE!
-    Current Block in Ganache is now: #81,424
+[✔] Attack Verification Ledger CSV successfully saved to:
+    --> E:\Mole-Rat-ADG\paper_outputs\csv_datasets\onchain_attack_verification_ledger.csv
 =====================================================================
 
 
@@ -443,11 +438,10 @@
     Operator / Attacker Wallet         : 0xE070cB040318102Dc47F90e7ca9d8b4AB5b66356
 ===========================================================================
 
-[+] Step 1: Simulating Malicious 50% Coalition Authority Vector via eth_call...
+[+] Simulating Malicious 50% Coalition Authority Vector via eth_call on Sepolia...
   [✔] INVARIANT VERIFIED ON SEPOLIA EVM!
-      Contract execution was aborted by EVM state machine.
       Revert details: ('0x557e523300000000000000000000000000000000000000000000000006f05b59d3b200000000000000000000000000000000000000000000000000000470de4df8200000', '0x557e523300000000000000000000000000000000000000000000000006f05b59d3b200000000000000000000000000000000000000000000000000000470de4df8200000')
-      --> Theorem 3 successfully protects Sepolia testnet against governance capture.
 
-[+] Verification Complete. The deployed Sepolia contract is mathematically immune to coalition takeover.
+[✔] Sepolia Adversarial Proof Ledger CSV saved to:
+    --> E:\Mole-Rat-ADG\paper_outputs\csv_datasets\sepolia_adversarial_proof_ledger.csv
 

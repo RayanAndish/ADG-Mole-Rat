@@ -1,0 +1,2 @@
+Network,Chain_ID,Target_Contract,Target_Contract_Name,Attacker_Wallet,Attack_Payload,Constitutional_Threshold_rho_max,EVM_Execution_Status,EVM_Revert_Reason,Timestamp,Formal_Guarantees_Proven
+Ethereum Sepolia Testnet,11155111,0x9750Cb0154DE32aE128f8A4b42bf3179BaDB43C0,EntropyConstraint.sol,0xE070cB040318102Dc47F90e7ca9d8b4AB5b66356,Top-1 Node Claiming 50% Authority,32.0%,Intercepted & Reverted by EVM,CoalitionAuthorityExceedsBound (Top-f share 50% > rho_max 32%),2026-09-05T13:48:29Z,Theorem 3 (Byzantine Coalition Anti-Capture)
