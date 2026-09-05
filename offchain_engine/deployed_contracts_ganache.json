@@ -1,21 +1,22 @@
 {
   "network": "ganache",
-  "rpcUrl": "http://127.0.0.1:7545",
   "chainId": 1337,
-  "deployerAddress": "0xF4BCdF4fa4D90a8576cf83D3dDFca29D877c7C12",
+  "rpcUrl": "http://127.0.0.1:7545",
+  "deployerAddress": "0xF8AaA335eF3bD0EA15e34f04242Eb88752358A16",
+  "timestamp": "2026-09-05T11:33:10.906Z",
   "contracts": {
-    "EntropyConstraint": "0x1Ca2f6Fd04331351818F468ca7F681F53b1dB834",
-    "ADGCoordinator": "0x4f7D3868a40Bd36c68684db9C0DE938580E672Bc",
-    "DynamicCommittee": "0x500eF0bAa8aDD92dFF69e02f68710E895F0C2c65",
-    "SignalDistributor": "0xDC9ddc1ED9eb0E08a464f520806b4edb948aF093",
-    "DynamicGovernanceScore": "0x088616abeaab03FA9e840Cf87C1882F9413969c5",
-    "SuccessionAutomaton": "0x5E5740330A5D117090d4D8591996699C00F80caA",
-    "StaticPBFTMock": "0xB2F8CD2F715Bd943320ED5A846a48D533A38D180",
-    "FlatDAOMock": "0xb61AADcA7Ef4b02130253D14A8812908E54F62c4",
-    "TendermintMock": "0x88cD0987E1407fbb76fDafbB41A7E8E4805d7a73",
-    "ByzantineCartelAttacker": "0xdA74DCED1f07E9d16531E40E54167c9CfE554F11",
-    "SybilChurnInjector": "0xfeFDCa38F770aD391D7924D442606EaaDB95e9ac",
-    "EmergencyExploitSimulator": "0x95d28Aa5CDA8ca95279a99F6f555ea70EBCe6b8A"
+    "EntropyConstraint": "0x067193190BD73403CCfb212ae02507c438529EFD",
+    "ADGCoordinator": "0xb86214200349f3B40E9df23659f84295F39833d4",
+    "DynamicCommittee": "0x07771FFee1bCF2e41Fc36973D9f8cA51Cea6016a",
+    "SignalDistributor": "0x5505B815Cf7989eE854D377AE2925Acc069fCe72",
+    "DynamicGovernanceScore": "0xc2f050F95Cb903169681B70F164c94E17FBEB667",
+    "SuccessionAutomaton": "0x7e019f8dD0034d7d254cAfDcfe9eC61E5d285882",
+    "StaticPBFTMock": "0xcdCf28b7928d1f3135A5C736E7683E743F8cF228",
+    "FlatDAOMock": "0xf1467688EEbF18a97C1e2468eb8cF190e6Fc1067",
+    "TendermintMock": "0xF8C6cb2bd7f0b5EeAAf5E06C22778b9cB26b4281",
+    "ByzantineCartelAttacker": "0xfF10619Eb87944EA3667bF1F898394eDA387Aa36",
+    "SybilChurnInjector": "0xBc1D28950B0Ef903579FDEEecAf4C0B413890500",
+    "EmergencyExploitSimulator": "0x6d6dF3DEF6345e7B4415231602253Ba967a21dC6"
   },
   "artifactsDir": "E:\\Mole-Rat-ADG\\artifacts\\contracts"
 }

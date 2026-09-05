@@ -2,16 +2,24 @@
 pragma solidity ^0.8.24;
 
 import "../core/ADGCoordinator.sol";
+import "../core/DynamicCommittee.sol";
 
 /**
  * @title SuccessionAutomaton
- * @notice Implements Algorithm 2 (Deterministic Zero-Fork Leadership Handover).
- * @dev Verifies cryptographic handover certificates with 2f+1 threshold signatures to prevent chain splits.
+ * @notice Implements Algorithm 2 (Deterministic Zero-Fork Leadership Handover Protocol).
+ * @dev Formally verifies cryptographic handover certificates against active committee quorums (2f_m + 1),
+ *      strictly preventing split-brain coordinator emergence, equivocation, and minority forks.
  */
 contract SuccessionAutomaton {
     ADGCoordinator public immutable coordinator;
 
-    enum SuccessionState { ACTIVE_LEAD, DEGRADATION_DETECTED, CANDIDATE_RANKING, SMOOTH_HANDOVER, FALLBACK_CONSENSUS }
+    enum SuccessionState { 
+        ACTIVE_LEAD, 
+        DEGRADATION_DETECTED, 
+        CANDIDATE_RANKING, 
+        SMOOTH_HANDOVER, 
+        FALLBACK_CONSENSUS 
+    }
 
     struct HandoverCertificate {
         uint256 epoch;
@@ -22,33 +30,66 @@ contract SuccessionAutomaton {
     }
 
     SuccessionState public currentState;
-    uint256 public constant TIMEOUT_TENURE = 3600; // Maximum tenure in seconds before mandatory rotation
+    uint256 public constant TIMEOUT_TENURE = 3600; // 1 hour max tenure before mandatory rotation
 
     event SuccessionTriggered(uint256 indexed epoch, address indexed failedLeader, SuccessionState reason);
     event HandoverFinalized(uint256 indexed epoch, address indexed newLeader, bytes32 stateRoot);
-    event SlashingExecuted(address indexed equivocalSigner, uint256 slashedAmount);
+    event EquivocationDetected(address indexed validator, uint256 indexed epoch, bytes32 conflictingHash);
+    event SlashedValidator(address indexed validator, uint256 amount);
 
-    mapping(bytes32 => bool) public executedHandovers;
-    mapping(address => mapping(uint256 => bytes32)) public nodeSignedProposal; // Detects double signing (equivocation)
+    // Track executed certificates to prevent replay attacks
+    mapping(bytes32 => bool) public executedCertificates;
 
-    constructor(address payable _coordinator) {
+    // Equivocation tracking: validator => (epoch => signedCertHash)
+    mapping(address => mapping(uint256 => bytes32)) public validatorEpochSignatures;
+
+    // Slashed validators registry
+    mapping(address => bool) public isSlashed;
+
+    error EpochMismatch(uint256 expected, uint256 provided);
+    error PredecessorMismatch(address expected, address provided);
+    error SuccessorCannotBePredecessor();
+    error CertificateAlreadyExecuted(bytes32 certHash);
+    error ArrayLengthMismatch();
+    error InsufficientActiveQuorum(uint256 validSignatures, uint256 requiredQuorum);
+    error UnauthorizedSigner(address signer);
+    error SignersNotStrictlyAscending(address previous, address current);
+    error SlashedSignerIgnored(address signer);
+    error InvalidSignatureLength(uint256 length);
+    error InvalidSignatureSValue();
+    error InvalidSignatureVValue(uint8 v);
+
+    constructor(address _coordinator) {
+        require(_coordinator != address(0), "Invalid coordinator");
         coordinator = ADGCoordinator(_coordinator);
         currentState = SuccessionState.ACTIVE_LEAD;
     }
 
     /**
-     * @notice Submits a multi-signed handover certificate C_{handover}^k verifying 2f+1 quorum.
-     * @param cert Handover proposal parameters.
-     * @param signatures Concatenated ECDSA signatures from committee members.
-     * @param signers Array of public addresses corresponding to signatures.
+     * @notice Submits and executes a cryptographic handover certificate C_{handover}^k.
+     * @dev Validates that signers are active committee members and meet the 2f_m + 1 supermajority.
+     * @param cert Handover proposal parameters (Epoch, Predecessor, Successor, StateRoot, BlockHeight).
+     * @param signatures Array of standard 65-byte ECDSA signatures.
+     * @param signers Array of validator addresses sorted in strictly ascending order.
      */
     function executeZeroForkHandover(
         HandoverCertificate calldata cert,
         bytes[] calldata signatures,
         address[] calldata signers
     ) external {
-        require(cert.epoch == coordinator.currentEpoch(), "Epoch mismatch");
-        require(signatures.length == signers.length, "Length mismatch");
+        // 1. Rigorous State Pre-Condition Verification
+        if (cert.epoch != coordinator.currentEpoch()) {
+            revert EpochMismatch(coordinator.currentEpoch(), cert.epoch);
+        }
+        if (cert.predecessor != coordinator.activeCoordinator()) {
+            revert PredecessorMismatch(coordinator.activeCoordinator(), cert.predecessor);
+        }
+        if (cert.successor == cert.predecessor || cert.successor == address(0)) {
+            revert SuccessorCannotBePredecessor();
+        }
+        if (signatures.length != signers.length) {
+            revert ArrayLengthMismatch();
+        }
 
         bytes32 certHash = keccak256(abi.encodePacked(
             cert.epoch,
@@ -58,54 +99,102 @@ contract SuccessionAutomaton {
             cert.blockHeight
         ));
 
-        require(!executedHandovers[certHash], "Certificate already executed");
+        if (executedCertificates[certHash]) {
+            revert CertificateAlreadyExecuted(certHash);
+        }
 
-        // Compute Byzantine fault tolerance quorum: 2f + 1 where m = total signers
-        uint256 m = signers.length;
-        uint256 f = (m - 1) / 3;
-        uint256 requiredQuorum = 2 * f + 1;
+        // 2. Fetch Active Committee Parameters from DynamicCommittee (Solves Critical Quorum Exploit)
+        DynamicCommittee committeeManager = coordinator.committeeManager();
+        uint256 m = committeeManager.getCommitteeSize();
+        require(m >= 4, "Committee too small for BFT");
+
+        uint256 f_m = (m - 1) / 3;
+        uint256 requiredQuorum = 2 * f_m + 1;
         uint256 validSignatures = 0;
 
         bytes32 ethSignedMessageHash = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", certHash));
 
-        for (uint256 i = 0; i < m; i++) {
+        address lastSigner = address(0);
+
+        // 3. Quorum Verification Loop with Equivocation & Duplicate Protection
+        for (uint256 i = 0; i < signers.length; i++) {
             address signer = signers[i];
-            
-            // Check for malicious equivocation (signing distinct hashes for same epoch)
-            bytes32 previousSigned = nodeSignedProposal[signer][cert.epoch];
-            if (previousSigned != bytes32(0) && previousSigned != certHash) {
-                emit SlashingExecuted(signer, 1 ether); // Slashing trigger
+
+            // Enforce strictly ascending order: prevents duplicates and ensures O(N) verification
+            if (signer <= lastSigner) {
+                revert SignersNotStrictlyAscending(lastSigner, signer);
+            }
+            lastSigner = signer;
+
+            // Signer must be a verified active validator in the committee
+            if (!committeeManager.isCommitteeMember(signer)) {
+                revert UnauthorizedSigner(signer);
+            }
+
+            // Slashed Byzantine nodes are stripped of voting power
+            if (isSlashed[signer]) {
                 continue;
             }
-            nodeSignedProposal[signer][cert.epoch] = certHash;
 
-            // Verify ECDSA signature
+            // Equivocation Check: Double signing conflicting certificates for the same epoch
+            bytes32 previouslySigned = validatorEpochSignatures[signer][cert.epoch];
+            if (previouslySigned != bytes32(0) && previouslySigned != certHash) {
+                isSlashed[signer] = true;
+                emit EquivocationDetected(signer, cert.epoch, certHash);
+                emit SlashedValidator(signer, 1 ether);
+                continue; // Malicious vote discarded
+            }
+            validatorEpochSignatures[signer][cert.epoch] = certHash;
+
+            // Cryptographic ECDSA Signature Verification with Malleability Guard
             if (recoverSigner(ethSignedMessageHash, signatures[i]) == signer) {
                 validSignatures++;
             }
         }
 
-        require(validSignatures >= requiredQuorum, "Quorum: Insufficient valid 2f+1 signatures");
+        // 4. Constitutional Quorum Check: Must achieve strictly >= 2f_m + 1 valid signatures
+        if (validSignatures < requiredQuorum) {
+            revert InsufficientActiveQuorum(validSignatures, requiredQuorum);
+        }
 
-        // Finalize deterministic zero-fork transition
-        executedHandovers[certHash] = true;
+        // 5. Finalize Handover & Transition State
+        executedCertificates[certHash] = true;
         currentState = SuccessionState.SMOOTH_HANDOVER;
+
+        // Apply leadership succession to master coordinator contract
         coordinator.applySuccession(cert.successor, cert.stateHash);
 
         emit HandoverFinalized(cert.epoch, cert.successor, cert.stateHash);
         currentState = SuccessionState.ACTIVE_LEAD;
     }
 
+    /**
+     * @notice Secure signature recovery with EIP-2 / SECP256k1 malleability guard.
+     */
     function recoverSigner(bytes32 messageHash, bytes memory sig) public pure returns (address) {
-        require(sig.length == 65, "Invalid signature length");
+        if (sig.length != 65) revert InvalidSignatureLength(sig.length);
+
         bytes32 r;
         bytes32 s;
         uint8 v;
+
         assembly {
             r := mload(add(sig, 32))
             s := mload(add(sig, 64))
             v := byte(0, mload(add(sig, 96)))
         }
-        return ecrecover(messageHash, v, r, s);
+
+        // Enforce malleable s-value bounds (OpenZeppelin / Ethereum Yellow Paper standard)
+        if (uint256(s) > 0x7FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5D576E735E4370F00100AB53315DD30A) {
+            revert InvalidSignatureSValue();
+        }
+
+        if (v != 27 && v != 28) {
+            revert InvalidSignatureVValue(v);
+        }
+
+        address recovered = ecrecover(messageHash, v, r, s);
+        require(recovered != address(0), "ecrecover failed");
+        return recovered;
     }
 }

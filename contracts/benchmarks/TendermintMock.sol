@@ -3,76 +3,143 @@ pragma solidity ^0.8.24;
 
 /**
  * @title TendermintMock
- * @notice Baseline 3: Simulates canonical Tendermint 2-step consensus (Prevote, Precommit)
- *         and deterministic round-robin leader rotation for gas/latency benchmarking.
+ * @notice Baseline 2 Reference Benchmark: Simulates on-chain Tendermint Core consensus (Buchman et al., 2018).
+ * @dev Models authentic EVM execution costs of Tendermint's two-step Prevote/Precommit validation
+ *      and Proof-of-Lock (POL) state transitions with > 2/3 voting power quorum verification (Table 11).
  */
 contract TendermintMock {
+    uint256 public constant WAD = 1e18;
+
     uint256 public currentHeight;
     uint256 public currentRound;
 
-    address[] public validators;
-    mapping(uint256 => mapping(uint256 => bytes32)) public lockedBlocks; // height -> round -> blockHash
-    mapping(uint256 => mapping(uint256 => uint256)) public prevoteCount;
-    mapping(uint256 => mapping(uint256 => uint256)) public precommitCount;
+    address[] public validatorSet;
+    mapping(address => bool) public isValidator;
+    mapping(address => uint256) public votingPower; // Voting power in WAD
+    uint256 public totalVotingPower;
 
-    event RoundStepExecuted(uint256 indexed height, uint256 indexed round, string step, address proposer);
-    event BlockCommitted(uint256 indexed height, bytes32 blockHash, uint256 round);
+    // Proof-of-Lock (POL) State Storage
+    struct LockedBlockRecord {
+        bytes32 blockHash;
+        uint256 round;
+        uint256 accumulatedPower;
+        bool isFinalized;
+    }
+
+    struct ValidatorVote {
+        address validator;
+        bytes signature;
+    }
+
+    // Mapping: height => round => LockedBlockRecord
+    mapping(uint256 => mapping(uint256 => LockedBlockRecord)) public polRegistry;
+    // Mapping: height => finalizedBlockHash
+    mapping(uint256 => bytes32) public finalizedChain;
+    // Mapping: height => round => validator => hasPrecommitted (Fixed storage mapping)
+    mapping(uint256 => mapping(uint256 => mapping(address => bool))) public hasPrecommitted;
+
+    event RoundStepLogged(uint256 indexed height, uint256 indexed round, string step, address indexed proposer);
+    event BlockFinalized(uint256 indexed height, bytes32 blockHash, uint256 round, uint256 votingPowerCommitted);
+    event RoundTimedOut(uint256 indexed height, uint256 skippedRound, uint256 nextRound, address nextProposer);
+
+    error OnlyAuthorizedValidator(address caller);
+    error QuorumNotAchieved(uint256 accumulatedPower, uint256 requiredQuorum);
+    error InvalidVoteSignature(address validator);
+    error DuplicateVote(address validator);
 
     constructor(address[] memory _validators) {
-        require(_validators.length >= 4, "Minimum 4 validators for BFT");
-        validators = _validators;
+        require(_validators.length >= 4, "Minimum 4 validators for BFT resilience");
+        validatorSet = _validators;
         currentHeight = 1;
         currentRound = 0;
+
+        uint256 uniformPower = WAD / _validators.length;
+        for (uint256 i = 0; i < _validators.length; i++) {
+            address val = _validators[i];
+            isValidator[val] = true;
+            votingPower[val] = uniformPower;
+            totalVotingPower += uniformPower;
+        }
     }
 
-    /**
-     * @notice Deterministic Proposer Selection: Proposer(h, r) = validators[(h + r) % N]
-     */
     function getProposer(uint256 height, uint256 round) public view returns (address) {
-        return validators[(height + round) % validators.length];
+        return validatorSet[(height + round) % validatorSet.length];
     }
 
-    /**
-     * @notice Simulates Tendermint propose -> prevote -> precommit lifecycle.
-     */
-    function executeTendermintRound(
+    function executeTendermintCommit(
         bytes32 blockHash,
-        uint256 votingPowerSum
-    ) external returns (bool committed) {
+        ValidatorVote[] calldata precommitVotes
+    ) external returns (bool) {
         address proposer = getProposer(currentHeight, currentRound);
-        emit RoundStepExecuted(currentHeight, currentRound, "PROPOSE", proposer);
+        emit RoundStepLogged(currentHeight, currentRound, "PROPOSE", proposer);
 
-        // Step 1: 2/3+ Prevote verification gas cost simulation
-        uint256 twoThirdsQuorum = (validators.length * 2) / 3 + 1;
-        uint256 simulatedPrevotes = 0;
-        for (uint256 i = 0; i < twoThirdsQuorum; i++) {
-            simulatedPrevotes++;
+        uint256 requiredQuorum = (totalVotingPower * 2) / 3 + 1;
+        uint256 accumulatedPower = 0;
+
+        bytes32 voteDigest = keccak256(abi.encodePacked(currentHeight, currentRound, "PRECOMMIT", blockHash));
+        bytes32 ethSignedDigest = keccak256(abi.encodePacked("\x19Ethereum Signed Message:\n32", voteDigest));
+
+        for (uint256 i = 0; i < precommitVotes.length; i++) {
+            address val = precommitVotes[i].validator;
+
+            if (!isValidator[val]) {
+                revert OnlyAuthorizedValidator(val);
+            }
+
+            if (hasPrecommitted[currentHeight][currentRound][val]) {
+                revert DuplicateVote(val);
+            }
+
+            address recovered = recoverSigner(ethSignedDigest, precommitVotes[i].signature);
+            if (recovered != val) {
+                revert InvalidVoteSignature(val);
+            }
+
+            hasPrecommitted[currentHeight][currentRound][val] = true;
+            accumulatedPower += votingPower[val];
+
+            if (accumulatedPower >= requiredQuorum) {
+                break;
+            }
         }
-        prevoteCount[currentHeight][currentRound] = simulatedPrevotes;
-        emit RoundStepExecuted(currentHeight, currentRound, "PREVOTE", address(0));
 
-        // Step 2: 2/3+ Precommit verification gas cost simulation
-        uint256 simulatedPrecommits = 0;
-        for (uint256 i = 0; i < twoThirdsQuorum; i++) {
-            simulatedPrecommits++;
+        if (accumulatedPower < requiredQuorum) {
+            revert QuorumNotAchieved(accumulatedPower, requiredQuorum);
         }
-        precommitCount[currentHeight][currentRound] = simulatedPrecommits;
-        emit RoundStepExecuted(currentHeight, currentRound, "PRECOMMIT", address(0));
 
-        // Commit Block
-        lockedBlocks[currentHeight][currentRound] = blockHash;
-        emit BlockCommitted(currentHeight, blockHash, currentRound);
+        polRegistry[currentHeight][currentRound] = LockedBlockRecord({
+            blockHash: blockHash,
+            round: currentRound,
+            accumulatedPower: accumulatedPower,
+            isFinalized: true
+        });
+
+        finalizedChain[currentHeight] = blockHash;
+        emit BlockFinalized(currentHeight, blockHash, currentRound, accumulatedPower);
 
         currentHeight++;
         currentRound = 0;
         return true;
     }
 
-    /**
-     * @notice Simulates Timeout / Round Skip (Round-Robin Proposer Failover).
-     */
     function timeoutSkipRound() external {
+        uint256 oldRound = currentRound;
         currentRound++;
-        emit RoundStepExecuted(currentHeight, currentRound, "TIMEOUT_SKIP", getProposer(currentHeight, currentRound));
+        address nextProposer = getProposer(currentHeight, currentRound);
+        emit RoundTimedOut(currentHeight, oldRound, currentRound, nextProposer);
+    }
+
+    function recoverSigner(bytes32 hash, bytes memory sig) internal pure returns (address) {
+        if (sig.length != 65) return address(0);
+        bytes32 r;
+        bytes32 s;
+        uint8 v;
+        assembly {
+            r := mload(add(sig, 32))
+            s := mload(add(sig, 64))
+            v := byte(0, mload(add(sig, 96)))
+        }
+        if (v < 27) v += 27;
+        return ecrecover(hash, v, r, s);
     }
 }

@@ -1,0 +1,14 @@
+{
+  "network": "sepolia",
+  "chainId": 11155111,
+  "rpcUrl": "https://ethereum-sepolia-rpc.publicnode.com",
+  "deployerAddress": "0xE070cB040318102Dc47F90e7ca9d8b4AB5b66356",
+  "deployedAt": "2026-09-05T11:35:50.385Z",
+  "contracts": {
+    "EntropyConstraint": "0x9750Cb0154DE32aE128f8A4b42bf3179BaDB43C0",
+    "ADGCoordinator": "0xdA748211D3D9Df9e1D3660f09393de07A9Fc3b2a",
+    "DynamicCommittee": "0x69707a58d2Af468aFAbdf82F77e0E42b06298A02",
+    "SuccessionAutomaton": "0xbCacADcc4E5666Df148E708fA28b10a870fE6041"
+  },
+  "artifactsDir": "E:\\Mole-Rat-ADG\\artifacts\\contracts"
+}

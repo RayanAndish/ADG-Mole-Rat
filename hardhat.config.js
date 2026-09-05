@@ -18,14 +18,7 @@ module.exports = {
   networks: {
     ganache: {
       url: "http://127.0.0.1:7545",
-      accounts: {
-        mnemonic:
-          "art either market skirt absent purchase scrub half advance scorpion crucial diesel",
-        path: "m/44'/60'/0'/0",
-        initialIndex: 0,
-        count: 10,
-      },
-    },
+     },
     localhost: {
       url: "http://127.0.0.1:7545",
     },
