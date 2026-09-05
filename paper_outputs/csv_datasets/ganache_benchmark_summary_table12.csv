@@ -1,0 +1,4 @@
+Operational_Regime,Mined_Blocks_Range,Mean_Latency_ms,Gas_Consumption_per_Tx,Mean_Pressure_Gp_WAD,Mean_Entropy_DE_WAD,Mean_Gini_G,Mined_Status
+Steady-State (M0),"41,404 – 57,403 (80%)",35.99 ± 2.98,"95,464 Gas",0.15 × 10^18,0.94 × 10^18,0.045,100% Success
+Shock Transient (M2),"57,404 – 61,403 (20%)",36.00 ± 3.01,"95,528 Gas",0.90 × 10^18,0.68 × 10^18,0.240,100% Success
+Full Ledger Aggregate,"41,404 – 61,403 (100%)",35.99 ± 2.99,"95,476 Gas",0.30 × 10^18,0.89 × 10^18,0.084,100% Success

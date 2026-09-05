@@ -61,3 +61,393 @@
 [✔] Sepolia deployment complete! Metadata saved to:
     --> E:\Mole-Rat-ADG\offchain_engine\deployed_contracts_sepolia.json
 =================================================================
+
+======================================================================
+[*] SUITE 1: Executing Multi-Horizon Variance Decay Suite (Table 7)
+    Fixed Population N = 128 | Horizons: [50, 100, 1000, 5000, 20000, 100000]
+======================================================================
+
+[+] Running Horizon: 50 Epochs...
+    --> TPS: 117343.0 ± 8205.6 | Latency: 54.43 ms | Gini: 3.054393e-05 | Min DE: 1.0
+
+[+] Running Horizon: 100 Epochs...
+    --> TPS: 126125.8 ± 7000.1 | Latency: 53.69 ms | Gini: 1.534055e-05 | Min DE: 1.0
+
+[+] Running Horizon: 1,000 Epochs...
+    --> TPS: 123682.9 ± 4731.3 | Latency: 53.26 ms | Gini: 8.267351e-06 | Min DE: 1.0
+
+[+] Running Horizon: 5,000 Epochs...
+    --> TPS: 122776.7 ± 2137.2 | Latency: 53.04 ms | Gini: 1.642654e-06 | Min DE: 1.0
+
+[+] Running Horizon: 20,000 Epochs...
+    --> TPS: 117472.7 ± 1026.0 | Latency: 53.01 ms | Gini: 4.083033e-07 | Min DE: 1.0
+
+[+] Running Horizon: 100,000 Epochs...
+    --> TPS: 120183.8 ± 469.8 | Latency: 53.0 ms | Gini: 8.254941e-08 | Min DE: 1.0
+
+[✔] Table 7 Master CSV exported to:
+    --> E:\Mole-Rat-ADG\paper_outputs\csv_datasets\monte_carlo_scale_convergence_summary.csv
+
+[✔] Figure 13 successfully generated (NO title, strict layout):
+    --> E:\Mole-Rat-ADG\paper_outputs\figures\figure13_variance_decay.pdf
+    --> E:\Mole-Rat-ADG\paper_outputs\figures\figure13_variance_decay.png
+
+======================================================================
+[*] SUITE 2: Executing Population Scale-Up Suite (Table 8)
+    Populations N in [16, 64, 256, 1024, 4096] | 30 Monte Carlo Seeds per Scale
+======================================================================
+
+[+] Benchmarking Population Scale N = 16 nodes...
+    --> N=16 | TPS: 14,370.7 ± 1399.0 | p99 Latency: 58.34 ms | c: 0.0395
+
+[+] Benchmarking Population Scale N = 64 nodes...
+    --> N=64 | TPS: 58,036.3 ± 2051.7 | p99 Latency: 58.18 ms | c: 0.034
+
+[+] Benchmarking Population Scale N = 256 nodes...
+    --> N=256 | TPS: 232,690.8 ± 5684.7 | p99 Latency: 58.09 ms | c: 0.034
+
+[+] Benchmarking Population Scale N = 1,024 nodes...
+    --> N=1,024 | TPS: 923,045.7 ± 8778.8 | p99 Latency: 58.05 ms | c: 0.034
+
+[+] Benchmarking Population Scale N = 4,096 nodes...
+    --> N=4,096 | TPS: 3,698,952.8 ± 17845.5 | p99 Latency: 58.02 ms | c: 0.034
+
+[✔] Table 8 Master CSV exported to:
+    --> E:\Mole-Rat-ADG\paper_outputs\csv_datasets\monte_carlo_scalability_results.csv
+
+===========================================================================
+[*] Starting Byzantine Fault Resilience Suite (Table 9 & Figure 14)
+    Total Nodes N = 128 | Monte Carlo Seeds per Fraction = 30
+===========================================================================
+
+[+] Evaluating Adversarial Fraction f =  0.0%...
+    --> f =  0.0% | ADG P_cap: 0.0000 | ADG Fork:  0.0% | PBFT Fork/Stall:   0.0% | Flat DAO P_cap: 0.0000
+
+[+] Evaluating Adversarial Fraction f =  5.0%...
+    --> f =  5.0% | ADG P_cap: 0.0000 | ADG Fork:  0.0% | PBFT Fork/Stall:   0.0% | Flat DAO P_cap: 0.1333
+
+[+] Evaluating Adversarial Fraction f = 10.0%...
+    --> f = 10.0% | ADG P_cap: 0.0000 | ADG Fork:  0.0% | PBFT Fork/Stall:   0.0% | Flat DAO P_cap: 0.2000
+
+[+] Evaluating Adversarial Fraction f = 15.0%...
+    --> f = 15.0% | ADG P_cap: 0.0000 | ADG Fork:  0.0% | PBFT Fork/Stall:   0.0% | Flat DAO P_cap: 0.3333
+
+[+] Evaluating Adversarial Fraction f = 20.0%...
+    --> f = 20.0% | ADG P_cap: 0.0000 | ADG Fork:  0.0% | PBFT Fork/Stall:   0.0% | Flat DAO P_cap: 0.4333
+
+[+] Evaluating Adversarial Fraction f = 25.0%...
+    --> f = 25.0% | ADG P_cap: 0.0000 | ADG Fork:  0.0% | PBFT Fork/Stall:  10.0% | Flat DAO P_cap: 0.5333
+
+[+] Evaluating Adversarial Fraction f = 30.0%...
+    --> f = 30.0% | ADG P_cap: 0.0000 | ADG Fork:  0.0% | PBFT Fork/Stall:  36.7% | Flat DAO P_cap: 0.6333
+
+[+] Evaluating Adversarial Fraction f = 33.0%...
+    --> f = 33.0% | ADG P_cap: 0.0000 | ADG Fork:  0.0% | PBFT Fork/Stall:   0.0% | Flat DAO P_cap: 0.7000
+
+[+] Evaluating Adversarial Fraction f = 35.0%...
+    --> f = 35.0% | ADG P_cap: 0.0000 | ADG Fork:  0.0% | PBFT Fork/Stall: 100.0% | Flat DAO P_cap: 0.7333
+
+[+] Evaluating Adversarial Fraction f = 40.0%...
+    --> f = 40.0% | ADG P_cap: 0.0000 | ADG Fork: 10.0% | PBFT Fork/Stall: 100.0% | Flat DAO P_cap: 0.9000
+
+[✔] Table 9 Master CSV saved to:
+    --> E:\Mole-Rat-ADG\paper_outputs\csv_datasets\byzantine_resilience_results.csv
+[✔] Summary CSV saved to:
+    --> E:\Mole-Rat-ADG\paper_outputs\csv_datasets\byzantine_resilience_summary.csv
+
+[✔] Figure 14 successfully generated (NO title, strict layout):
+    --> E:\Mole-Rat-ADG\paper_outputs\figures\figure14_byzantine_capture.pdf
+    --> E:\Mole-Rat-ADG\paper_outputs\figures\figure14_byzantine_capture.png
+
+===========================================================================
+[*] Starting Leader Crash & Dynamic Churn Benchmark (Table 10)
+    Total Validators N = 128 | 50 Monte Carlo Seeds per Churn Regime
+===========================================================================
+
+[+] Evaluating Validator Churn Rate =  5.0%...
+    --> Churn:  5.0% | Success Rate: 100.0% | Mean Latency T_succ: 20.90 ms | Message Overhead: 244.0
+
+[+] Evaluating Validator Churn Rate = 10.0%...
+    --> Churn: 10.0% | Success Rate: 100.0% | Mean Latency T_succ: 20.78 ms | Message Overhead: 232.0
+
+[+] Evaluating Validator Churn Rate = 20.0%...
+    --> Churn: 20.0% | Success Rate: 100.0% | Mean Latency T_succ: 20.53 ms | Message Overhead: 206.0
+
+[+] Evaluating Validator Churn Rate = 30.0%...
+    --> Churn: 30.0% | Success Rate: 100.0% | Mean Latency T_succ: 20.27 ms | Message Overhead: 180.0
+
+[+] Evaluating Validator Churn Rate = 40.0%...
+    --> Churn: 40.0% | Success Rate:   0.0% | Mean Latency T_succ:  0.00 ms | Message Overhead:   0.0
+
+[+] Evaluating Validator Churn Rate = 50.0%...
+    --> Churn: 50.0% | Success Rate:   0.0% | Mean Latency T_succ:  0.00 ms | Message Overhead:   0.0
+
+[✔] Table 10 Master CSV saved to:
+    --> E:\Mole-Rat-ADG\paper_outputs\csv_datasets\leader_crash_churn_results.csv
+[✔] Summary CSV saved to:
+    --> E:\Mole-Rat-ADG\paper_outputs\csv_datasets\leader_crash_churn_summary.csv
+
+===========================================================================
+[*] Starting EVM Gas Consumption Profiling Suite (Table 11 & Figure 15)
+    Active Committee Scales m in [4, 16, 64, 128]
+===========================================================================
+[+] Committee m =   4 | ADG Advance: 73,680 Gas | ADG Succession: 67,600 Gas | PBFT View-Change: 111,400 Gas | Flat DAO: 136,000 Gas | Tendermint: 80,600 Gas
+[+] Committee m =  16 | ADG Advance: 90,720 Gas | ADG Succession: 101,200 Gas | PBFT View-Change: 507,400 Gas | Flat DAO: 400,000 Gas | Tendermint: 130,200 Gas
+[+] Committee m =  64 | ADG Advance: 158,880 Gas | ADG Succession: 235,600 Gas | PBFT View-Change: 6,843,400 Gas | Flat DAO: 1,456,000 Gas | Tendermint: 328,600 Gas
+[+] Committee m = 128 | ADG Advance: 249,760 Gas | ADG Succession: 412,000 Gas | PBFT View-Change: 27,118,600 Gas | Flat DAO: 2,864,000 Gas | Tendermint: 589,000 Gas
+
+[✔] Table 11 Master CSV saved to:
+    --> E:\Mole-Rat-ADG\paper_outputs\csv_datasets\evm_gas_benchmarks.csv
+[✔] Gas Reduction Summary saved to:
+    --> E:\Mole-Rat-ADG\paper_outputs\csv_datasets\evm_gas_reduction_summary.csv
+
+[✔] Figure 15 successfully generated (NO title, strict layout):
+    --> E:\Mole-Rat-ADG\paper_outputs\figures\figure15_gas_scaling.pdf
+    --> E:\Mole-Rat-ADG\paper_outputs\figures\figure15_gas_scaling.png
+
+===========================================================================
+[*] Connected to LIVE Ganache RPC: http://127.0.0.1:7545
+    Target ADGCoordinator: 0xb86214200349f3B40E9df23659f84295F39833d4
+===========================================================================
+[+] Active Mining Account: 0xF8AaA335eF3bD0EA15e34f04242Eb88752358A16
+    Available Balance   : 100.1 ETH
+
+[*] Commencing live dispatch of 20,000 transactions to Ganache...
+    [Block Progress will be visible live in Ganache GUI!]
+    --> Mined 500/20,000 Blocks in Ganache (45.3 tx/s) | Latest Block: #41903 | Gas: 95,464
+    --> Mined 1,000/20,000 Blocks in Ganache (47.4 tx/s) | Latest Block: #42403 | Gas: 95,464
+    --> Mined 1,500/20,000 Blocks in Ganache (47.6 tx/s) | Latest Block: #42903 | Gas: 95,464
+    --> Mined 2,000/20,000 Blocks in Ganache (48.5 tx/s) | Latest Block: #43403 | Gas: 95,464
+    --> Mined 2,500/20,000 Blocks in Ganache (49.1 tx/s) | Latest Block: #43903 | Gas: 95,464
+    --> Mined 3,000/20,000 Blocks in Ganache (49.6 tx/s) | Latest Block: #44403 | Gas: 95,464
+    --> Mined 3,500/20,000 Blocks in Ganache (50.0 tx/s) | Latest Block: #44903 | Gas: 95,464
+    --> Mined 4,000/20,000 Blocks in Ganache (50.1 tx/s) | Latest Block: #45403 | Gas: 95,464
+    --> Mined 4,500/20,000 Blocks in Ganache (50.3 tx/s) | Latest Block: #45903 | Gas: 95,464
+    --> Mined 5,000/20,000 Blocks in Ganache (50.3 tx/s) | Latest Block: #46403 | Gas: 95,464
+    --> Mined 5,500/20,000 Blocks in Ganache (50.4 tx/s) | Latest Block: #46903 | Gas: 95,464
+    --> Mined 6,000/20,000 Blocks in Ganache (50.4 tx/s) | Latest Block: #47403 | Gas: 95,464
+    --> Mined 6,500/20,000 Blocks in Ganache (50.6 tx/s) | Latest Block: #47903 | Gas: 95,464
+    --> Mined 7,000/20,000 Blocks in Ganache (50.8 tx/s) | Latest Block: #48403 | Gas: 95,464
+    --> Mined 7,500/20,000 Blocks in Ganache (50.9 tx/s) | Latest Block: #48903 | Gas: 95,464
+    --> Mined 8,000/20,000 Blocks in Ganache (51.0 tx/s) | Latest Block: #49403 | Gas: 95,464
+    --> Mined 8,500/20,000 Blocks in Ganache (51.1 tx/s) | Latest Block: #49903 | Gas: 95,464
+    --> Mined 9,000/20,000 Blocks in Ganache (51.1 tx/s) | Latest Block: #50403 | Gas: 95,464
+    --> Mined 9,500/20,000 Blocks in Ganache (51.2 tx/s) | Latest Block: #50903 | Gas: 95,464
+    --> Mined 10,000/20,000 Blocks in Ganache (51.3 tx/s) | Latest Block: #51403 | Gas: 95,464
+    --> Mined 10,500/20,000 Blocks in Ganache (51.4 tx/s) | Latest Block: #51903 | Gas: 95,464
+    --> Mined 11,000/20,000 Blocks in Ganache (51.4 tx/s) | Latest Block: #52403 | Gas: 95,464
+    --> Mined 11,500/20,000 Blocks in Ganache (51.5 tx/s) | Latest Block: #52903 | Gas: 95,464
+    --> Mined 12,000/20,000 Blocks in Ganache (51.6 tx/s) | Latest Block: #53403 | Gas: 95,464
+    --> Mined 12,500/20,000 Blocks in Ganache (51.7 tx/s) | Latest Block: #53903 | Gas: 95,464
+    --> Mined 13,000/20,000 Blocks in Ganache (51.7 tx/s) | Latest Block: #54403 | Gas: 95,464
+    --> Mined 13,500/20,000 Blocks in Ganache (51.6 tx/s) | Latest Block: #54903 | Gas: 95,464
+    --> Mined 14,000/20,000 Blocks in Ganache (51.7 tx/s) | Latest Block: #55403 | Gas: 95,464
+    --> Mined 14,500/20,000 Blocks in Ganache (51.8 tx/s) | Latest Block: #55903 | Gas: 95,464
+    --> Mined 15,000/20,000 Blocks in Ganache (51.8 tx/s) | Latest Block: #56403 | Gas: 95,464
+    --> Mined 15,500/20,000 Blocks in Ganache (51.8 tx/s) | Latest Block: #56903 | Gas: 95,464
+    --> Mined 16,000/20,000 Blocks in Ganache (51.9 tx/s) | Latest Block: #57403 | Gas: 95,464
+    --> Mined 16,500/20,000 Blocks in Ganache (51.9 tx/s) | Latest Block: #57903 | Gas: 95,528
+    --> Mined 17,000/20,000 Blocks in Ganache (52.0 tx/s) | Latest Block: #58403 | Gas: 95,528
+    --> Mined 17,500/20,000 Blocks in Ganache (52.0 tx/s) | Latest Block: #58903 | Gas: 95,528
+    --> Mined 18,000/20,000 Blocks in Ganache (52.0 tx/s) | Latest Block: #59403 | Gas: 95,528
+    --> Mined 18,500/20,000 Blocks in Ganache (52.0 tx/s) | Latest Block: #59903 | Gas: 95,528
+    --> Mined 19,000/20,000 Blocks in Ganache (52.1 tx/s) | Latest Block: #60403 | Gas: 95,528
+    --> Mined 19,500/20,000 Blocks in Ganache (52.1 tx/s) | Latest Block: #60903 | Gas: 95,528
+    --> Mined 20,000/20,000 Blocks in Ganache (52.1 tx/s) | Latest Block: #61403 | Gas: 95,528
+
+[✔] 20,000 REAL Mined Transactions exported to:
+    --> E:\Mole-Rat-ADG\paper_outputs\csv_datasets\ganache_blockchain_ledger_full.csv
+[✔] Table 12 Master Summary CSV saved to:
+    --> E:\Mole-Rat-ADG\paper_outputs\csv_datasets\ganache_benchmark_summary_table12.csv
+[✔] Figure 16 generated (NO title):
+    --> E:\Mole-Rat-ADG\paper_outputs\figures\figure16_ganache_20k_ledger.pdf
+    --> E:\Mole-Rat-ADG\paper_outputs\figures\figure16_ganache_20k_ledger.png
+
+
+===========================================================================
+[*] Connected to LIVE Ganache RPC: http://127.0.0.1:7545
+    Active Operator Wallet      : 0xF8AaA335eF3bD0EA15e34f04242Eb88752358A16
+    Current Ganache Block Height: #81,421
+===========================================================================
+
+[+] Launching Real On-Chain Adversarial Attack Suite on Ganache...
+
+---------------------------------------------------------------------
+[ATTACK 1] Shifting 50% Authority to Byzantine Coalition on EVM...
+---------------------------------------------------------------------
+  [✔] ATTACK INTERCEPTED ON EVM!
+      Transaction reverted by EntropyConstraint.sol:
+      --> Error: CoalitionAuthorityExceedsBound (Top-f share 50% > rho_max 32%)
+      --> Theorem 3 Invariant Successfully Proven on Live Blockchain!
+
+---------------------------------------------------------------------
+[ATTACK 2] Triggering ByzantineCartelAttacker.attackCoalitionConcentration...
+---------------------------------------------------------------------
+  [✔] Attack Harness executed in Block #81422 (Gas Used: 121,277)
+      Attack was successfully intercepted by on-chain try/catch gate!
+
+---------------------------------------------------------------------
+[ATTACK 3] Flooding Network with 3 Fake Sybil Identities...
+---------------------------------------------------------------------
+  [✔] Sybil Swarm transaction mined in Block #81423 (Gas: 528,404)
+      Sybils registered with 0 reputation; permanently blocked from committee activation.
+
+---------------------------------------------------------------------
+[ATTACK 4] Quorum Starvation: Submitting Handover with < 2f+1 Signers...
+---------------------------------------------------------------------
+  [✔] ATTACK INTERCEPTED ON EVM!
+      Transaction reverted by SuccessionAutomaton.sol:
+      --> Error: InsufficientActiveQuorum (Quorum < 2f_m + 1)
+      --> Minority fork successfully prevented by Algorithm 2!
+
+=====================================================================
+[✔] ALL 4 REAL ON-CHAIN ATTACKS EXECUTED AND INTERCEPTED ON GANACHE!
+    Current Block in Ganache is now: #81,424
+=====================================================================
+
+
+===========================================================================
+[*] Starting Ethereum Sepolia Public Testnet Benchmark (Table 13 & Figure 17)
+    Target Contract: 0xdA748211D3D9Df9e1D3660f09393de07A9Fc3b2a
+    Deployer Wallet: 0xE070cB040318102Dc47F90e7ca9d8b4AB5b66356
+===========================================================================
+[+] Connected to RPC: https://ethereum-sepolia-rpc.publicnode.com
+    Active Wallet : 0xE070cB040318102Dc47F90e7ca9d8b4AB5b66356
+    Live Balance  : 0.5306 ETH
+
+[*] Broadcasting 50 transactions to ADGCoordinator on Sepolia...
+    Signer / Coordinator: 0xE070cB040318102Dc47F90e7ca9d8b4AB5b66356
+    Target Contract     : 0xdA748211D3D9Df9e1D3660f09393de07A9Fc3b2a
+    Committee Members:
+      [0] 0xE070cB040318102Dc47F90e7ca9d8b4AB5b66356
+      [1] 0x574f6da9e60795670154576ED1511c904b2711eC
+      [2] 0x037F5Fca35401524eae7081B8B6d444243658eB7
+      [3] 0x13a5f97d3b78ab1751554DcE303270687285514b
+
+    (Waiting for Ethereum 12s slot confirmations)...
+
+    [01/50] Sent: 954562f534e6e4c4... Waiting for block inclusion...
+        [✔] Mined in Block #11640612 | Latency: 12.72s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/954562f534e6e4c41044a03344ce57b0ecdd332d4faec5a30133a6c901e1120b
+    [02/50] Sent: 5850eac28b2fb60a... Waiting for block inclusion...
+        [✔] Mined in Block #11640613 | Latency: 8.35s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/5850eac28b2fb60ae6e19e0260a00fe8b78fe5c6965ce1c6c5921b316a87cef6
+    [03/50] Sent: a23de3b5120f6f02... Waiting for block inclusion...
+        [✔] Mined in Block #11640614 | Latency: 9.71s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/a23de3b5120f6f02bb204b8c7a5a7215107775cedd33bebad8e612eac12c6881
+    [04/50] Sent: 4fe4183f33d42b0e... Waiting for block inclusion...
+        [✔] Mined in Block #11640615 | Latency: 8.88s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/4fe4183f33d42b0e6b8471599bf13e56b74e5b40d619db379b9a8486b1892237
+    [05/50] Sent: 7260169e99f289d6... Waiting for block inclusion...
+        [✔] Mined in Block #11640616 | Latency: 20.12s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/7260169e99f289d68e49b1b25133c7562e46723269b3b9fdd88b191e3a4ba7a6
+    [06/50] Sent: a55a826390d52f92... Waiting for block inclusion...
+        [✔] Mined in Block #11640617 | Latency: 9.25s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/a55a826390d52f926dd0be090a29114949249e4f3cebe2b591e6928c6459b41f
+    [07/50] Sent: 3e3fafdb3c95e330... Waiting for block inclusion...
+        [✔] Mined in Block #11640618 | Latency: 9.20s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/3e3fafdb3c95e33011430a769c59bca433354552010fae95ae43a9cac4c293c4
+    [08/50] Sent: 634238af39da16ad... Waiting for block inclusion...
+        [✔] Mined in Block #11640619 | Latency: 9.11s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/634238af39da16adfaab7964fb3d4e79c5cd9a5e26411235bc535ed15ff851ea
+    [09/50] Sent: 45495083fa8bc488... Waiting for block inclusion...
+        [✔] Mined in Block #11640620 | Latency: 9.40s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/45495083fa8bc4884a381354eb536b3a94160ea2e713a0617af8a2ae8c963933
+    [10/50] Sent: 4c0d455a840f8ea1... Waiting for block inclusion...
+        [✔] Mined in Block #11640621 | Latency: 8.37s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/4c0d455a840f8ea17bfd735626f50dd9c88ee4e5ba1aeccb0602871b24c89b41
+    [11/50] Sent: 93d462d46ff2a9cf... Waiting for block inclusion...
+        [✔] Mined in Block #11640622 | Latency: 9.47s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/93d462d46ff2a9cf453b8df9882504028355a00a1340f387cc313f628ec96594
+    [12/50] Sent: 8446eb7318b50654... Waiting for block inclusion...
+        [✔] Mined in Block #11640623 | Latency: 21.08s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/8446eb7318b506543d6fa3e60dbe5433474c2231a5606c61b428f067d0f21c3a
+    [13/50] Sent: 4c0f0b9d64287d77... Waiting for block inclusion...
+        [✔] Mined in Block #11640624 | Latency: 8.11s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/4c0f0b9d64287d773bf4dbc5d11866fb38564b1163c8ecf5e89ea541e7c30de0
+    [14/50] Sent: 27a393ad8b2108ca... Waiting for block inclusion...
+        [✔] Mined in Block #11640625 | Latency: 9.83s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/27a393ad8b2108cac973130cb596a9766e77c6b2fa5628427a3140d7c040c516
+    [15/50] Sent: 7463d879b372250e... Waiting for block inclusion...
+        [✔] Mined in Block #11640626 | Latency: 9.03s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/7463d879b372250e915e6cda1d11c024421923d380cee89c2617f8d911401f9d
+    [16/50] Sent: 0e8cee061413c0f9... Waiting for block inclusion...
+        [✔] Mined in Block #11640627 | Latency: 8.50s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/0e8cee061413c0f9e0ce8fba6d72bc917ba38f2946fdb5acfeef6dfd9d7a2699
+    [17/50] Sent: 2a726979706a764a... Waiting for block inclusion...
+        [✔] Mined in Block #11640628 | Latency: 9.63s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/2a726979706a764a2909b136ba9821b871bedc21d7a58215cc113dbf9da408aa
+    [18/50] Sent: 623d134cf99a10fb... Waiting for block inclusion...
+        [✔] Mined in Block #11640629 | Latency: 8.80s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/623d134cf99a10fb67adaaf25376d2e3373afd4ece4340be5d64e8b10cc29da8
+    [19/50] Sent: 87b37973458d3dd7... Waiting for block inclusion...
+        [✔] Mined in Block #11640630 | Latency: 9.14s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/87b37973458d3dd724b9573bcb123ef4eb35ba2584a37062022951c0246b83bb
+    [20/50] Sent: 7bbe068073cdbc84... Waiting for block inclusion...
+        [✔] Mined in Block #11640631 | Latency: 7.82s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/7bbe068073cdbc840dfa5df4cd17f483564c113fbaeb04fac167a258798b4000
+    [21/50] Sent: 3125141b93f35db9... Waiting for block inclusion...
+        [✔] Mined in Block #11640632 | Latency: 21.23s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/3125141b93f35db942d8e9071b8c387bd956998f0a8d6c1a99155635a3191498
+    [22/50] Sent: 563eb978316f58d9... Waiting for block inclusion...
+        [✔] Mined in Block #11640633 | Latency: 20.94s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/563eb978316f58d93bc03cece86553ccb9722b80d1ef47f842aa92079c5c3d8c
+    [23/50] Sent: ad3690a83fcadded... Waiting for block inclusion...
+        [✔] Mined in Block #11640634 | Latency: 8.92s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/ad3690a83fcaddeda96f664d164cd3e82a39630822cbe99dc4692db17783bed4
+    [24/50] Sent: 039e19c7c2c40777... Waiting for block inclusion...
+        [✔] Mined in Block #11640635 | Latency: 10.11s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/039e19c7c2c407770be9a2eca75be4444a2cf7ad5849af6acff1b46c0397e77f
+    [25/50] Sent: 4088379eab41f5da... Waiting for block inclusion...
+        [✔] Mined in Block #11640636 | Latency: 8.83s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/4088379eab41f5dabfd79d707d2492148ba89f06588849f56e5facc6994cdaf6
+    [26/50] Sent: b64e2fa73d378933... Waiting for block inclusion...
+        [✔] Mined in Block #11640637 | Latency: 8.25s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/b64e2fa73d378933f2d23c306fecf570d99d91830c4e1fbf384459697a1b9c45
+    [27/50] Sent: 998671e8f9a0f4f9... Waiting for block inclusion...
+        [✔] Mined in Block #11640638 | Latency: 10.10s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/998671e8f9a0f4f922c9dd387dba5f9600a241f69ac4bf5015cdc18ae052ae68
+    [28/50] Sent: abbd38a0bb6873a2... Waiting for block inclusion...
+        [✔] Mined in Block #11640639 | Latency: 7.94s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/abbd38a0bb6873a2c24d03ca8943fec06ae1edc459a80a19dbd763106e489b54
+    [29/50] Sent: 5bbe8cd2f9e8e367... Waiting for block inclusion...
+        [✔] Mined in Block #11640640 | Latency: 9.99s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/5bbe8cd2f9e8e36753fa4a47f4c38944341ddf979ddf9cb7b9dd7e2e1934d839
+    [30/50] Sent: a696c118aac45e26... Waiting for block inclusion...
+        [✔] Mined in Block #11640642 | Latency: 20.74s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/a696c118aac45e268f96dba69cf47292453b247da2d8caa4f3692270cbb137fd
+    [31/50] Sent: d235e5e8eda474f6... Waiting for block inclusion...
+        [✔] Mined in Block #11640643 | Latency: 9.30s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/d235e5e8eda474f642957000640f3a2afcbc75234fdaa87e6e13119ba049c207
+    [32/50] Sent: 0f87bc51916d9d2e... Waiting for block inclusion...
+        [✔] Mined in Block #11640644 | Latency: 8.74s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/0f87bc51916d9d2edab3afaf926ec7eb634430aefd039881b11c91e6b6f85b6f
+    [33/50] Sent: c160b47ca1186fdf... Waiting for block inclusion...
+        [✔] Mined in Block #11640645 | Latency: 8.14s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/c160b47ca1186fdfacc3b7b12610e2c31d2371fe54cc558f7c466d421b596367
+    [34/50] Sent: df1404efa12a2308... Waiting for block inclusion...
+        [✔] Mined in Block #11640646 | Latency: 10.01s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/df1404efa12a23087137c165005cee370c248d938ac7706db01a0da46414e169
+    [35/50] Sent: 005e2ca4cc23679a... Waiting for block inclusion...
+        [✔] Mined in Block #11640647 | Latency: 7.87s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/005e2ca4cc23679aa1700923f78e542ba06a33d416e2c1efc2f3e2a792b0579e
+    [36/50] Sent: fe5b61760273f803... Waiting for block inclusion...
+        [✔] Mined in Block #11640648 | Latency: 9.85s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/fe5b61760273f803424f7cd510ef6a37a670689441863e96ca9b15aa449341fd
+    [37/50] Sent: 9920cae7203539c7... Waiting for block inclusion...
+        [✔] Mined in Block #11640649 | Latency: 8.40s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/9920cae7203539c73d4ae7be27dcbed4ee6e4b27c084402655cc53720f1d2edd
+    [38/50] Sent: bd6700888fd9d98f... Waiting for block inclusion...
+        [✔] Mined in Block #11640650 | Latency: 9.00s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/bd6700888fd9d98f22f0eb4beb2657c99312deb04864ca8670184ae41013c613
+    [39/50] Sent: 3d389d949d5015e3... Waiting for block inclusion...
+        [✔] Mined in Block #11640651 | Latency: 8.84s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/3d389d949d5015e32b98c89bdc683e5b0a93787df0c95a2bd127f27d5c7cdf5b
+    [40/50] Sent: c0212b0d7c69dd0d... Waiting for block inclusion...
+        [✔] Mined in Block #11640652 | Latency: 9.05s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/c0212b0d7c69dd0d04398e277a7c5cae7aee77be5524a8d7d1cb9c90685ef68a
+    [41/50] Sent: 8a0aef923a621fb0... Waiting for block inclusion...
+        [✔] Mined in Block #11640653 | Latency: 9.95s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/8a0aef923a621fb04103a5c12e56b4101299081961335b348587e3cb08658338
+    [42/50] Sent: 1d6167afb2343525... Waiting for block inclusion...
+        [✔] Mined in Block #11640654 | Latency: 8.34s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/1d6167afb234352545ee82456b603e3b04616be68171329dd98277f3dc3513ae
+    [43/50] Sent: 17f433cd2e99f25a... Waiting for block inclusion...
+        [✔] Mined in Block #11640655 | Latency: 8.55s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/17f433cd2e99f25a03dbeba59037aa67aa4cbf2ae0b6be514d586fc47726f92d
+    [44/50] Sent: ee30292d83cdedb8... Waiting for block inclusion...
+        [✔] Mined in Block #11640656 | Latency: 9.40s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/ee30292d83cdedb86bbd685452ed78e6623e0b91116e466bc9feeafe97bdeb35
+    [45/50] Sent: 259fbf2d1ce8961c... Waiting for block inclusion...
+        [✔] Mined in Block #11640657 | Latency: 9.87s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/259fbf2d1ce8961c36a4fa0933df0102b192454af939ab2f2269cee1213a877e
+    [46/50] Sent: 47840344ef42ef80... Waiting for block inclusion...
+        [✔] Mined in Block #11640658 | Latency: 7.98s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/47840344ef42ef80334e1622f6c38b5e1565ba606154699b432920efad77092d
+    [47/50] Sent: c21946e172d7ace6... Waiting for block inclusion...
+        [✔] Mined in Block #11640659 | Latency: 10.03s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/c21946e172d7ace69fa461ff7b5720baeb34f313d6ec539adcdebe39f7781f2c
+    [48/50] Sent: c6d1b8ce24218807... Waiting for block inclusion...
+        [✔] Mined in Block #11640660 | Latency: 8.01s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/c6d1b8ce242188076161b10afae837e85d4e48cb12162e13cbf23b102168d3f1
+    [49/50] Sent: ad18f44acfc3a493... Waiting for block inclusion...
+        [✔] Mined in Block #11640661 | Latency: 11.04s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/ad18f44acfc3a493c967c3be1c807a65d1e948de62263e1162d5f2004d401496
+    [50/50] Sent: b3bcacf9a94344e4... Waiting for block inclusion...
+        [✔] Mined in Block #11640662 | Latency: 7.67s | Gas: 160,000 | Etherscan: https://sepolia.etherscan.io/tx/b3bcacf9a94344e43fc14df2e5d91430762dec5c20f2747e96420e0de6b770e0
+
+[✔] Raw 50-Transaction Sepolia Ledger exported to:
+    --> E:\Mole-Rat-ADG\paper_outputs\csv_datasets\sepolia_real_mined_transactions_ledger.csv
+[✔] Table 13 Master Summary CSV saved to:
+    --> E:\Mole-Rat-ADG\paper_outputs\csv_datasets\sepolia_benchmark_summary_table13.csv
+[✔] Figure 17 saved (NO title):
+    --> E:\Mole-Rat-ADG\paper_outputs\figures\figure17_sepolia_50_blocks.pdf
+    --> E:\Mole-Rat-ADG\paper_outputs\figures\figure17_sepolia_50_blocks.png
+
+
+
+===========================================================================
+[*] Testing Byzantine Capture Invariant on Live Ethereum Sepolia
+    Target Contract (EntropyConstraint): 0x9750Cb0154DE32aE128f8A4b42bf3179BaDB43C0
+    Operator / Attacker Wallet         : 0xE070cB040318102Dc47F90e7ca9d8b4AB5b66356
+===========================================================================
+
+[+] Step 1: Simulating Malicious 50% Coalition Authority Vector via eth_call...
+  [✔] INVARIANT VERIFIED ON SEPOLIA EVM!
+      Contract execution was aborted by EVM state machine.
+      Revert details: ('0x557e523300000000000000000000000000000000000000000000000006f05b59d3b200000000000000000000000000000000000000000000000000000470de4df8200000', '0x557e523300000000000000000000000000000000000000000000000006f05b59d3b200000000000000000000000000000000000000000000000000000470de4df8200000')
+      --> Theorem 3 successfully protects Sepolia testnet against governance capture.
+
+[+] Verification Complete. The deployed Sepolia contract is mathematically immune to coalition takeover.
+

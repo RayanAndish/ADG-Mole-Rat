@@ -1,0 +1,7 @@
+Metric,Value
+Failover_Reliability_Le_20pct_Churn,100.0
+Critical_Threshold_30pct_Churn_Success,100.0
+SuperThreshold_40pct_Churn_Success,0.0
+SuperThreshold_50pct_Churn_Success,0.0
+Mean_Failover_Latency_Across_Regimes_ms,15.05
+Latency_Variance_ms2,0.02

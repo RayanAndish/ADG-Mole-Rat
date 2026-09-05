@@ -1,0 +1,6 @@
+Transaction_Range,Mined_Block_Range,Mean_Inclusion_Latency_s,Gas_Used,Effective_Gas_Price_Gwei,Status
+Tx #01 – #10,11640612 – 11640621,10.51 s,"160,000",1.34 ± 0.07,1 (Success)
+Tx #11 – #20,11640622 – 11640631,10.14 s,"160,000",1.30 ± 0.07,1 (Success)
+Tx #21 – #30,11640632 – 11640642,12.70 s,"160,000",1.30 ± 0.06,1 (Success)
+Tx #31 – #40,11640643 – 11640652,8.92 s,"160,000",1.30 ± 0.07,1 (Success)
+Tx #41 – #50,11640653 – 11640662,9.08 s,"160,000",1.29 ± 0.07,1 (Success)

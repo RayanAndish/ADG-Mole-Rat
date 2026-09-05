@@ -176,7 +176,7 @@ def plot_figure_14(
     # Vertical Line: Theoretical BFT Bound at f = 33.3%
     ax.axvline(
         x=33.3, color="#2ca02c", linestyle=":", linewidth=2.0,
-        label="Theoretical BFT Bound ($f = 33.3\%$)"
+        label=r"Theoretical BFT Bound ($f = 33.3\%$)"
     )
 
     # Axis Labels & Limits

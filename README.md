@@ -289,7 +289,7 @@ ADG-Framework/
 │   └── deployed_contracts_sepolia.json     # Ethereum Sepolia live deployment metadata
 │
 ├── scripts/                                 # Hardhat Deployment Scripts
-│   ├── deploy.js                           # Universal automated deployer (Ganache / Sepolia)
+│   ├── deploy_local_ganache.cjs                           # Universal automated deployer (Ganache / Sepolia)
 │   └── deploy_sepolia_live.cjs             # Lean production deployer for public Ethereum Sepolia
 │
 ├── tests_and_benchmarks/                    # Comprehensive 3-Tier Experimental Suite
@@ -531,7 +531,7 @@ npx hardhat compile
 #### Stage 2: Local Ganache Deployment
 Start Ganache GUI or CLI on port 7545, then deploy the complete contract suite:
 ```bash
-npx hardhat run scripts/deploy.js --network localhost
+npx hardhat run scripts/deploy_local_ganache.cjs --network ganache
 ```
 *Outputs deployment addresses to `offchain_engine/deployed_contracts_ganache.json`.*
 

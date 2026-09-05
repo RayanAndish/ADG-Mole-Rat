@@ -1,0 +1,8 @@
+Comparison_Metric,Value
+ADG_Advance_vs_PBFT_Reduction_m128_pct,99.08
+ADG_Advance_vs_FlatDAO_Reduction_m128_pct,91.28
+ADG_Succession_vs_Tendermint_Reduction_m128_pct,30.05
+ADG_Advance_Gas_m128,249760.0
+PBFT_ViewChange_Gas_m128,27118600.0
+FlatDAO_Gas_m128,2864000.0
+Ethereum_Block_Gas_Limit,30000000.0

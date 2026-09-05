@@ -1,7 +1,7 @@
 """
 Actuation Signals Module (ADG Biological Control Actuators - Formally Corrected)
 Implements:
-1. Global Pheromone-Inspired Attenuation \sigma_{IPM}(t) & Bandwidth Throttling (Equations 10 & 11).
+1. Global Pheromone-Inspired Attenuation \\sigma_{IPM}(t) & Bandwidth Throttling (Equations 10 & 11).
 2. Targeted Mechanical Stimulus Impulse Vector u_{stim,i}(t) (Equation 12).
 """
 
@@ -19,7 +19,7 @@ class ActuationSignalEngine:
         governance_pressure: float,
         elapsed_beacon_epochs: int = 0
     ) -> float:
-        """
+        r"""
         Computes Global Chemical Attenuation Signal \sigma_{IPM}(t) (Equation 10):
             \sigma_{IPM}(t) = \sigma_0 * (1 - exp(-\eta * G_p(t))) * exp(-\delta * \Delta t)
         
@@ -50,7 +50,7 @@ class ActuationSignalEngine:
         sigma_ipm: float,
         bw_max: float = 1.0
     ) -> float:
-        """
+        r"""
         Computes bounded network gossip bandwidth allocation (Equation 11):
             BW_allowed = BW_min + (BW_max - BW_min) * (1 - \sigma_{IPM})
         
@@ -70,7 +70,7 @@ class ActuationSignalEngine:
         node_latencies: np.ndarray,
         node_reliabilities: np.ndarray
     ) -> np.ndarray:
-        """
+        r"""
         Computes Targeted Mechanical Stimulus Impulses u_{stim,i}(t) (Equation 12):
             u_{stim,i}(t) = ReLU( (w_mean - w_i) / (w_mean + eps) ) * I(l_i <= l_med) * I(Q_i >= Q_thresh)
 
@@ -106,7 +106,7 @@ class ActuationSignalEngine:
         stimulus_vector: np.ndarray,
         compute_capacities: np.ndarray
     ) -> float:
-        """
+        r"""
         Computes aggregate absorbed workload demand from stimulated idle workers (Equation 24):
             W_absorbed = sum_{i=1}^N u_{stim,i}(t) * c_i(t)
         """

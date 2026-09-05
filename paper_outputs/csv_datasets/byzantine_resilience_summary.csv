@@ -1,0 +1,6 @@
+Metric,Value
+Mean_ADG_P_Capture,0.0
+Max_ADG_Fork_Rate_f_le_33,0.0
+Max_ADG_Fork_Rate_SuperThreshold,10.0
+PBFT_Collapse_f_ge_33,66.66666666666667
+Max_FlatDAO_P_Capture,0.9

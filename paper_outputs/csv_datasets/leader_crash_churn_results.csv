@@ -1,0 +1,7 @@
+Churn_Rate,Succession_Success_Rate_pct,Mean_Handover_Latency_Tsucc_ms,Handover_Message_Overhead
+5%,100.0,20.9,244.0
+10%,100.0,20.78,232.0
+20%,100.0,20.53,206.0
+30%,100.0,20.27,180.0
+40%,0.0,0.0,0.0
+50%,0.0,0.0,0.0

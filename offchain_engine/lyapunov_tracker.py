@@ -26,7 +26,7 @@ class LyapunovEnergyTracker:
         authority_vector: np.ndarray,
         baseline_pressure: float = 0.0
     ) -> float:
-        """
+        r"""
         Evaluates the positive-definite Lyapunov candidate function (Equation 19):
             V(S, a) = 0.5 * (G_p - G_p*)^2 + 0.5 * \lambda_de * (1 - DE)^2 
                     + 0.5 * \lambda_a * sum_{i=1}^N (a_i - 1/N)^2
@@ -67,7 +67,7 @@ class LyapunovEnergyTracker:
             self.peak_epoch = epoch
 
     def estimate_exponential_decay_rate(self) -> Tuple[float, float]:
-        """
+        r"""
         Estimates the empirical exponential dissipation constant c (Theorem 1, Equation 29):
             V(t) <= V(t_peak) * exp(-2c * (t - t_peak))
         
@@ -112,7 +112,7 @@ class LyapunovEnergyTracker:
         return empirical_c, float(np.clip(r_squared, 0.0, 1.0))
 
     def compute_epsilon_relaxation_time(self, epsilon: float = 1e-3) -> float:
-        """
+        r"""
         Calculates theoretical relaxation time to return to epsilon-neighborhood (Theorem 1):
             T_epsilon <= (1 / 2c) * ln( V(t_peak) / epsilon )
         """
