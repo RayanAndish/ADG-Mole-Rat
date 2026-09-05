@@ -1,9 +1,0 @@
-Parameter,Description,First_Order_S1,Total_Order_ST
-w_r,Calibration parameter w_r,0.5817647054635947,0.7859800871826237
-w_w,Calibration parameter w_w,0.15739429230400434,0.2083997873337438
-beta_q,Calibration parameter beta_q,0.01,0.013408159536198446
-beta_l,Calibration parameter beta_l,0.01,0.012425928323017822
-de_min,Calibration parameter de_min,0.01,0.012272742951173539
-gamma_0,Calibration parameter gamma_0,0.014727798904598336,0.01771620086773624
-xi,Calibration parameter xi,0.01,0.012701175117613192
-kappa_a,Calibration parameter kappa_a,0.01,0.013179835373709266

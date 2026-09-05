@@ -1,3 +1,4 @@
+```markdown
 # Adaptive Distributed Governance (ADG) Framework
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -12,12 +13,12 @@
 
 ## 1. Executive Summary
 
-Decentralized architectures exhibit an intrinsic **Decentralization–Coordination Trilemma**: flat topologies guarantee censorship resistance and fault isolation but induce severe coordination latency, operational paralysis, and voter apathy during critical non-equilibrium transients (flash-loan exploits, Byzantine network partitions, sudden node churn). Conversely, static hierarchical overrides, security councils, and privileged multi-signature keys introduce permanent centralization vectors and single points of failure.
+Decentralized architectures exhibit an intrinsic **Decentralization–Coordination Trilemma**: flat topologies guarantee censorship resistance and fault isolation but induce severe coordination latency, operational paralysis, and voter apathy during critical non-equilibrium transients (flash-loan exploits, Byzantine network partitions, sudden node churn). Conversely, static emergency interventions, security councils, and privileged administrative keys introduce permanent centralization vectors and single points of failure.
 
 ```mermaid
 flowchart TD
     subgraph Trilemma ["The Decentralization-Coordination Trade-off Space"]
-        T1["High Adaptation Speed\n(Centralized Authority)"]
+        T1["High Adaptation Speed\n(Centralized Coordination)"]
         T2["Strict Censorship Resistance\n(Flat Decentralization)"]
         T3["Bounded Safety & Liveness\n(BFT Guarantees)"]
         
@@ -25,11 +26,11 @@ flowchart TD
         T2 --- T3
         T3 --- T1
         
-        ADG(("ADG Framework\n(Dynamic Equilibrium)"))
+        ADG(("ADG Framework\n(Closed-Loop Dynamic Equilibrium)"))
         
         ADG -.->|"Dynamic Pressure G_p"| T1
-        ADG -.->|"Entropy Bound DE_min"| T2
-        ADG -.->|"Lyapunov Stability V(S)"| T3
+        ADG -.->|"Entropy Bound DE_min & rho_max"| T2
+        ADG -.->|"Lyapunov Exponential Stability V(S)"| T3
     end
 
     classDef default fill:#ffffff,stroke:#2b2b2b,stroke-width:1px;
@@ -37,19 +38,26 @@ flowchart TD
     class ADG highlight;
 ```
 
-The **Adaptive Distributed Governance (ADG)** framework resolves this fundamental tension. Translating homeostatic mechanisms from *Heterocephalus glaber* (naked mole-rat) colonies, ADG models authority as a **bounded, continuous, state-dependent regulatory function** rather than a permanently assigned privileged role. Under operational crises, authority temporarily concentrates to coordinate rapid system defense, while an information-theoretic lower bound on **Decentralization Entropy** ($DE(t) \ge DE_{min}$) and a **Lyapunov energy dissipation controller** guarantee asymptotic return to a fully decentralized baseline upon perturbation dissipation.
+The **Adaptive Distributed Governance (ADG)** framework resolves this fundamental tension. Translating homeostatic mechanisms from *Heterocephalus glaber* (naked mole-rat) colonies into closed-loop control primitives, ADG models authority as a **bounded, continuous, state-dependent regulatory variable** ($a_i(t)$) rather than a permanently assigned privileged role. Under operational crises, coordination authority temporarily concentrates to execute rapid collective defense. 
+
+Constitutional security is strictly guaranteed by coupling:
+1. An explicit **Byzantine Coalition Authority Invariant** ($\sum_{j=1}^f a_{(j)} \le \rho_{\max} < 1/3$),
+2. A **Normalized Shannon Decentralization Entropy** constraint ($DE(t) \ge DE_{\min}$), and
+3. A **Lyapunov energy dissipation controller** proving exponential return to a flat decentralized baseline ($a_i \to 1/N$) upon shock dissipation.
 
 ---
 
 ## 2. Biological-to-Computational Mapping Matrix
 
-| Biological Mechanism (*H. glaber*) | Empirical Ethological Grounding | Formal Computational & Mathematical Operator | Implementation Module |
+The mapping abstracts phenomenological control principles from *Heterocephalus glaber* ethology rather than literal zoological equivalence:
+
+| Biological Mechanism (*H. glaber*) | Empirical Grounding | Formal Computational & Mathematical Operator | Implementation Module |
 | :--- | :--- | :--- | :--- |
-| **Queen Physical Shoving** | Reeve (1992); Kutsukake et al. (2012) | **Targeted Stimulus Vector** $\mathbf{u}_{stim}(t)$: Latency-driven priority activation of idle validator sub-committees. | `SignalDistributor.sol` / `actuation_signals.py` |
-| **Volatile IPM Pheromone** | Khallaf et al. (2026); Faulkes (2026) | **Global Attenuation Signal** $\sigma_{IPM}(t)$: Rate-limiting broadcast suppressing mutation and mempool thrashing. | `SignalDistributor.sol` / `actuation_signals.py` |
-| **Dominance & Endocrine Rank** | Clarke & Faulkes (1998); Jacobs et al. (2024) | **Dynamic Governance Score** $GS_i(t)$: Multi-factor telemetry scoring combining uptime, capacity, and anti-monopoly decay. | `DynamicGovernanceScore.sol` / `gsf_scoring.py` |
-| **Peaceful Queen Succession** | Abeywardena et al. (2026); van der Westhuizen (2013) | **Deterministic Zero-Fork Automaton** $\mathcal{M}_{succ}$: $(2f+1)$ quorum-certified leader handover state machine. | `SuccessionAutomaton.sol` / `succession_fsm.py` |
-| **Colony Metabolic Homeostasis** | Medger et al. (2019); Wetzel et al. (2026) | **Lyapunov Stability Energy** $V(\mathbf{S}(t))$: Asymptotic dissipation guaranteeing reversible authority allocation. | `ADGCoordinator.sol` / `lyapunov_tracker.py` |
+| **Queen Physical Shoving** | Reeve (1992); Kutsukake et al. (2012) | **Targeted Stimulus Vector** $\mathbf{u}_{stim}(t)$: Latency-driven activation of idle worker sub-committees (Eq. 12). | `SignalDistributor.sol` / `actuation_signals.py` |
+| **Volatile IPM Pheromone** | Khallaf et al. (2026); Faulkes (2026) | **Global Attenuation Signal** $\sigma_{IPM}(t)$: Dynamic rate-limiting suppressing non-critical mempool mutations (Eq. 10). | `SignalDistributor.sol` / `actuation_signals.py` |
+| **Dominance & Endocrine Rank** | Clarke & Faulkes (1998); Jacobs et al. (2024) | **Dynamic Governance Score** $GS_i(t)$: 5-factor node telemetry scoring with anti-monopoly tenure decay (Eq. 8). | `DynamicGovernanceScore.sol` / `gsf_scoring.py` |
+| **Peaceful Queen Succession** | Abeywardena et al. (2026); van der Westhuizen (2013) | **Deterministic Zero-Fork Automaton** $\mathcal{M}_{succ}$: Lexicographical ranking with $(2f_m+1)$ threshold quorums (Alg. 2). | `SuccessionAutomaton.sol` / `succession_fsm.py` |
+| **Colony Metabolic Homeostasis** | Medger et al. (2019); Wetzel et al. (2026) | **Lyapunov Energy Dissipation** $V(\mathbf{S}(t))$: Exponential decay guaranteeing reversible authority allocation (Theorem 1). | `ADGCoordinator.sol` / `lyapunov_tracker.py` |
 
 ---
 
@@ -57,72 +65,94 @@ The **Adaptive Distributed Governance (ADG)** framework resolves this fundamenta
 
 ### 3.1. System State Vectors
 
-Let a distributed network be modeled as a dynamic graph $\mathcal{G}(t) = (\mathcal{V}(t), \mathcal{E}(t))$ with $N = |\mathcal{V}(t)|$ heterogeneous participating nodes.
+Let a distributed network be modeled as a dynamic graph $\mathcal{G}(t) = (\mathcal{V}(t), \mathcal{E}(t))$ with $N = |\mathcal{V}(t)|$ participating validator nodes operating under partial synchrony (message delay bounded by $\Delta$ after Global Stabilization Time, GST).
 
 #### Local Node State Vector ($\mathbf{X}_i(t) \in \mathbb{R}^7$)
 Each node $v_i \in \mathcal{V}$ maintains a multi-factor local state vector:
+
 $$\mathbf{X}_i(t) = \big[ Q_i(t), \, r_i(t), \, c_i(t), \, w_i(t), \, e_i(t), \, l_i(t), \, p_i(t) \big]^T$$
+
 where:
-* $Q_i(t) \in [0, 1]$: Empirical reliability index (uptime and valid block signature ratio).
-* $r_i(t) \in [0, 1]$: Cryptographic reputation/stake weight.
+* $Q_i(t) \in [0, 1]$: Empirical reliability index (historical uptime and valid block validation ratio).
+* $r_i(t) \in [0, 1]$: Cryptographic reputation or staked capital weight.
 * $c_i(t) \in \mathbb{R}^+$: Normalized compute and bandwidth capacity.
 * $w_i(t) \in [0, 1]$: Instantaneous processing queue load.
-* $e_i(t) \in [0, 1]$: Remaining energy/resource budget.
-* $l_i(t) \in \mathbb{R}^+$: Relative network latency to peer median.
+* $e_i(t) \in [0, 1]$: Remaining energy and hardware resource headroom budget.
+* $l_i(t) \in \mathbb{R}^+$: Round-trip network latency relative to peer median.
 * $p_i(t) \in [0, 1]$: Historical governance participation consistency.
 
-#### Global Macroscopic State Vector ($\mathbf{S}(t) \in \mathbb{R}^5$)
-$$\mathbf{S}(t) = \big[ R(t), \, W(t), \, F(t), \, C(t), \, DE(t) \big]^T$$
-where $R(t)$ is aggregate network risk index, $W(t)$ is normalized workload, $F(t)$ is fault fraction ($N_{faulty}/N$), $C(t)$ is normalized coordination overhead, and $DE(t)$ is instantaneous Decentralization Entropy.
+#### Macroscopic Stressor State Vector ($\tilde{\mathbf{S}}(t) \in [0, 1]^5$)
+
+$$\tilde{\mathbf{S}}(t) = \big[ R(t), \, W(t), \, F(t), \, C(t), \, 1 - DE(t) \big]^T$$
+
+where $R(t) = \frac{1}{N}\sum (1 - Q_i)$ is aggregate network risk, $W(t) = \frac{\sum w_i c_i}{\sum c_i}$ is capacity-adjusted workload, $F(t) = N_{faulty}/N$ is unresponsive node fraction, $C(t)$ is gossip coordination overhead, and $1 - DE(t)$ is instantaneous entropy deficit.
 
 ---
 
-### 3.2. Closed-Loop Governance Pressure ($G_p$)
+### 3.2. Closed-Loop Dynamic Governance Pressure ($G_p$)
 
-Governance Pressure $G_p(t) \in [0, 1]$ quantifies the macro-level operational stress of the distributed system:
-$$G_p(t) = \mathbf{w}^T \mathbf{\Phi}(\mathbf{S}(t)) = w_r R(t) + w_w W(t) + w_f F(t) + w_c C(t) - w_d DE(t)$$
-subject to the convex simplex constraint $\sum_{k \in \{r,w,f,c,d\}} w_k = 1, \; w_k > 0$, where $\mathbf{\Phi}(\cdot)$ denotes a Sigmoidal normalization operator.
+Governance Pressure $G_p(t) \in (0, 1)$ evaluates macroscopic physical network stress via a normalized sigmoidal convex combination:
 
+$$G_p(t) = \sum_{k \in \{r,w,f,c,d\}} w_k \, \Phi\left(\tilde{S}_k(t)\right), \quad \Phi(x) = \frac{1}{1 + \exp\left(-\lambda_g (x - x_{0, k})\right)}$$
 
-#### Regime Transition Automaton
-<p>The continuous pressure variable $G_p(t)$ drives discrete transitions across three operational governance modes via dual-threshold hysteresis:</p>
+subject to:
 
-$$M(t) = \begin{cases} 
-\mathcal{M}_0 \text{ (Flat Decentralization)}, & \text{if } G_p(t) < \theta_{low} \\
-\mathcal{M}_1 \text{ (Adaptive Committee)}, & \text{if } \theta_{low} \le G_p(t) < \theta_{high} \\
-\mathcal{M}_2 \text{ (Bounded Leadership / Queen Regime)}, & \text{if } G_p(t) \ge \theta_{high}
+$$\sum_{k \in \{r,w,f,c,d\}} w_k = 1, \quad w_k > 0$$
+
+#### Four-Threshold Anti-Chattering Hysteresis Automaton
+To prevent mode chattering around transition boundaries, discrete governance regimes are governed by an automaton with distinct ascending and descending thresholds:
+
+$$\text{Mode}(t) = \begin{cases} 
+\mathcal{M}_0 \text{ (Flat Decentralization)}, & \text{if } G_p(t) < \theta_{low}^{down} \;\lor\; \left(\text{Mode}(t^-) = \mathcal{M}_0 \;\land\; G_p(t) < \theta_{low}^{up}\right) \\
+\mathcal{M}_2 \text{ (Bounded Leadership)}, & \text{if } G_p(t) \ge \theta_{high}^{up} \;\lor\; \left(\text{Mode}(t^-) = \mathcal{M}_2 \;\land\; G_p(t) \ge \theta_{high}^{down}\right) \\
+\mathcal{M}_1 \text{ (Adaptive Committee)}, & \text{otherwise}
 \end{cases}$$
+
+where default constitutional triggers are calibrated to:
+
+$$0 < \theta_{low}^{down} (0.30) < \theta_{low}^{up} (0.35) < \theta_{high}^{down} (0.65) < \theta_{high}^{up} (0.70) < 1$$
 
 ---
 
 ### 3.3. Dynamic Governance Score Function (GSF)
 
-The eligibility score $GS_i(t) \in \mathbb{R}^+$ of each node $v_i$ to assume coordination authority is evaluated via:
-$$GS_i(t) = \left[ \frac{\beta_q Q_i(t) + \beta_r r_i(t) + \beta_c c_i(t) + \beta_p p_i(t)}{1 + \beta_w w_i(t) + \beta_l l_i(t)} \right] \cdot \exp\left(-\xi \cdot \tau_i(t)\right)$$
-where $\tau_i(t) = t - t_{last\_lead, i}$ is the elapsed epochs since node $i$ last held elevated authority, and $\xi > 0$ is the anti-monopoly decay coefficient preventing permanent coordinator re-election.
+Node eligibility to assume elevated coordination roles is computed via the 5-factor Dynamic Governance Score:
+
+$$GS_i(t) = \left[ \frac{\beta_q Q_i(t) + \beta_r r_i(t) + \beta_c c_i(t) + \beta_e e_i(t) + \beta_p p_i(t)}{1 + \beta_w w_i(t) + \beta_l l_i(t)} \right] \cdot \exp\left(-\xi \cdot \tau_i(t)\right)$$
+
+where:
+* $\sum_{k \in \{q,r,c,e,p\}} \beta_k = 1, \; \beta_k > 0$.
+* $\tau_i(t)$ tracks consecutive epochs served as active coordinator ($\tau_i = 0$ for non-coordinators).
+* $\xi = 0.05 \text{ epoch}^{-1}$ is the tenure penalty coefficient, preventing leadership ossification and enforcing periodic rotation.
 
 ---
 
-### 3.4. Boltzmann Authority Allocation & Simplex Projection (Algorithm 3)
+### 3.4. Bounded Authority Allocation & Simplex Projection (Algorithm 3)
 
-The raw authority share $a_{\text{raw}, i}(t)$ is allocated via a dynamic Boltzmann-Gibbs distribution:
-$$a_{\text{raw}, i}(t) = \frac{\exp\left(\gamma(G_p) \cdot GS_i(t)\right) \cdot \mathbb{I}\left(GS_i(t) \ge \theta_{act}\right)}{\sum_{j=1}^N \exp\left(\gamma(G_p) \cdot GS_j(t)\right) \cdot \mathbb{I}\left(GS_j(t) \ge \theta_{act}\right)}$$
-where $\gamma(G_p) = \gamma_0 (1 + \kappa G_p(t))$ scales competition selectivity with real-time pressure.
+Raw authority weights $a_i^{raw}(t)$ are generated via dynamic Boltzmann-Gibbs selection:
 
-#### Analytical Convex Projection under the Minimum-Entropy Constraint
+$$a_i^{raw}(t) = \begin{cases}
+\frac{\exp\left(\gamma(G_p) \cdot GS_i(t)\right)}{\sum_{j \in \mathcal{E}(t)} \exp\left(\gamma(G_p) \cdot GS_j(t)\right)}, & \text{if } v_i \in \mathcal{E}(t) \\
+0, & \text{if } v_i \notin \mathcal{E}(t)
+\end{cases}$$
 
-To strictly enforce the constitutional invariant
-$I_{\mathrm{safety}}: DE(t) \geq DE_{\min}$, the engine computes:
+where $\mathcal{E}(t) = \{v_j \in \mathcal{V}(t) \mid GS_j(t) \ge \theta_{act}\}$ and $\gamma(G_p) = \gamma_0 (1 + \kappa G_p(t))$.
 
-```math
-\mathbf{a}^{\star}(t)=(1-\lambda^{\star})\mathbf{a}_{\mathrm{raw}}(t)+\lambda^{\star}\left(\frac{1}{N}\mathbf{1}\right)
-```
+#### Constitutional Safety Invariant ($\mathcal{I}_{safety}$)
+To prevent temporary coordination authority from degenerating into plutocratic or collusive capture, authority allocations must reside within the constitutional polytope:
 
-where $\lambda^{\star} \in [0,1]$ is the minimum convex blending factor satisfying:
+$$\mathcal{I}_{safety} := \left\{ \mathbf{a} \in \Delta^{N-1} \;\middle|\; \sum_{j=1}^{\lfloor (N-1)/3 \rfloor} a_{(j)} \le \rho_{\max} < \frac{1}{3}, \quad DE(\mathbf{a}) \ge DE_{\min} \right\}$$
 
-```math
-DE(\mathbf{a}^{\star})=-\frac{1}{\ln N}\sum_{i=1}^{N}a_i^{\star}(t)\ln\left(a_i^{\star}(t)+\epsilon\right)\geq DE_{\min}
-```
+where:
+* $a_{(1)} \ge a_{(2)} \ge \dots \ge a_{(N)}$ are descending order statistics.
+* $\rho_{\max} = 0.330$ enforces that any Byzantine coalition ($f < N/3$) accumulates strictly less than $1/3$ coordination power.
+* $DE(\mathbf{a}) = -\frac{1}{\ln N} \sum a_i \ln(a_i + \epsilon) \ge DE_{\min} = 0.60$ bounds single-node monopoly to $a_{(1)} \le 1 - \frac{N-1}{N} DE_{\min}$.
+
+When $\mathbf{a}^{raw}(t) \notin \mathcal{I}_{safety}$, **Algorithm 3** executes a deterministic bisection shrinkage projection toward the uniform distribution $\mathbf{u} = [1/N, \dots, 1/N]^T$:
+
+$$\mathbf{a}^*(\lambda) = (1 - \lambda)\mathbf{a}^{raw}(t) + \lambda \mathbf{u}, \quad \lambda \in [0, 1]$$
+
+---
 
 ### 3.5. Biological Actuation Signals
 
@@ -130,29 +160,53 @@ DE(\mathbf{a}^{\star})=-\frac{1}{\ln N}\sum_{i=1}^{N}a_i^{\star}(t)\ln\left(a_i^
 
 $$\sigma_{IPM}(t) = \sigma_0 \cdot \left(1 - \exp\left(-\eta \cdot G_p(t)\right)\right) \cdot \exp\left(-\delta \cdot (t - t_{beacon})\right)$$
 
-Throttling allowable mutation bandwidth: $BW_i^{allowed}(t) = BW_i^{max} \cdot (1 - \sigma_{IPM}(t))$.
+Gossip bandwidth allocated to node $v_i$ is throttled while guaranteeing a constitutional execution floor ($BW^{\min} = 0.20$):
 
-2. **Targeted Mechanical Shoving Stimulus ($\mathbf{u}_{stim}$):**
+$$BW_i^{allowed}(t) = BW^{\min} + (BW^{\max} - BW^{\min})\left(1 - \sigma_{IPM}(t)\right)$$
 
-<p>The stimulus vector activates idle validators based on weight and quality thresholds:</p>
+2. **Targeted Mechanical Shoving Stimulus ($u_{stim}$):**
 
-$$u_{stim, i}(t) = \text{ReLU}\left( \frac{\bar{w}_{colony}(t) - w_i(t)}{\bar{w}_{colony}(t)} \right) \cdot \mathbb{I}\left(l_i(t) \le \bar{l}_{median}\right) \cdot \mathbb{I}\left(Q_i(t) \ge Q_{thresh}\right)$$
+$$u_{stim, i}(t) = \max\left(0, \, \frac{\bar{w}(t) - w_i(t)}{\bar{w}(t) + \epsilon}\right) \cdot \mathbb{I}\left(l_i(t) \le l_{median}\right) \cdot \mathbb{I}\left(Q_i(t) \ge Q_{thresh}\right)$$
 
-<p>Formally, the stimulus vector $\mathbf{u}_{stim}(t) = (u_{stim,1}(t), \ldots, u_{stim,N}(t))$ acts as a coordination perturbation injected into the Boltzmann distribution weightings during the $\mathcal{M}_1$ (Adaptive Committee) regime, biasing committee formation toward underutilized yet high-quality validators.</p>
+Idle but reliable nodes absorb queue backlogs, accelerating aggregate throughput.
 
 ---
 
-### 3.6. Lyapunov Stability & Finite-Time Convergence (Theorem 1)
+### 3.6. Theoretical Guarantees & Stability Proofs
 
-We construct the positive-definite Lyapunov candidate function $V(\mathbf{S}(t)): \mathbb{R}^5 \to \mathbb{R}^+$:
-$$V(\mathbf{S}(t)) = \frac{1}{2} \big(G_p(t) - G_p^*\big)^2 + \frac{\lambda_{de}}{2} \big(1 - DE(t)\big)^2 + \frac{\lambda_a}{2} \sum_{i=1}^N \left( a_i(t) - \frac{1}{N} \right)^2$$
+#### Theorem 1 (Exponential Stability of Decentralized Equilibrium)
+Consider the positive-definite Lyapunov candidate function $V(\mathbf{S}(t), \mathbf{a}(t)): \mathbb{R}^5 \times \Delta^{N-1} \to \mathbb{R}^+$:
 
+$$V(\mathbf{S}(t), \mathbf{a}(t)) = \frac{1}{2}\big(G_p(t) - G_p^*\big)^2 + \frac{\lambda_{de}}{2}\big(1 - DE(t)\big)^2 + \frac{\lambda_a}{2} \sum_{i=1}^N \left( a_i(t) - \frac{1}{N} \right)^2$$
 
-<p>Under the authority relaxation gradient law $\dot{a}_i(t) = -\kappa_a (a_i(t) - 1/N) + \zeta \nabla_{a_i} G_p(t)$, the total time derivative satisfies:</p>
+Under simplex-projected gradient authority dynamics:
 
-$$\dot{V}(\mathbf{S}(t)) \le -c \|\mathbf{S}(t) - \mathbf{S}^*\|_2^2 \le -2c V(\mathbf{S}(t)) \implies V(\mathbf{S}(t)) \le V(\mathbf{S}(0)) e^{-2ct}$$
+$$\dot{a}_i(t) = -\kappa_a\left(a_i(t) - \frac{1}{N}\right) + \zeta \left( \nabla_{a_i} G_p(t) - \frac{1}{N}\sum_{j=1}^N \nabla_{a_j} G_p(t) \right) \cdot \mathbb{I}(G_p \ge \theta_{low}^{up})$$
 
-<p>guaranteeing exponential energy dissipation and asymptotic return to the flat decentralized equilibrium $\mathbf{S}^*$ in finite time $T_{conv} \le \frac{V(\mathbf{S}(0))}{c}$.</p>
+upon perturbation dissipation ($t > t_{shock}$), the time derivative satisfies:
+
+$$\dot{V}(t) \le -2c V(t) \implies V(t) \le V(0)e^{-2ct}$$
+
+where $c = \min[\kappa_a, \alpha_r, \alpha_w c_{\min}] > 0$. The system state exponentially recovers to any $\epsilon$-neighborhood of the decentralized equilibrium $\mathbf{S}^*$ within bounded relaxation time:
+
+$$T_\epsilon \le \frac{1}{2c} \ln\left(\frac{V(0)}{\frac{1}{2}\mu_{\min}\epsilon^2}\right)$$
+
+#### Theorem 2 (Succession Safety and Handover Liveness)
+Under partial synchrony post-GST, with active committee size $m \ge 3f_m + 1$ and at most $f_m$ Byzantine faults, the succession state machine $\mathcal{M}_{succ}$ guarantees:
+1. **Safety (Split-Brain Immunity):** By quorum intersection $|Q_1 \cap Q_2| \ge f_m + 1$, at least one honest validator intersects all quorums. Honest validators sign at most one handover proposal per epoch index, guaranteeing non-equivocation of handover certificates:
+
+$$C_{handover}^k = \langle k, h_{lock}, c^*, succ^*, H_k, \Sigma_{agg}, \mathcal{B} \rangle$$
+
+2. **Bounded Failover Latency:** Leadership succession completes deterministically within:
+
+$$T_{handover} \le 2\Delta + \tau_{rank} + \tau_{BLS} = \mathcal{O}(\Delta)$$
+
+#### Theorem 3 (Deterministic Invariant of Byzantine Anti-Capture)
+Because Algorithm 3 strictly enforces $\mathbf{a}^*(t) \in \mathcal{I}_{safety}$, for any colluding coalition $\mathcal{A}_{mal} \subset \mathcal{V}$ with $|\mathcal{A}_{mal}| = k \le f \le \lfloor (N-1)/3 \rfloor$:
+
+$$\sum_{i \in \mathcal{A}_{mal}} a_i^*(t) \le \sum_{j=1}^{\lfloor (N-1)/3 \rfloor} a_{(j)}^*(t) \le \rho_{\max} < \frac{1}{3} < \frac{1}{2}, \quad \forall t \ge 0$$
+
+$$\implies P_{capture}(t) := \mathbb{P}\left(\sum_{i \in \mathcal{A}_{mal}} a_i^*(t) \ge \frac{1}{2}\right) \equiv 0, \quad \forall t \ge 0$$
 
 ---
 
@@ -160,35 +214,35 @@ $$\dot{V}(\mathbf{S}(t)) \le -c \|\mathbf{S}(t) - \mathbf{S}^*\|_2^2 \le -2c V(\
 
 ```mermaid
 flowchart TD
-    subgraph Sensing["1. State Sensing & Monitoring"]
-        In["Node Telemetries X_i(t)"] --> SM["StateMonitor (state_monitor.py)"]
-        SM --> S["Global State Vector S(t)"]
+    subgraph Sensing["1. Macroscopic State Sensing & Telemetry"]
+        In["Node Telemetry Vectors X_i(t)"] --> SM["StateMonitor (state_monitor.py)"]
+        SM --> S["Global State Vector S(t) = [R, W, F, C, 1-DE]"]
     end
 
     subgraph Control["2. Non-Equilibrium Control Engine"]
         S --> GP["GovernancePressureEngine (governance_pressure.py)"]
-        GP --> Mode{"Regime Check"}
-        Mode -->|G_p < θ_low| M0["Mode 0: Flat Consensus"]
-        Mode -->|θ_low ≤ G_p < θ_high| M1["Mode 1: Adaptive Committee"]
-        Mode -->|G_p ≥ θ_high| M2["Mode 2: Bounded Queen Lead"]
+        GP --> Hyst{"4-Threshold Hysteresis"}
+        Hyst -->|Gp < 0.30| M0["Mode 0: Flat Decentralization"]
+        Hyst -->|0.35 ≤ Gp < 0.65| M1["Mode 1: Adaptive Committee"]
+        Hyst -->|Gp ≥ 0.70| M2["Mode 2: Bounded Leadership"]
         
         M0 & M1 & M2 --> GSF["GSFScoringEngine (gsf_scoring.py)"]
         GSF --> Alloc["AuthorityAllocator (authority_allocator.py)"]
-        Alloc --> Proj["Convex Simplex Projection (DE >= DE_min)"]
+        Alloc --> Proj["Algorithm 3: Constrained Simplex Projection\n(DE ≥ 0.60 & Top-f ≤ 0.33)"]
     end
 
-    subgraph Actuation["3. Actuation & State Handover"]
+    subgraph Actuation["3. Biological Actuation & Succession"]
         Proj --> Sig["ActuationSignalEngine (actuation_signals.py)"]
-        Sig --> IPM["Global IPM Suppression σ_IPM"]
-        Sig --> Shov["Targeted Shoving u_stim"]
+        Sig --> IPM["Global IPM Attenuation σ_IPM (Eq. 10)"]
+        Sig --> Shov["Targeted Mechanical Shoving u_stim (Eq. 12)"]
         Proj --> FSM["SuccessionAutomaton (succession_fsm.py)"]
-        FSM --> Cert["(2f+1) Handover Certificate C_handover"]
+        FSM --> Cert["(2f_m + 1) Verified Handover Certificate C_handover"]
     end
 
-    subgraph EVM["4. Blockchain Execution & Verification"]
+    subgraph EVM["4. On-Chain Smart Contract Verification"]
         Cert --> SC1["ADGCoordinator.sol & DynamicCommittee.sol"]
-        Proj --> SC2["EntropyConstraint.sol (On-Chain DE Math)"]
-        SC1 & SC2 --> Chain["Ganache / Sepolia Mined Ledger"]
+        Proj --> SC2["EntropyConstraint.sol (Order-Statistics & ln Math)"]
+        SC1 & SC2 --> Chain["Ganache / Sepolia On-Chain Ledger"]
     end
 
     classDef default fill:#ffffff,stroke:#2b2b2b,stroke-width:1px;
@@ -199,211 +253,260 @@ flowchart TD
 ```text
 ADG-Framework/
 │
-├── hardhat.config.js                        # Multi-network EVM config (Ganache 7545, Sepolia 11155111)
-├── package.json                             # Automated Node.js pipeline orchestration
-├── requirements.txt                         # Python scientific computing dependencies
+├── hardhat.config.js                        # Multi-network EVM configuration (Ganache 7545, Sepolia 11155111)
+├── package.json                             # Toolchain dependencies & automated NPM scripts
+├── requirements.txt                         # Python scientific computing dependencies (NumPy, SciPy, Pandas, Web3)
 ├── README.md                                # Master technical specification
 │
-├── contracts/                               # Tier 2: EVM On-Chain Smart Contracts
+├── contracts/                               # Tier 2: EVM On-Chain Smart Contracts (^0.8.24)
 │   ├── core/
-│   │   ├── ADGCoordinator.sol              # Master Queen/Coordinator State Transition Engine
-│   │   ├── DynamicCommittee.sol            # Mode 0/1/2 Validator Registry & Signal Handlers
-│   │   ├── EntropyConstraint.sol           # On-Chain Shannon Entropy & Fixed-Point ln(x) Math
-│   │   └── SignalDistributor.sol           # IPM Suppression & Shoving Stimulus Dispatcher
+│   │   ├── ADGCoordinator.sol              # Master Coordinator Closed-Loop Transition Engine
+│   │   ├── DynamicCommittee.sol            # 4-Threshold Hysteresis Registry & Actuation Handlers
+│   │   ├── EntropyConstraint.sol           # On-Chain Order-Statistics Top-f & Shannon Entropy Verifier
+│   │   └── SignalDistributor.sol           # IPM Attenuation & Fixed-Point Exponential Actuator
 │   ├── governance/
-│   │   ├── DynamicGovernanceScore.sol      # On-Chain GSF Scoring & Anti-Monopoly Tenure Decay
-│   │   └── SuccessionAutomaton.sol         # Algorithm 2 (M_succ) Zero-Fork Handover Verifier
+│   │   ├── DynamicGovernanceScore.sol      # 5-Factor GSF Scoring & Coordinator Tenure Decay
+│   │   └── SuccessionAutomaton.sol         # Algorithm 2 (M_succ) Zero-Fork Quorum Handover Verifier
 │   ├── benchmarks/
-│   │   ├── FlatDAOMock.sol                 # Baseline: Token-Weighted Proposal Voting
-│   │   ├── StaticPBFTMock.sol              # Baseline: Static Primary & O(m^2) View-Change
-│   │   └── TendermintMock.sol              # Baseline: Round-Robin Proposer BFT Rotation
+│   │   ├── FlatDAOMock.sol                 # Baseline: Token-Weighted Governor Bravo Storage Model
+│   │   ├── StaticPBFTMock.sol              # Baseline: Unaggregated Multi-Sig View-Change Verification
+│   │   └── TendermintMock.sol              # Baseline: 2-Step Prevote/Precommit & Proof-of-Lock (POL)
 │   └── attacks/
-│       ├── ByzantineCartelAttacker.sol     # Malicious Equivocation & Double-Signing Harness
-│       ├── EmergencyExploitSimulator.sol   # Flash-Load & Telemetry Spoofing Injector
-│       └── SybilChurnInjector.sol          # Sybil Identity Flooding & Churn Burst Injector
+│       ├── ByzantineCartelAttacker.sol     # Adversarial Collusion, Equivocation & Quorum Starvation
+│       ├── EmergencyExploitSimulator.sol   # Flash-Load Stress (R=0.90, W=0.95) & Relaxation Driver
+│       └── SybilChurnInjector.sol          # Sybil Flooding & Partition Churn Simulation Harness
 │
-├── offchain_engine/                         # Master Mathematical & Algorithmic Engines
+├── offchain_engine/                         # Master Mathematical & Simulation Engines (Python 3.12+)
 │   ├── config.py                           # Parametric Calibration Matrix (Table 6)
-│   ├── state_monitor.py                    # State Space S(t) Vectorization
-│   ├── governance_pressure.py              # Non-Linear G_p(t) & Hysteresis State Machine
-│   ├── gsf_scoring.py                      # Multi-Factor Dynamic Governance Scoring (GSF)
-│   ├── authority_allocator.py              # Boltzmann Allocation & Convex Simplex Projection
-│   ├── actuation_signals.py                # IPM Odour Attenuation & Shoving Stimulus Engines
-│   ├── succession_fsm.py                   # Zero-Fork Handover Automaton (M_succ)
-│   ├── lyapunov_tracker.py                 # Lyapunov Energy Candidate V(S(t)) Verification
-│   ├── discrete_event_simulator.py         # Vectorized High-Throughput Discrete-Event Simulator
-│   ├── deployed_contracts_ganache.json     # Auto-generated Ganache contract addresses & RPC
-│   └── deployed_contracts_sepolia.json     # Auto-generated Sepolia contract addresses & RPC
+│   ├── state_monitor.py                    # Macroscopic State Space Vectorization S(t)
+│   ├── governance_pressure.py              # Normalized Pressure G_p(t) & 4-Threshold Hysteresis
+│   ├── gsf_scoring.py                      # 5-Factor GSF Scoring & Active Coordinator Tenure Decay
+│   ├── authority_allocator.py              # Algorithm 1 Runtime Controller & Algorithm 3 Projection
+│   ├── actuation_signals.py                # IPM Attenuation & Mechanical Stimulus Actuation
+│   ├── succession_fsm.py                   # Zero-Fork Handover Automaton (M_succ) & Churn Handler
+│   ├── lyapunov_tracker.py                 # Lyapunov Candidate V(S(t)) & Exponential Decay Fitting
+│   ├── discrete_event_simulator.py         # High-Throughput Discrete-Event Simulation Engine
+│   ├── deployed_contracts_ganache.json     # Ganache deployment addresses and RPC metadata
+│   └── deployed_contracts_sepolia.json     # Ethereum Sepolia live deployment metadata
 │
-├── scripts/                                 # Hardhat Deployment & Interaction Scripts
-│   ├── deploy_local_ganache.cjs            # Deploys full contract suite to local Ganache
-│   ├── deploy_sepolia_live.cjs             # Deploys core contracts to Ethereum Sepolia Testnet
-│   └── interact_adg_sepolia.cjs            # RPC interaction utility
+├── scripts/                                 # Hardhat Deployment Scripts
+│   ├── deploy.js                           # Universal automated deployer (Ganache / Sepolia)
+│   └── deploy_sepolia_live.cjs             # Lean production deployer for public Ethereum Sepolia
 │
 ├── tests_and_benchmarks/                    # Comprehensive 3-Tier Experimental Suite
-│   ├── run_monte_carlo_scalability.py      # Scenario 1: Multi-scale Monte Carlo (50 to 100k epochs)
-│   ├── run_byzantine_resilience.py         # Scenario 2: Byzantine corruption f in [0%, 40%]
-│   ├── run_leader_crash_churn.py           # Scenario 3: Churn in [5%, 50%] & Handover Latency
-│   ├── run_sobol_sensitivity.py            # Scenario 4: Global Sobol Sensitivity & LHS Analysis
-│   ├── run_evm_gas_benchmarks.py           # Tier 2: Gas profiling for ADG vs. Baselines
-│   ├── run_ganache_ledger.py               # Tier 2: 20,000 Live transaction ledger generator
-│   ├── run_sepolia_live_benchmark.py       # Tier 3: 50 Real mined transactions on Sepolia
-│   └── generate_all_publication_artifacts.py # Compiles LaTeX tables (.tex) & Vector PDF figures
+│   ├── run_monte_carlo_scalability.py      # Scenario 1: Multi-scale horizons (50 to 100k) & N=16 to 4096
+│   ├── run_byzantine_resilience.py         # Scenario 2: Byzantine adversary fractions f in [0.0, 0.40]
+│   ├── run_leader_crash_churn.py           # Scenario 3: Validator churn in [5%, 50%] & Handover latency
+│   ├── run_evm_gas_benchmarks.py           # Tier 2: Gas profiling for ADG vs. Canonical Baselines
+│   ├── run_ganache_ledger.py               # Tier 2: 20,000 continuous on-chain transactions benchmark
+│   ├── run_sepolia_live_benchmark.py       # Tier 3: 50 real mined transactions on Ethereum Sepolia
+│   ├── run_sobol_sensitivity.py            # Scenario 4: Global Sobol Sensitivity & Variance Decomposition
+│   └── generate_all_publication_artifacts.py # Master orchestrator compiling summary CSVs and figures
 │
-└── paper_outputs/                          # Publication-Ready Artifacts Directory
-    ├── csv_datasets/                       # Verified raw experimental datasets
+└── paper_outputs/                          # Camera-Ready Artifacts Directory (Pure CSVs & Vector Plots)
+    ├── csv_datasets/                       # Standardized CSV datasets & statistical summary files
+    │   ├── adg_master_publication_metrics_index.csv
     │   ├── byzantine_resilience_results.csv
+    │   ├── byzantine_resilience_summary.csv
     │   ├── evm_gas_benchmarks.csv
+    │   ├── evm_gas_reduction_summary.csv
+    │   ├── ganache_benchmark_summary_table12.csv
     │   ├── ganache_blockchain_ledger_full.csv
     │   ├── leader_crash_churn_results.csv
+    │   ├── leader_crash_churn_summary.csv
     │   ├── monte_carlo_scale_convergence_summary.csv
+    │   ├── monte_carlo_scalability_results.csv
+    │   ├── sepolia_benchmark_summary_table13.csv
     │   ├── sepolia_real_mined_transactions_ledger.csv
-    │   └── sobol_sensitivity_results.csv
-    ├── figures/                            # High-resolution vector figures (.pdf / .png)
-    │   ├── fig_byzantine_resilience.pdf
-    │   ├── fig_cross_scale_convergence.pdf
-    │   ├── fig_gas_comparison.pdf
-    │   └── fig_sobol_sensitivity.pdf
-    └── tables/                             # Camera-ready LaTeX tables (.tex)
-        ├── table_gas_comparison.tex
-        ├── table_performance_metrics.tex
-        └── table_scale_convergence.tex
+    │   ├── sobol_sensitivity_results.csv
+    │   └── sobol_variance_decomposition_summary.csv
+    └── figures/                            # Publication vector figures (.pdf / .png, 300 DPI, NO titles)
+        ├── figure13_variance_decay.pdf / .png
+        ├── figure14_byzantine_capture.pdf / .png
+        ├── figure15_gas_scaling.pdf / .png
+        ├── figure16_ganache_20k_ledger.pdf / .png
+        ├── figure17_sepolia_50_blocks.pdf / .png
+        └── figure18_sobol_decomposition.pdf / .png
 ```
 
 ---
 
-## 5. Empirical Benchmarking Results
+## 5. Master Parametric Calibration Matrix (Table 6)
 
-### 5.1. Multi-Scale Convergence & Variance Decay ($T = 50$ to $100,000$ Epochs)
-
-<table>
-  <thead>
-    <tr>
-      <th align="center">Monte Carlo Scale<br><em>T</em></th>
-      <th align="center">Mean Throughput<br>(TPS ± σ)</th>
-      <th align="center">Throughput Variance<br>(σ²)</th>
-      <th align="center">Latency<br>(ms ± σ)</th>
-      <th align="center">Latency Variance</th>
-      <th align="center">Mean Gini Index<br><em>G</em></th>
-      <th align="center">Min DE(t) Preserved</th>
-      <th align="center">Final Energy<br>V(<b>S</b>)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr><td align="center"><b>50</b></td><td align="center">114,432.0 ± 31,236.3</td><td align="center">9.75 × 10⁸</td><td align="center">59.41 ± 7.22</td><td align="center">52.17</td><td align="center">0.000340</td><td align="center">0.9986</td><td align="center">1.05 × 10⁻³</td></tr>
-    <tr><td align="center"><b>100</b></td><td align="center">136,234.2 ± 28,915.4</td><td align="center">8.36 × 10⁸</td><td align="center">55.96 ± 6.31</td><td align="center">39.78</td><td align="center">0.000180</td><td align="center">0.9985</td><td align="center">1.10 × 10⁻³</td></tr>
-    <tr><td align="center"><b>1,000</b></td><td align="center">146,588.0 ± 10,076.2</td><td align="center">1.01 × 10⁸</td><td align="center">52.65 ± 2.24</td><td align="center">5.02</td><td align="center">0.000014</td><td align="center">0.9990</td><td align="center">1.05 × 10⁻³</td></tr>
-    <tr><td align="center"><b>5,000</b></td><td align="center">145,846.0 ± 4,478.9</td><td align="center">2.01 × 10⁷</td><td align="center">52.35 ± 1.01</td><td align="center">1.02</td><td align="center">0.000005</td><td align="center">0.9981</td><td align="center">1.04 × 10⁻³</td></tr>
-    <tr><td align="center"><b>20,000</b></td><td align="center">140,022.6 ± 2,128.3</td><td align="center">4.53 × 10⁶</td><td align="center">52.23 ± 0.50</td><td align="center">0.25</td><td align="center">0.000002</td><td align="center">0.9949</td><td align="center">0.98 × 10⁻³</td></tr>
-    <tr><td align="center"><b>100,000</b></td><td align="center"><b>143,023.1 ± 977.9</b></td><td align="center"><b>9.56 × 10⁵</b></td><td align="center"><b>52.26 ± 0.23</b></td><td align="center"><b>0.05</b></td><td align="center"><b>3.11 × 10⁻⁷</b></td><td align="center"><b>0.9956</b></td><td align="center"><b>1.01 × 10⁻³</b></td></tr>
-  </tbody>
-</table>
-
-**Visual Summary — Multi-Scale Convergence:**
-
-<p align="center">
-  <img src="paper_outputs/figures/fig_cross_scale_convergence.png" alt="Cross-Scale Monte Carlo Convergence" width="90%"/>
-</p>
-
-**Key Takeaway:** Throughput variance decays by **over 1000×** as $T \to 100{,}000$, while the Gini coefficient converges asymptotically to zero ($G = 3.11 \times 10^{-7}$), empirically proving Lyapunov stability and power reversibility.
+| Parameter Category | Symbol | Mathematical Description | Default Calibration | Bounded Search Domain |
+| :--- | :--- | :--- | :--- | :--- |
+| **Governance State Weights** | $w_r, w_w, w_f, w_c, w_d$ | Convex weights for State Vector $\tilde{\mathbf{S}}(t)$ | $[0.25, 0.20, 0.20, 0.15, 0.20]$ | $\sum w_k = 1, \; w_k \in [0.05, 0.50]$ |
+| **GSF Quality Weights** | $\beta_q, \beta_r, \beta_c, \beta_e, \beta_p$ | Positive numerator weights in $GS_i(t)$ | $[0.30, 0.20, 0.20, 0.15, 0.15]$ | $\sum \beta_k = 1, \; \beta_k > 0$ |
+| **GSF Penalty Weights** | $\beta_w, \beta_l$ | Load and latency denominator penalties in $GS_i(t)$ | $[0.40, 0.60]$ | $\beta_w, \beta_l \in [0.10, 2.00]$ |
+| **Entropy Invariant Bound** | $DE_{\min}$ | Constitutional lower bound on Decentralization Entropy | $0.60$ | $DE_{\min} \in [0.40, 0.85]$ |
+| **Coalition Authority Bound** | $\rho_{\max}$ | Strict upper bound on aggregate authority of top-$f$ nodes | $0.32$ | $\rho_{\max} \in [0.20, 0.333]$ |
+| **Regime Hysteresis Triggers** | $\theta_{low}^{down}, \theta_{low}^{up}, \theta_{high}^{down}, \theta_{high}^{up}$ | 4-threshold operational mode switching triggers | $[0.30, 0.35, 0.65, 0.70]$ | $\theta_{low} \in [0.20, 0.40], \; \theta_{high} \in [0.60, 0.80]$ |
+| **Authority Selectivity** | $\gamma_0, \kappa$ | Base Boltzmann gain and dynamic pressure scaling factor | $1.50, \; 2.00$ | $\gamma_0 \in [0.50, 5.00], \; \kappa \in [0.50, 4.00]$ |
+| **Anti-Monopoly Decay** | $\xi$ | Exponential coordinator tenure penalty rate | $0.05 \text{ epoch}^{-1}$ | $\xi \in [0.01, 0.20]$ |
+| **IPM Attenuation Scaling** | $\sigma_0, \eta, \delta$ | Max suppression, sensitivity gain, and decay rate | $0.80, \; 3.00, \; 0.10$ | $\sigma_0 \in [0.50, 0.95], \; \eta \in [1.0, 5.0]$ |
+| **Lyapunov Relaxation Rate** | $\kappa_a, c$ | Authority dispersion rate and exponential decay constant | $0.15 \text{ s}^{-1}, \; 0.08$ | $\kappa_a \in [0.05, 0.50], \; c > 0$ |
+| **Minimum Committee Size** | $m_{\min}$ | Fault-tolerant floor for active coordination committee | $16 \text{ nodes}$ | $m_{\min} \ge 3f_m + 1$ |
+| **Byzantine Fault Tolerance** | $f / N$ | Maximum allowable fraction of adversarial nodes | $0.30$ | $f / N \in [0.00, 0.333]$ |
 
 ---
 
-### 5.2. Byzantine Adversary Resilience ($N = 128$)
+## 6. Empirical Benchmarking Results
 
-<table>
-  <thead>
-    <tr>
-      <th align="center">Byzantine Fraction<br><em>f</em></th>
-      <th align="center">ADG Capture Prob.<br>P<sub>cap</sub></th>
-      <th align="center">ADG Fork Rate (%)</th>
-      <th align="center">PBFT Fork Rate (%)</th>
-      <th align="center">Flat DAO Capture Prob.<br>P<sub>cap</sub></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr><td align="center"><b>0.0% – 33.3%</b></td><td align="center"><b>0.0000</b></td><td align="center"><b>0.0%</b></td><td align="center">Up to 36.7%</td><td align="center">Up to 0.6667</td></tr>
-    <tr><td align="center"><b>35.0%</b></td><td align="center"><b>0.0000</b></td><td align="center"><b>3.3%</b></td><td align="center">100.0% (Stall)</td><td align="center">0.8000</td></tr>
-    <tr><td align="center"><b>40.0%</b></td><td align="center"><b>0.0000</b></td><td align="center"><b>10.0%</b></td><td align="center">100.0% (Stall)</td><td align="center">0.8667</td></tr>
-  </tbody>
-</table>
+### 6.1. Multi-Scale Convergence & Variance Decay ($T = 50$ to $100,000$ Epochs)
+*Source: `monte_carlo_scale_convergence_summary.csv` (Table 7)*
 
-<p align="center">
-  <img src="paper_outputs/figures/fig_byzantine_resilience.png" alt="Byzantine Resilience" width="90%"/>
-</p>
+| Execution Scale ($T$) | Mean Throughput (TPS $\pm \sigma$) | Throughput Variance ($\sigma^2$) | Finality Latency (ms $\pm \sigma$) | Latency Variance ($\sigma^2$) | Mean Gini Index ($G$) | Min Preserved $DE(t)$ | Final Energy $V(\mathbf{S})$ |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **50** | $114,432.0 \pm 31,236.3$ | $9.75 \times 10^8$ | $59.41 \pm 7.22$ | $52.17$ | $0.000340$ | $0.9986$ | $1.05 \times 10^{-3}$ |
+| **100** | $136,234.2 \pm 28,915.4$ | $8.36 \times 10^8$ | $55.96 \pm 6.31$ | $39.78$ | $0.000180$ | $0.9985$ | $1.10 \times 10^{-3}$ |
+| **1,000** | $146,588.0 \pm 10,076.2$ | $1.01 \times 10^8$ | $52.65 \pm 2.24$ | $5.02$ | $0.000014$ | $0.9990$ | $1.05 \times 10^{-3}$ |
+| **5,000** | $145,846.0 \pm 4,478.9$ | $2.01 \times 10^7$ | $52.35 \pm 1.01$ | $1.02$ | $0.000005$ | $0.9981$ | $1.04 \times 10^{-3}$ |
+| **20,000** | $140,022.6 \pm 2,128.3$ | $4.53 \times 10^6$ | $52.23 \pm 0.50$ | $0.25$ | $0.000002$ | $0.9949$ | $0.98 \times 10^{-3}$ |
+| **100,000** | **$143,023.1 \pm 977.9$** | **$9.56 \times 10^5$** | **$52.26 \pm 0.23$** | **$0.05$** | **$3.11 \times 10^{-7}$** | **$0.9956$** | **$1.01 \times 10^{-3}$** |
 
-**Key Takeaway:** ADG guarantees **$P_{cap} = 0.0000$** and **$0.0\%$ fork rate** up to the theoretical BFT bound $f \le 33.3\%$.
+```
+Key Takeaway: Throughput variance contracts by over three orders of magnitude from 9.75e8 to 9.56e5,
+confirming that transient shock injections do not induce cumulative state drift.
+```
 
 ---
 
-### 5.3. Dynamic Validator Churn & Handover Latency
+### 6.2. Horizontal Population Scale-Up ($N = 16$ to $4096$ Nodes)
+*Source: `monte_carlo_scalability_results.csv` (Table 8)*
 
-<table>
-  <thead>
-    <tr>
-      <th align="center">Churn Rate (%)</th>
-      <th align="center">Handover Success Rate (%)</th>
-      <th align="center">Mean Handover Latency<br>T<sub>succ</sub> (ms)</th>
-      <th align="center">Message Overhead (Msgs)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr><td align="center"><b>5% – 20%</b></td><td align="center"><b>100.0%</b></td><td align="center">15.05 ms</td><td align="center">204.0 – 242.0</td></tr>
-    <tr><td align="center"><b>30%</b></td><td align="center"><b>92.0%</b></td><td align="center">15.00 ms</td><td align="center">178.0</td></tr>
-    <tr><td align="center"><b>40%</b></td><td align="center"><b>8.0%</b></td><td align="center">14.84 ms</td><td align="center">152.0</td></tr>
-    <tr><td align="center"><b>50%</b></td><td align="center"><b>0.0%</b> (Safety Invariant)</td><td align="center">0.00 ms</td><td align="center">0.0</td></tr>
-  </tbody>
-</table>
+| Population ($N$) | Mean Throughput (TPS) | 99th-Percentile Latency (ms) | Adaptation Time $T_{adapt}$ (Epochs) | Minimum Preserved $DE(t)$ | Lyapunov Dissipation ($c$) |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| **16** | $15,769.4 \pm 1,266.0$ | $69.34 \pm 0.98$ | $1.00 \pm 0.00$ | $0.9838$ | $0.0010$ |
+| **64** | $63,475.1 \pm 2,409.5$ | $68.11 \pm 0.29$ | $1.00 \pm 0.00$ | $0.9969$ | $0.0010$ |
+| **256** | $257,424.7 \pm 4,623.4$ | $67.98 \pm 0.13$ | $1.00 \pm 0.00$ | $0.9994$ | $0.0010$ |
+| **1024** | $1,024,600.4 \pm 8,667.0$ | $67.90 \pm 0.06$ | $1.00 \pm 0.00$ | $0.9998$ | $0.0010$ |
+| **4096** | **$4,091,654.3 \pm 22,427.3$** | **$67.88 \pm 0.04$** | **$1.00 \pm 0.00$** | **$0.9999$** | **$0.0010$** |
 
-**Key Takeaway:** Success rate strictly drops at $\ge 33.3\%$ churn because the $(2f+1)$ supermajority quorum cannot form, preserving safety over invalid execution.
+```
+Key Takeaway: Validator population scales across 2.41 orders of magnitude (16 -> 4096).
+Tail latency monotonically contracts from 69.34 ms to 67.88 ms (+-0.04 ms),
+while the Lyapunov dissipation rate c = 0.0010 remains completely scale-invariant.
+```
 
 ---
 
-### 5.4. On-Chain EVM Gas Consumption Benchmarks
+### 6.3. Byzantine Adversary Resilience ($N = 128$)
+*Source: `byzantine_resilience_results.csv` (Table 9)*
 
-<table>
-  <thead>
-    <tr>
-      <th align="center">Committee Size<br><em>m</em></th>
-      <th align="center">ADG Epoch Advance</th>
-      <th align="center">ADG Zero-Fork Succession</th>
-      <th align="center">PBFT View-Change<br>𝒪(m²)</th>
-      <th align="center">Flat DAO Voting</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr><td align="center"><b>4</b></td><td align="center">73,680 Gas</td><td align="center">67,600 Gas</td><td align="center">111,400 Gas</td><td align="center">136,000 Gas</td></tr>
-    <tr><td align="center"><b>16</b></td><td align="center">90,720 Gas</td><td align="center">101,200 Gas</td><td align="center">507,400 Gas</td><td align="center">400,000 Gas</td></tr>
-    <tr><td align="center"><b>64</b></td><td align="center">158,880 Gas</td><td align="center">235,600 Gas</td><td align="center">6,843,400 Gas</td><td align="center">1,456,000 Gas</td></tr>
-    <tr><td align="center"><b>128</b></td><td align="center"><b>249,760 Gas</b></td><td align="center"><b>412,000 Gas</b></td><td align="center"><b>27,118,600 Gas</b></td><td align="center"><b>2,864,000 Gas</b></td></tr>
-  </tbody>
-</table>
+| Byzantine Fraction ($f$) | ADG Capture Prob. $P_{cap}$ | ADG Fork Rate (%) | PBFT Fork / Stall Rate (%) | Flat DAO Capture Prob. $P_{cap}$ |
+| :---: | :---: | :---: | :---: | :---: |
+| **0.0%** | **0.0000** | **0.0%** | 0.0% | 0.0000 |
+| **5.0%** | **0.0000** | **0.0%** | 0.0% | 0.0667 |
+| **10.0%** | **0.0000** | **0.0%** | 0.0% | 0.2000 |
+| **15.0%** | **0.0000** | **0.0%** | 0.0% | 0.3333 |
+| **20.0%** | **0.0000** | **0.0%** | 0.0% | 0.5000 |
+| **25.0%** | **0.0000** | **0.0%** | 13.3% | 0.6333 |
+| **30.0%** | **0.0000** | **0.0%** | 36.7% | 0.6000 |
+| **33.0% (BFT Limit)** | **0.0000** | **0.0%** | 20.0% | 0.6667 |
+| **35.0%** | **0.0000** | **3.3%** | 100.0% (Total Stall) | 0.8000 |
+| **40.0%** | **0.0000** | **10.0%** | 100.0% (Total Stall) | 0.8667 |
 
-<p align="center">
-  <img src="paper_outputs/figures/fig_gas_comparison.png" alt="EVM Gas Comparison" width="90%"/>
-</p>
-
-**Key Takeaway:** At $m = 128$, ADG reduces on-chain governance overhead by **99.08%** relative to PBFT view-changes.
+```
+Key Takeaway: ADG preserves P_capture = 0.0000 across all adversary regimes by enforcing
+the top-f coalition bound (rho_max <= 0.330), strictly preventing plutocratic capture.
+```
 
 ---
 
-### 5.5. Verified Public Testnet Deployment (Ethereum Sepolia)
+### 6.4. Dynamic Validator Churn & Handover Latency
+*Source: `leader_crash_churn_results.csv` (Table 10)*
 
-50 consecutive state-transition transactions were broadcast and mined on the live public Ethereum Sepolia testnet across blocks `11566628` to `11566677`:
+| Churn Rate (%) | Succession Success Rate (%) | Mean Handover Latency $T_{succ}$ (ms) | Handover Message Overhead ($2 \cdot m_{active}$) |
+| :---: | :---: | :---: | :---: |
+| **5%** | **100.0%** | 15.05 ms | 242.0 |
+| **10%** | **100.0%** | 15.06 ms | 230.0 |
+| **20%** | **100.0%** | 15.05 ms | 204.0 |
+| **30%** | **92.0%** | 15.00 ms | 178.0 |
+| **40%** | **8.0%** | 14.85 ms | 152.0 |
+| **50%** | **0.0%** (Safety Invariant) | 0.00 ms | 0.0 |
 
-* **Mean Block Inclusion Latency:** 10.42 s
-* **Gas Consumption per Mined Transition:** 95,440 – 95,480 Gas
-* **Effective Gas Price:** 1.17 – 1.49 Gwei
-* **Transaction Status:** 100% Success (`Status: 1`)
+```
+Key Takeaway: Failover reliability strictly transitions at churn >= 33.3% because surviving
+online nodes cannot assemble an honest 2f_m + 1 supermajority, preventing illegitimate minority forks.
+```
 
 ---
 
-## 6. Quick Start & Replication Guide
+### 6.5. On-Chain EVM Gas Consumption Benchmarks
+*Source: `evm_gas_benchmarks.csv` & `evm_gas_reduction_summary.csv` (Table 11)*
+
+| Committee Size ($m$) | ADG Epoch Advance | ADG Zero-Fork Succession | PBFT View-Change $\mathcal{O}(m^2)$ | Flat DAO Voting (Governor Bravo) | Tendermint Commit Round |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| **4** | 73,680 Gas | 67,600 Gas | 111,400 Gas | 136,000 Gas | 80,600 Gas |
+| **16** | 90,720 Gas | 101,200 Gas | 507,400 Gas | 400,000 Gas | 130,200 Gas |
+| **64** | 158,880 Gas | 235,600 Gas | 6,843,400 Gas | 1,456,000 Gas | 328,600 Gas |
+| **128** | **249,760 Gas** | **412,000 Gas** | **27,118,600 Gas** | **2,864,000 Gas** | **589,000 Gas** |
+
+```
+Key Takeaway: At m = 128, ADG Epoch Advance achieves a 99.08% reduction in on-chain gas overhead
+relative to unaggregated PBFT view-changes and a 91.28% reduction relative to per-voter DAO SSTORE storage.
+```
+
+---
+
+### 6.6. High-Throughput Ganache Ledger Stress Benchmark (20,000 Blocks)
+*Source: `ganache_benchmark_summary_table12.csv` (Table 12)*
+
+| Operational Regime | Mined Blocks Range | Mean Latency (ms $\pm \sigma$) | Gas Consumption per Tx | Mean Pressure $G_p$ (WAD) | Mean Entropy $DE$ (WAD) | Mean Gini ($G$) | Mined Status |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Steady-State ($\mathcal{M}_0$)** | 41,404 – 57,403 (80%) | $35.42 \pm 4.12$ | 95,464 Gas | $0.15 \times 10^{18}$ | $0.94 \times 10^{18}$ | 0.045 | 100% Success |
+| **Shock Transient ($\mathcal{M}_2$)** | 57,404 – 61,403 (20%) | $38.76 \pm 5.34$ | 95,528 Gas | $0.90 \times 10^{18}$ | $0.68 \times 10^{18}$ | 0.240 | 100% Success |
+| **Full Ledger Aggregate** | **41,404 – 61,403 (100%)** | **$36.09 \pm 4.65$** | **95,519 Gas** | **$0.30 \times 10^{18}$** | **$0.89 \times 10^{18}$** | **0.084** | **100% Success** |
+
+---
+
+### 6.7. Verified Public Testnet Deployment (Ethereum Sepolia)
+*Source: `sepolia_benchmark_summary_table13.csv` (Table 13)*
+
+Across 50 consecutive mined blocks (`11,566,628` to `11,566,677`) on the public Ethereum Sepolia Testnet (Chain ID 11155111):
+
+| Transaction Range | Mined Block Range | Mean Inclusion Latency (s) | Gas Used | Effective Gas Price (Gwei) | Status |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| **Tx #01 – #10** | 11566628 – 11566637 | 10.65 s | 95,440 – 95,480 | $1.35 \pm 0.08$ | 1 (Success) |
+| **Tx #11 – #20** | 11566638 – 11566647 | 9.82 s | 95,480 | $1.28 \pm 0.06$ | 1 (Success) |
+| **Tx #21 – #30** | 11566648 – 11566657 | 11.08 s | 95,480 | $1.34 \pm 0.09$ | 1 (Success) |
+| **Tx #31 – #40** | 11566658 – 11566667 | 10.02 s | 95,480 | $1.26 \pm 0.07$ | 1 (Success) |
+| **Tx #41 – #50** | 11566668 – 11566677 | 10.15 s | 95,480 | $1.27 \pm 0.06$ | 1 (Success) |
+
+* **Overall Mean Latency:** $10.34 \pm 2.45 \text{ s}$ (strictly synchronized within Ethereum's 12.0 s PoS beacon slot interval).
+* **Average Economic Cost:** $0.00012 \text{ ETH}$ ($\approx \$0.36 \text{ USD}$).
+* **Integrity:** Zero transaction reverts, out-of-gas exceptions, or reentrancy anomalies.
+
+---
+
+### 6.8. Global Sobol Sensitivity & Variance Decomposition
+*Source: `sobol_sensitivity_results.csv` & `sobol_variance_decomposition_summary.csv` (Table 14)*
+
+| Parameter | Structural Description | First-Order Index ($S_1$) | Total-Order Index ($S_T$) | Sensitivity Rank |
+| :---: | :--- | :---: | :---: | :---: |
+| $w_r$ | Risk Weight in State Vector $\mathbf{S}(t)$ | **0.5818** | **0.7860** | 1 (Primary Driver) |
+| $w_w$ | Workload Demand Weight in $\mathbf{S}(t)$ | **0.1574** | **0.2084** | 2 (Secondary Driver) |
+| $\gamma_0$ | Base Boltzmann Selectivity Gain | 0.0147 | 0.0177 | 3 |
+| $\beta_q$ | Reliability Quality Weight in GSF | 0.0100 | 0.0134 | 4 |
+| $\kappa_a$ | Lyapunov Asymptotic Relaxation Rate | 0.0100 | 0.0132 | 5 |
+| $\xi$ | Anti-Monopoly Tenure Penalty Rate | 0.0100 | 0.0127 | 6 |
+| $\beta_l$ | Latency Penalty Weight in GSF | 0.0100 | 0.0124 | 7 |
+| $DE_{\min}$ | Constitutional Entropy Lower Bound | 0.0100 | 0.0123 | 8 |
+
+```
+Key Takeaway: Direct first-order parameter contributions account for 80.39% of total output variance
+(sum S1 = 0.8039), while non-linear parameter couplings account for 19.61%. The non-zero interaction gap
+for risk ST(wr) - S1(wr) = 0.2042 demonstrates constructive non-linear coupling with dynamic Boltzmann gain gamma(Gp).
+```
+
+---
+
+## 7. Quick Start & Execution Workflow
 
 ### Prerequisites
 * **Node.js:** `>= 18.0.0`
 * **Python:** `>= 3.10` (tested on 3.12 and 3.13)
-* **Ganache:** running locally on `http://127.0.0.1:7545`
+* **Local EVM:** Ganache running locally on port `7545`
 
 ### 1. Installation
 
@@ -412,62 +515,84 @@ ADG-Framework/
 git clone https://anonymous.4open.science/r/ADG-Mole-Rat-CED6/
 cd ADG-Framework
 
-# Install Node.js toolchain and Hardhat dependencies
+# Install Node.js smart contract toolchain
 npm install
 
-# Install Python scientific computing requirements
+# Install Python scientific computing dependencies
 pip install -r requirements.txt
 ```
 
-### 2. End-to-End Automated Pipeline
+### 2. Stage-by-Stage Reproduction Pipeline
 
-To compile smart contracts, deploy to local Ganache, execute multi-scale Monte Carlo simulations (up to 100,000 epochs), run Byzantine resilience suites, profile EVM gas, execute Sepolia live transactions, and generate all LaTeX tables and PDF figures:
-
+#### Stage 1: Smart Contract Compilation
 ```bash
-npm run pipeline:full
+npx hardhat compile
 ```
 
-### 3. Individual Execution Commands
+#### Stage 2: Local Ganache Deployment
+Start Ganache GUI or CLI on port 7545, then deploy the complete contract suite:
+```bash
+npx hardhat run scripts/deploy.js --network localhost
+```
+*Outputs deployment addresses to `offchain_engine/deployed_contracts_ganache.json`.*
+
+#### Stage 3: Ethereum Sepolia Public Testnet Deployment
+Set your funded private key and deploy the lean core contracts to Sepolia:
+```bash
+# PowerShell:
+$env:SEPOLIA_PRIVATE_KEY="YOUR_PRIVATE_KEY_HERE"
+node deploy_sepolia_live.cjs
+
+# Linux / macOS:
+export SEPOLIA_PRIVATE_KEY="YOUR_PRIVATE_KEY_HERE"
+node deploy_sepolia_live.cjs
+```
+*Outputs verified addresses to `offchain_engine/deployed_contracts_sepolia.json`.*
+
+#### Stage 4: Scientific Benchmarking Suites
+Execute the empirical benchmarking scripts in sequence:
 
 ```bash
-# Compile smart contracts
-npm run compile
+# 1. Multi-scale convergence & N=16 to 4096 scalability (Tables 7 & 8, Figure 13)
+python tests_and_benchmarks/run_monte_carlo_scalability.py
 
-# Deploy to local Ganache (Port 7545)
-npm run deploy:ganache
+# 2. Byzantine fault resilience & capture bounds (Table 9, Figure 14)
+python tests_and_benchmarks/run_byzantine_resilience.py
 
-# Run 6-scale Monte Carlo convergence (50 to 100,000 epochs)
-npm run sim:scalability
+# 3. Dynamic validator churn & failover latency (Table 10)
+python tests_and_benchmarks/run_leader_crash_churn.py
 
-# Run Byzantine adversary resilience suite
-npm run sim:byzantine
+# 4. On-chain EVM gas consumption profiling (Table 11, Figure 15)
+python tests_and_benchmarks/run_evm_gas_benchmarks.py
 
-# Run leader crash and dynamic churn test
-npm run sim:churn
+# 5. Continuous 20,000-block Ganache stress ledger (Table 12, Figure 16)
+python tests_and_benchmarks/run_ganache_ledger.py
 
-# Run global Sobol variance decomposition
-npm run sim:sobol
+# 6. Ethereum Sepolia 50 consecutive mined blocks trace (Table 13, Figure 17)
+python tests_and_benchmarks/run_sepolia_live_benchmark.py
 
-# Generate 20,000 live Ganache blockchain ledger transactions
-npm run ledger:ganache
-
-# Broadcast 50 live transactions to Ethereum Sepolia Testnet
-npm run ledger:sepolia
-
-# Generate camera-ready LaTeX tables (.tex) and vector PDF figures (.pdf)
-npm run artifacts:generate
+# 7. Global Sobol sensitivity & variance decomposition (Table 14, Figure 18)
+python tests_and_benchmarks/run_sobol_sensitivity.py
 ```
+
+#### Stage 5: Master Artifact & Figure Compilation
+Compile the master index CSV and generate all camera-ready vector figures:
+```bash
+python tests_and_benchmarks/generate_all_publication_artifacts.py
+```
+
+All standardized datasets are exported to `paper_outputs/csv_datasets/` and all publication-grade vector plots (300 DPI, strictly NO plot titles) are exported to `paper_outputs/figures/`.
 
 ---
 
-## 7. Citation
+## 8. Citation
 
-If you utilize this framework, codebase, or empirical datasets in your research, please cite our monograph:
+If you utilize this framework, smart contracts, or empirical benchmark datasets, please cite our monograph:
 
 ```bibtex
 @article{adg2026framework,
   title     = {Adaptive Dynamic Authority Allocation in Decentralized Systems: A Non-Equilibrium Control-Theoretic Framework Inspired by Eusocial Mammalian Regulation},
-  author    = {Erfan Shahmohammadi},
+  author    = {Shahmohammadi, Erfan and Elmi Sola, Yasser},
   journal   = {IEEE Transactions on Dependable and Secure Computing},
   year      = {2026},
   volume    = {under review},
@@ -478,6 +603,9 @@ If you utilize this framework, codebase, or empirical datasets in your research,
 
 ---
 
-## 8. License
+## 9. License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+```
+
+---
